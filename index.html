@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Sensitivity Hub - Độ Nhạy Free Fire Pro Player & Tùy Chỉnh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ffred: {
+                            500: '#ff3b30',
+                            600: '#e02d22',
+                            700: '#c52217',
+                        },
+                        ffdark: {
+                            800: '#1a1a1e',
+                            900: '#121215',
+                            950: '#0a0a0c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/style.css">
+</head>
+<body class="bg-ffdark-950 text-gray-100 font-sans min-h-screen flex flex-col selection:bg-ffred-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-50 bg-ffdark-900/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-ffred-600 to-amber-500 p-2 rounded-xl text-white shadow-lg shadow-ffred-600/30">
+                    <i class="fa-solid fa-crosshairs text-xl animate-pulse"></i>
+                </div>
+                <span class="text-xl font-black tracking-wider uppercase bg-gradient-to-r from-white via-gray-200 to-ffred-500 bg-clip-text text-transparent">
+                    FF<span class="text-ffred-500">SENSE</span>.VN
+                </span>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-semibold">
+                <a href="#pro-players" class="hover:text-ffred-500 transition-colors">Pro Players</a>
+                <a href="#generator" class="hover:text-ffred-500 transition-colors">Tạo Độ Nhạy</a>
+                <a href="#custom-list" class="hover:text-ffred-500 transition-colors">Độ Nhạy Của Tôi</a>
+                <a href="#tips" class="hover:text-ffred-500 transition-colors">Mẹo Kéo Tâm</a>
+            </nav>
+            <div>
+                <a href="#generator" class="bg-ffred-600 hover:bg-ffred-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition-all shadow-lg shadow-ffred-600/20 active:scale-95">
+                    <i class="fa-solid fa-plus mr-1"></i> Thêm Setting
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative py-16 lg:py-24 overflow-hidden border-b border-gray-800/60 bg-gradient-to-b from-ffdark-900 to-ffdark-950">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ff3b30_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-ffred-500/10 text-ffred-500 border border-ffred-500/20 mb-6">
+                <i class="fa-solid fa-fire text-amber-500"></i> Cập nhật bản vá Free Fire mới nhất
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-tight uppercase mb-6">
+                BÍ KÍ KÉO TÂM <span class="bg-gradient-to-r from-ffred-500 to-amber-500 bg-clip-text text-transparent">BÁCH PHÁT BÁCH TRÚNG</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-10">
+                Khám phá độ nhạy chuẩn xác từ các Pro Player hàng đầu thế giới hoặc tự tối ưu hóa thông số DPI và Setting phù hợp với thiết bị của riêng bạn.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#pro-players" class="bg-ffred-600 hover:bg-ffred-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-xl shadow-ffred-600/30 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-bolt">}</i> Xem Pro Players
+                </a>
+                <a href="#generator" class="bg-ffdark-800 hover:bg-gray-800 text-white font-bold px-8 py-3.5 rounded-xl border border-gray-700 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> Tự Tạo Setting
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+        
+        <!-- Section: Pro Players -->
+        <section id="pro-players" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide flex items-center gap-3">
+                        <span class="w-3 h-8 bg-ffred-600 rounded-sm"></span> Độ Nhạy Pro Player
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">Cấu hình chuẩn xác được tin dùng bởi các huyền thoại Free Fire.</p>
+                </div>
+                
+                <!-- Filter & Search Controls -->
+                <div class="flex flex-wrap gap-3">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-search"></i>
+                        </span>
+                        <input type="text" id="search-input" placeholder="Tìm kiếm pro player..." class="bg-ffdark-900 border border-gray-800 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-ffred-500 w-full sm:w-64">
+                    </div>
+                    <select id="dpi-filter" class="bg-ffdark-900 border border-gray-800 rounded-xl px-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        <option value="all">Tất cả DPI</option>
+                        <option value="low">DPI Dưới 500</option>
+                        <option value="mid">DPI 500 - 800</option>
+                        <option value="high">DPI Trên 800</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Grid Pro Players -->
+            <div id="pro-players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS will inject cards here -->
+            </div>
+        </section>
+
+        <!-- Section: Generator & Custom Tool -->
+        <section id="generator" class="bg-ffdark-900/80 border border-gray-800 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-ffred-600/5 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide">TẠO & LƯU ĐỘ NHẠY CÁ NHÂN</h2>
+                    <p class="text-gray-400 text-sm mt-1">Lưu lại cấu hình kéo tâm tốt nhất của bạn vào bộ nhớ trình duyệt.</p>
+                </div>
+
+                <form id="sensitivity-form" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tên / Biệt danh</label>
+                            <input type="text" id="creator-name" required placeholder="VD: Siêu Kéo Tâm" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Thiết bị sử dụng</label>
+                            <input type="text" id="creator-device" required placeholder="VD: iPhone 13 / Samsung" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">DPI</label>
+                            <input type="number" id="val-dpi" required value="500" min="200" max="1500" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Nhìn Xung Quanh</label>
+                            <input type="number" id="val-general" required value="95" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Red Dot</label>
+                            <input type="number" id="val-reddot" required value="90" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm 2X</label>
+                            <input type="number" id="val-scope2x" required value="88" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm 4X</label>
+                            <input type="number" id="val-scope4x" required value="92" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm AWM</label>
+                            <input type="number" id="val-awm" required value="50" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-ffred-600 to-ffred-700 hover:from-ffred-700 hover:to-ffred-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-ffred-600/30 transition-all flex items-center justify-center gap-2 uppercase tracking-wider text-sm">
+                        <i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình Vào Máy
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Section: Custom User List -->
+        <section id="custom-list" class="space-y-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide flex items-center gap-3">
+                        <span class="w-3 h-8 bg-amber-500 rounded-sm"></span> Độ Nhạy Của Tôi
+                    </h2>
+                    <p class="text-gray-400 text-sm mt-1">Danh sách các cấu hình bạn đã tự tạo trên trình duyệt này.</p>
+                </div>
+            </div>
+
+            <div id="custom-players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS will inject user custom cards here -->
+            </div>
+        </section>
+
+        <!-- Section: Tips for Dragging Aim -->
+        <section id="tips" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
+                <div class="w-10 h-10 rounded-xl bg-ffred-500/10 text-ffred-500 flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="font-bold text-lg">Tốc Độ Kéo Tâm</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Không kéo quá mạnh hoặc quá nhanh. Hãy thực hiện động tác vuốt dứt khoát từ nửa dưới màn hình hướng thẳng lên đầu đối thủ.
+                </p>
+            </div>
+            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                </div>
+                <h3 class="font-bold text-lg">Vệ Sinh Màn Hình</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Mồ hôi tay làm giảm độ trơn trượt đáng kể. Hãy lau sạch màn hình và sử dụng phấn rôm hoặc bao tay chơi game để tối ưu độ nhạy.
+                </p>
+            </div>
+            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-lg">
+                    <i class="fa-solid fa-crosshairs"></i>
+                </div>
+                <h3 class="font-bold text-lg">Tâm Mặc Định (Red Dot)</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Đặt tâm súng ở ngang ngực trước khi nhắm bắn sẽ giúp lực kéo tâm nhẹ hơn và dễ dính headshot hơn rất nhiều.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-ffdark-900 border-t border-gray-800 py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
+            <p class="font-semibold text-gray-400 mb-2">FF Sensitivity Hub - Công cụ hỗ trợ Free Fire tối ưu hóa trải nghiệm game.</p>
+            <p>&copy; 2025 FF Sense. VN. Không liên kết chính thức với Garena.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-ffdark-800 border border-gray-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+        <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
+            <i class="fa-solid fa-check text-xs"></i>
+        </div>
+        <span id="toast-message" class="text-sm font-medium">Đã sao chép cấu hình vào bộ nhớ tạm!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="src/data/pro-players.js"></script>
+    <script src="src/js/app.js"></script>
+</body>
+</html>
