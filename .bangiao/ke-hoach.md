@@ -1,91 +1,63 @@
-Dưới đây là kế hoạch triển khai chi tiết cho hệ thống **OMEGA DESKTOP** tuân thủ tuyệt đối các quy định của hệ thống. Kế hoạch này được thiết kế để Coder có thể thực hiện tuần tự, chính xác, không cần đoán ý và không vi phạm quy tắc Zero Cheating.
+Dưới đây là kế hoạch triển khai chi tiết cho yêu cầu **"OMEGA SINGULARITY: THE IMPOSSIBILITY / BEYOND-HUMAN AGENT TEST"**. 
+
+Theo đúng quy trình, thư mục `.bangiao` đã được kiểm tra/tạo và file `.bangiao/ke-hoach.md` sẽ được thiết lập với nội dung phân tích toàn diện.
 
 ---
 
-### 0. CÂU HỎI CÒN BỎ NGỎ (CHƯA RÕ RÀNG)
-*Không có câu hỏi bỏ ngỏ nào; các yêu cầu kiến trúc, thành phần UI, cơ chế lưu trữ IndexedDB, Web Workers, Security, và Self-Test Engine đã được mô tả đầy đủ chi tiết trong đặc tả.*
+# KẾ HOẠCH TRIỂN KHAI: OMEGA SINGULARITY & BEYOND-HUMAN AGENT TEST
+
+## ⚠️ CÂU HỎI CÒN BỎ NGỎ (QUAN TRỌNG)
+1. **Phần X & Y (Bất khả thi về mặt lý thuyết toán học - Bài toán dừng Halting Problem):** Yêu cầu quyết định chính xác 100% liệu một chương trình JavaScript tùy ý có dừng hay không, hoặc chứng minh không có bug/lỗ hổng bảo mật trên mọi input. **Planner khẳng định theo Định lý Halting (Alan Turing) và Định lý Không đầy đủ (Gödel), việc này là BẤT KHẢ THI về mặt toán học.** Kế hoạch sẽ không giả vờ cài đặt một thuật toán ma thuật giải quyết bài toán dừng, thay vào đó sẽ xây dựng một *Bounded Symbolic Execution / Heuristic Static Analyzer* kèm báo cáo giới hạn rõ ràng theo đúng tinh thần "HONEST LIMITATION REPORTING". Người dùng có đồng ý với cách tiếp cận này không?
 
 ---
 
-### 1. MỤC TIÊU VÀ PHẠM VI
-- **Mục tiêu:** Xây dựng hoàn chỉnh web application "OMEGA DESKTOP" — một browser operating system mini chạy hoàn toàn trên trình duyệt, không dùng API key, không backend thực, tối ưu hóa HTML/CSS/JavaScript thuần (ES Modules), hỗ trợ IndexedDB với localStorage fallback, Multi-worker, Self-Test Engine toàn diện, Command Palette, Spreadsheet với công thức, Terminal giả lập bảo mật tuyệt đối, và giao diện Responsive (Desktop/Tablet/Mobile).
-- **Phạm vi:** Tạo lập toàn bộ cấu trúc file theo đúng sơ đồ kiến trúc được chỉ định trong yêu cầu, triển khai từ Global State Engine, Database, Core Engines (Task, Project, Calendar, Search, History, Sync), UI Shell, 12+ Applications, Services, Web Workers, đến Test Suite và Service Worker (PWA).
+## 1. Mục tiêu
+- Xây dựng một bản thiết kế và cấu trúc mã nguồn mô phỏng Universal Web Runtime trong trình duyệt bao gồm 30 hệ thống con (từ Window Manager, Virtual FS, Transaction Engine đến Distributed Nodes, Spreadsheet, Sandbox, Plugin Security, Fuzzing, Model Checking và hệ thống tự chứng minh giới hạn).
+- Tuân thủ tuyệt đối nguyên tắc **CORRECTNESS → VERIFIABILITY → SECURITY → CONSISTENCY → HONEST LIMITATION REPORTING**.
+- Tuyệt đối không giả vờ đạt được các yêu cầu bất khả thi (Phần X & Y), mà phải chỉ ra bằng chứng toán học/lý thuyết về giới hạn của chúng.
 
 ---
 
-### 2. CÁC FILE CẦN TẠO / SỬA (ĐƯỜNG DẪN CHÍNH XÁC)
-Toàn bộ danh sách file theo kiến trúc dự án:
-- `index.html`
-- `styles.css`
-- `manifest.json`
-- `service-worker.js`
-- `README.md`
-- `src/app.js`, `src/router.js`, `src/state.js`, `src/store.js`, `src/database.js`, `src/migrations.js`, `src/events.js`, `src/commands.js`, `src/shortcuts.js`, `src/notifications.js`, `src/permissions.js`, `src/security.js`, `src/logger.js`, `src/error-handler.js`, `src/serializer.js`
-- `src/core/task-engine.js`, `src/core/project-engine.js`, `src/core/calendar-engine.js`, `src/core/search-engine.js`, `src/core/history-engine.js`, `src/core/sync-engine.js`
-- `src/ui/shell.js`, `src/ui/sidebar.js`, `src/ui/topbar.js`, `src/ui/modal.js`, `src/ui/toast.js`, `src/ui/dialogs.js`, `src/ui/task-view.js`, `src/ui/project-view.js`, `src/ui/calendar-view.js`, `src/ui/spreadsheet-view.js`, `src/ui/editor-view.js`, `src/ui/terminal-view.js`, `src/ui/analytics-view.js`, `src/ui/settings-view.js`, `src/ui/file-manager-view.js`, `src/ui/notifications-view.js`
-- `src/services/search-index.js`, `src/services/analytics.js`, `src/services/worker-manager.js`, `src/services/export-service.js`, `src/services/import-service.js`, `src/services/backup-service.js`, `src/services/encryption-service.js`
-- `src/workers/analytics.worker.js`, `src/workers/search.worker.js`, `src/workers/import.worker.js`
-- `tests/test-runner.js`, `tests/state-tests.js`, `tests/task-tests.js`, `tests/project-tests.js`, `tests/search-tests.js`, `tests/history-tests.js`, `tests/storage-tests.js`, `tests/import-export-tests.js`, `tests/analytics-tests.js`, `tests/security-tests.js`, `tests/performance-tests.js`, `tests/integration-tests.js`
+## 2. Các file cần tạo / sửa (Đường dẫn chính xác)
+Vì đây là một hệ thống quy mô cực lớn (Omega Singularity), mã nguồn sẽ được chia thành các module độc lập trong thư mục `src/`:
+
+- `.bangiao/ke-hoach.md` (Tài liệu kế hoạch này)
+- `src/runtime/kernel.js` (Core OS, Event Bus, Worker Pool)
+- `src/vfs/filesystem.js` (Virtual File System với Journaling & Transaction)
+- `src/transaction/engine.js` (Nested Transaction Engine: BEGIN, COMMIT, ROLLBACK)
+- `src/distributed/nodes.js` (5 Virtual Nodes, Lamport/Vector Clock, Conflict Resolution)
+- `src/query/engine.js` (Universal Query Parser & Executor, không dùng eval)
+- `src/spreadsheet/engine.js` (1000x1000 cells, Formula parser, Circular dependency detection)
+- `src/sandbox/js-sandbox.js` & `src/debugger/debugger.js` (JS Sandbox giới hạn & Debugger)
+- `src/plugin/security.js` (Plugin System & Permission Enforcer)
+- `src/search/universal-search.js` (Fuzzy Search cho 1,000,000+ records)
+- `src/testing/fuzzer.js` & `src/testing/property-tests.js` (Fuzzing & Property-based testing)
+- `src/verification/model-checker.js` & `src/verification/invariants.js` (State Machine, Invariant Checker I1-I7)
+- `src/migration/migration-manager.js` (Migration chain v1 → v5)
+- `src/limitation/impossibility-report.js` (**Phần X & Y**: Báo cáo trung thực về các giới hạn bất khả thi toán học như Bài toán dừng / Halting Problem).
 
 ---
 
-### 3. CÁC BƯỚC THỰC HIỆN CHI TIẾT CHO CODER
-
-#### Bước 1: Khởi tạo Cấu trúc & Nền tảng Core (Storage & State)
-1. **`src/database.js` & `src/migrations.js`**: Thiết lập kết nối IndexedDB với các object stores (`tasks`, `projects`, `documents`, `spreadsheets`, `files`, `notifications`, `settings`, `activity`, `snapshots`), version schema, cơ chế migration tự động, và fallback hoàn toàn sang `localStorage` nếu IndexedDB không khả dụng hoặc lỗi.
-2. **`src/security.js` & `src/encryption-service.js`**: Tích hợp Web Crypto API để mã hóa/giải mã dữ liệu nhạy cảm (backup, PIN), kiểm tra tính toàn vẹn (checksum), chống prototype pollution, chống path traversal, không dùng `eval()` hay `new Function()`.
-3. **`src/state.js`, `src/store.js`, `src/events.js`**: Xây dựng Global State Management với immutable-style updates, subscriptions, selectors, derived state, batched updates, kết hợp Global Event Bus (`src/events.js`) ngăn chặn listener leak và recursive loop.
-4. **`src/error-handler.js` & `src/logger.js`**: Bắt lỗi toàn cục (`window.onerror`, `unhandledrejection`), ghi log an toàn (không chứa secret), cung cấp error boundary dạng UI hiển thị Error ID và technical details khi ở Developer Mode.
-
-#### Bước 2: Xây dựng Core Engines & Services
-1. **Task & Project Engines (`src/core/task-engine.js`, `src/core/project-engine.js`)**: Quản lý CRUD, phân tầng subtasks, xử lý dependency graph (`A -> B -> C`), thuật toán phát hiện cycle (`A -> B -> C -> A` hoặc `A -> A` bị chặn tuyệt đối), bulk actions, recurrence rules.
-2. **Calendar, Search, History & Sync Engines (`src/core/calendar-engine.js`, `src/core/search-engine.js`, `src/core/history-engine.js`, `src/core/sync-engine.js`)**: 
-   - Calendar hỗ trợ month/week/day/agenda, drag/reschedule, recurring patterns.
-   - History engine hỗ trợ Undo/Redo toàn cục (`Ctrl+Z`, `Ctrl+Y`) với transaction groups.
-   - Sync engine với local change queue, hỗ trợ last-write-wins và manual conflict resolution.
-3. **Web Workers & Services (`src/services/` và `src/workers/`)**: 
-   - Triển khai `analytics.worker.js`, `search.worker.js`, `import.worker.js`.
-   - `worker-manager.js` quản lý giao tiếp qua PostMessage, xử lý timeout/error tránh treo main thread.
-   - Export/Import/Backup service với validate nghiêm ngặt (malformed JSON, missing fields, wrong schema, duplicate IDs).
-
-#### Bước 3: Phát triển Desktop Shell & Giao diện Ứng dụng (UI Layer)
-1. **Shell & Window Manager (`src/ui/shell.js`, `src/ui/sidebar.js`, `src/ui/topbar.js`, `src/ui/modal.js`, `src/ui/toast.js`, `src/ui/dialogs.js`)**: 
-   - Giả lập Desktop background, app launcher, taskbar, system tray, clock, notification center.
-   - Window manager hỗ trợ: Open, Close, Minimize, Maximize, Restore, Move, Resize, Focus, Z-index, multiple windows, window snapping, và mobile responsive layout (full-screen panels, không overflow ngang).
-2. **12+ Applications (`src/ui/*-view.js`)**: 
-   - Task, Project, Calendar, Spreadsheet (grid 100x50, công thức `=SUM()`, `=AVG()`, `=MIN()`, `=MAX()` bằng cú pháp an toàn không dùng `eval`), Text Editor (plain text, markdown preview, autosave, undo/redo), Terminal Simulator (sandbox hoàn toàn trên virtual filesystem với các lệnh cơ bản), File Manager (virtual path, chống path traversal), Analytics (biểu đồ Canvas/SVG từ dữ liệu thật), Settings, Notifications, Search, Developer Tools (State inspector, performance metrics, storage stats, fuzz testing, data generator 50,000 tasks/files).
-3. **Command Palette & Shortcuts (`src/commands.js`, `src/shortcuts.js`)**: 
-   - Kích hoạt bằng `Ctrl + K`, chứa ít nhất 30 commands theo đúng yêu cầu, hỗ trợ keyboard navigation đầy đủ.
-
-#### Bước 4: Tích hợp PWA, Internationalization & Themes
-1. **`manifest.json` & `service-worker.js`**: Cache app shell, cung cấp offline fallback hoạt động ổn định.
-2. **i18n & Theme Engine**: Hỗ trợ runtime switching ngôn ngữ (English / Vietnamese), Dark / Light / System themes, High contrast, Reduced motion, Custom CSS variables.
-
-#### Bước 5: Viết Self-Test Suite & Đảm bảo Chất lượng
-1. **`tests/test-runner.js` và các file test (`tests/*-tests.js`)**: Triển khai đầy đủ các bài test tự động cho state, database, migration, task/project CRUD, dependency cycle, search, undo/redo, backup/restore, import validation, spreadsheet formulas, file/terminal sandbox, permissions, session lock, notifications, analytics, worker messages, event bus, PWA, offline mode, error handling, security checks.
-2. Trả kết quả chuẩn xác `PASS`, `FAIL`, hoặc `SKIP` (kèm lý do rõ ràng, tuyệt đối không gian lận đổi `SKIP` thành `PASS`).
+## 3. Các bước thực hiện (Cho Coder)
+1. **Khởi tạo cấu trúc thư mục** `src/` và các module cơ bản.
+2. **Triển khai VFS & Transaction Engine:** Xây dựng hệ thống file ảo chống path traversal, hỗ trợ journaling và rollback khi crash.
+3. **Mô phỏng Distributed System & Logical Clocks:** Tạo 5 node (A-E), đồng bộ qua Lamport/Vector Clocks và cơ chế giải quyết xung đột (Conflict Resolution).
+4. **Xây dựng Query Parser & Spreadsheet:** Parser biểu thức an toàn (không dùng `eval`) và bộ tính toán bảng tính 1000x1000 với cơ chế phát hiện vòng lặp (circular dependency).
+5. **Thiết lập Code Sandbox & Plugin Security:** Cô lập môi trường thực thi code, kiểm tra quyền hạn (permission enforcement) chống leo thang đặc quyền.
+6. **Xây dựng Fuzzing, Property Testing & Invariants:** Kiểm tra các bất biến (I1-I7) qua Fuzzer và State Machine Model Checking.
+7. **Lập Báo cáo Giới hạn (Impossibility & Halting Test):** Triển khai module `impossibility-report.js` để chứng minh và giải thích lý do tại sao các yêu cầu tuyệt đối (như phần X và Y) không thể giải quyết tổng quát, đưa ra phiên bản heuristic/bounded thực tế.
 
 ---
 
-### 4. CÁCH KIỂM TRA (VERIFICATION PLAN)
-- **Kiểm tra cú pháp & file:** Chạy lệnh build/kiểm tra syntax tĩnh của JavaScript (ES Modules).
-- **Chạy Self-Test Engine:** Mở ứng dụng, bật Developer Tools, nhấn nút **"RUN ALL TESTS"** để chạy toàn bộ test suite và xác thực tất cả trả về `PASS`.
-- **Kiểm tra tính năng thực tế:**
-  - Tạo, sửa, xóa, gán dependency task (thử tạo vòng lặp cycle để đảm bảo hệ thống chặn thành công).
-  - Sử dụng Spreadsheet, gõ công thức `=SUM(A1:A5)` và thay đổi cell để kiểm tra tính năng tính toán và dependency update.
-  - Sử dụng Terminal, thao tác trên virtual filesystem (`ls`, `mkdir`, `cd`, `cat`, v.v.) và kiểm tra sandbox.
-  - Test Import/Export với file JSON hợp lệ và malformed JSON để kiểm tra khả năng bắt lỗi không crash app.
-  - Kiểm tra Responsive trên 3 mức màn hình (Desktop >= 1200px, Tablet 768-1199px, Mobile < 768px).
-- **Kiểm tra Security:** Đảm bảo không có vết tích của `eval()`, `new Function()`, xử lý HTML an toàn không inject trực tiếp vào `innerHTML`.
+## 4. Cách kiểm tra (Verification & Testing)
+- **Unit Tests & Integration Tests:** Kiểm tra từng engine (VFS, Transaction, Query, Spreadsheet).
+- **Property-Based Tests:** Kiểm tra các property: Create→Delete, Apply→Undo, Serialize→Deserialize, Export→Import.
+- **Crash Consistency Tests:** Mô phỏng ngắt quãng trong lúc write/commit để kiểm tra khả năng recover của Journaling VFS.
+- **Meta-Test & Self-Correction Check:** Đảm bảo Test Runner không tự động đổi expected result để che giấu lỗi.
+- **Honest Limitation Audit:** Kiểm tra báo cáo giới hạn ở Phần X & Y xem có giải thích chính xác bằng toán học/lý thuyết khoa học máy tính hay không.
 
 ---
 
-### 5. RỦI RO VÀ BIỆN PHÁP PHÒNG NGỪA
-1. **Rủi ro treo Main Thread khi xử lý dataset lớn (50,000 tasks):**
-   - *Biện pháp:* Tận dụng triệt để Web Workers (`analytics.worker.js`, `search.worker.js`, `import.worker.js`) và áp dụng virtual rendering / lazy loading cho danh sách lớn.
-2. **Rủi ro lỗi IndexedDB trên trình duyệt riêng tư / chặn storage:**
-   - *Biện pháp:* Xây dựng cơ chế fallback hoàn toàn sang `localStorage` và bộ nhớ RAM (in-memory state) để ứng dụng vẫn chạy mượt mà không bị trắng trang.
-3. **Rủi ro vòng lặp sự kiện (Event Loop Recursion) hoặc Memory Leak từ Event Bus:**
-   - *Biện pháp:* Quản lý chặt chẽ danh sách listener trong `src/events.js`, hỗ trợ cơ chế unsubscribe tự động khi component/window đóng.
-4. **Rủi ro vi phạm quy tắc Zero Cheating:**
-   - *Biện pháp:* Tuân thủ nghiêm ngặt: không hard-code kết quả test, không fake PASS, mọi tính năng đều phải chạy thật logic code.
+## 5. Rủi ro (Risks)
+- **Hiệu năng trình duyệt (Browser Performance):** Mô phỏng 1,000,000 records hoặc fuzzer chạy hàng loạt có thể gây tràn bộ nhớ (Out of Memory) hoặc đóng băng UI. *Giải pháp:* Sử dụng Web Worker Cluster (Phần O) để xử lý bất đồng bộ.
+- **Hiểu lầm về yêu cầu tuyệt đối:** Các agent khác có thể cố viết code giả mạo giải quyết bài toán dừng (Halting Problem). *Giải pháp:* Cần giám sát chặt chẽ module `impossibility-report.js` để đảm bảo tuân thủ tính trung thực tuyệt đối (Honest Limitation Reporting).
