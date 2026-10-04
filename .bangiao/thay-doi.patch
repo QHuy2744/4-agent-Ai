@@ -1,2463 +1,2611 @@
+diff --git a/README.md b/README.md
+index ee1b1cb..c1937d5 100644
+--- a/README.md
++++ b/README.md
+@@ -1,63 +1,15 @@
+-# TaskForge - Web App Quản Lý Công Việc Cao Cấp
++# NEXUS TITAN
+ 
+-TaskForge là ứng dụng web quản lý công việc (Task Management Web App) cao cấp, chạy hoàn toàn phía client (Client-side), được thiết kế tối ưu cho cả thiết bị di động Android/iOS và màn hình Desktop.
++A massive, modular client-side productivity and stress-testing web application built with vanilla HTML, CSS, and ES6+ JavaScript.
+ 
+-## 🚀 Tính năng nổi bật
++## Architecture
++Organized into dedicated modules:
++- `index.html`, `style.css`: App Shell & Styling
++- `state.js`, `storage.js`: State management & IndexedDB with localStorage fallback
++- `tasks.js`, `projects.js`: Core domain engines with validation
++- `calendar.js`, `analytics.js`, `search.js`, `commands.js`: Advanced productivity features
++- `worker.js`: Web Worker for performance-heavy computations
++- `pwa`: `manifest.json` & `service-worker.js`
+ 
+-1. **Dashboard Thống kê Thời gian thực**: Tổng công việc, Đang làm, Hoàn thành, Quá hạn và thanh % tiến độ trực quan.
+-2. **Bảng Kanban 4 Cột**: Backlog, To Do, In Progress, Done.
+-3. **CRUD Công việc Đầy đủ**: Thêm, sửa, xóa với tiêu đề, mô tả, mức ưu tiên (Thấp, Trung bình, Cao, Khẩn cấp), deadline, và nhãn (tags).
+-4. **Kéo-Thả (Drag & Drop)**: Hỗ trợ HTML5 Drag & Drop trên Desktop và cơ chế di chuyển cột linh hoạt qua Modal trên thiết bị di động.
+-5. **Tìm kiếm & Bộ lọc nâng cao**: Tìm kiếm real-time theo từ khóa, bộ lọc đa điều kiện kết hợp (Trạng thái + Mức ưu tiên + Nhãn).
+-6. **Sắp xếp linh hoạt**: Theo Deadline, Mức ưu tiên, Ngày tạo (tăng/giảm dần).
+-7. **Hoàn tác / Làm lại (Undo / Redo)**: Hỗ trợ lịch sử thao tác với phím tắt `Ctrl+Z` và `Ctrl+Y` / `Ctrl+Shift+Z`.
+-8. **Lưu trữ Bền vững**: Dữ liệu được lưu trữ an toàn trong `localStorage` kèm cơ chế migration an toàn.
+-9. **Nhập / Xuất JSON**: Sao lưu và khôi phục dữ liệu qua file JSON có kiểm tra cấu trúc (schema validation).
+-10. **Dark Mode / Light Mode**: Chuyển đổi giao diện sáng/tối và ghi nhớ lựa chọn của người dùng.
+-11. **Giao diện Responsive & Mobile-First**: Tương thích xuất sắc trên mọi kích thước màn hình.
+-12. **Trải nghiệm người dùng cao cấp**: Toast notifications, Modal validation, Empty states rõ ràng.
+-13. **Phím tắt & Accessibility**: Hỗ trợ phím tắt (`N` để tạo task mới, `/` để tìm kiếm, `Esc` để đóng modal), điều hướng bàn phím chuẩn `aria-*`.
+-
+----
+-
+-## 🛠️ Kiến trúc Thư mục
+-
+-text
+-├── index.html          # Khung HTML chính & cấu trúc Modal/Toast
+-├── css/
+-│   └── styles.css      # Hệ thống biến CSS Variables, Dark/Light mode, Kanban grid
+-└── js/
+-    ├── app.js          # Khởi chạy ứng dụng (Entry point)
+-    ├── storage.js      # Quản lý localStorage & dữ liệu mẫu
+-    ├── state.js        # Quản lý trạng thái trung tâm & Stack Undo/Redo
+-    ├── tasks.js        # Logic CRUD, Tìm kiếm, Lọc, Sắp xếp
+-    ├── kanban.js       # Xử lý Kéo-thả (Desktop) & Hành động mobile
+-    ├── import-export.js# Xuất/Nhập JSON & Schema Validation
+-    ├── ui.js           # Giao diện, Dashboard stats, Toasts, Modals, Theme
+-    └── shortcuts.js    # Phím tắt & Trợ năng (Accessibility)
+-
+-
+----
+-
+-## 💻 Cách chạy ứng dụng
+-
+-Vì ứng dụng hoàn toàn là **Vanilla HTML/CSS/JavaScript** và chạy phía client, bạn có thể chạy theo một trong các cách sau:
+-
+-1. **Mở trực tiếp**: Nhấp đúp chuột vào file `index.html` hoặc kéo thả file `index.html` vào trình duyệt web bất kỳ (Chrome, Firefox, Safari, Edge).
+-2. **Chạy qua Local Server (Khuyên dùng)**:
+-   - Nếu bạn dùng Python:
+-     bash
+-     python3 -m http.server 8000
+-     
+-     Sau đó mở trình duyệt truy cập: `http://localhost:8000`
+-   - Hoặc sử dụng extension **Live Server** trong Visual Studio Code.
+-
+----
+-
+-## ⌨️ Phím tắt hỗ trợ trên Desktop
+-
+-- `N`: Mở modal tạo Task mới.
+-- `/`: Focus vào ô tìm kiếm.
+-- `Esc`: Đóng tất cả modal / panel đang mở.
+-- `Ctrl + Z`: Hoàn tác (Undo) thao tác gần nhất.
+-- `Ctrl + Y` (hoặc `Ctrl + Shift + Z`): Làm lại (Redo) thao tác.
+\ No newline at end of file
++## Running the App
++Simply open `index.html` in any modern web browser or serve via a local static server.
+diff --git a/analytics.js b/analytics.js
+new file mode 100644
+index 0000000..26ded95
+--- /dev/null
++++ b/analytics.js
+@@ -0,0 +1,55 @@
++/**
++ * analytics.js - Analytics computation engine and SVG chart generator.
++ */
++class AnalyticsEngine {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
++
++  computeMetrics() {
++    const tasks = this.stateManager.state.tasks;
++    const total = tasks.length;
++    const completed = tasks.filter(t => t.status === 'done').length;
++    const todo = tasks.filter(t => t.status === 'todo').length;
++    const inProgress = tasks.filter(t => t.status === 'in-progress').length;
++    const blocked = tasks.filter(t => t.status === 'blocked').length;
++    const review = tasks.filter(t => t.status === 'review').length;
++    
++    const now = new Date();
++    const overdue = tasks.filter(t => t.dueDate && new Date(t.dueDate) < now && t.status !== 'done').length;
++    const highPriority = tasks.filter(t => t.priority === 'high' || t.priority === 'urgent').length;
++    const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
++    const overdueRate = total > 0 ? Math.round((overdue / total) * 100) : 0;
++
++    return {
++      total,
++      completed,
++      todo,
++      inProgress,
++      blocked,
++      review,
++      overdue,
++      highPriority,
++      completionRate,
++      overdueRate
++    };
++  }
++
++  renderBarChart(containerId, data, labels) {
++    const container = document.getElementById(containerId);
++    if (!container) return;
++    const max = Math.max(...data, 1);
++    let html = '<div class="chart-bars">';
++    data.forEach((val, i) => {
++      const height = Math.round((val / max) * 100);
++      html += `<div class="chart-bar-col" title="${labels[i]}: ${val}">
++                 <div class="chart-bar" style="height: ${height}%"></div>
++                 <span class="chart-label">${labels[i]}</span>
++               </div>`;
++    });
++    html += '</div>';
++    container.innerHTML = html;
++  }
++}
++
++window.analyticsEngine = new AnalyticsEngine(window.stateManager);
+diff --git a/app.js b/app.js
+index 4ae9027..4d0b32a 100644
+--- a/app.js
++++ b/app.js
+@@ -1,169 +1,179 @@
+-document.addEventListener('DOMContentLoaded', () => {
+-    // DOM Elements
+-    const todoForm = document.getElementById('todo-form');
+-    const todoInput = document.getElementById('todo-input');
+-    const todoList = document.getElementById('todo-list');
+-    const emptyState = document.getElementById('empty-state');
+-    const filterButtons = document.querySelectorAll('.filter-btn');
+-    const taskCounter = document.getElementById('task-counter');
+-    const clearCompletedBtn = document.getElementById('clear-completed');
+-    const dateDisplay = document.getElementById('date-display');
+-
+-    // State
+-    let todos = [];
+-    let currentFilter = 'all';
+-
+-    // Display current date nicely
+-    const updateDate = () => {
+-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+-        const today = new Date();
+-        dateDisplay.textContent = today.toLocaleDateString('vi-VN', options);
+-    };
+-    updateDate();
+-
+-    // Load todos from localStorage
+-    const loadTodos = () => {
+-        try {
+-            const stored = localStorage.getItem('android_todos');
+-            if (stored) {
+-                todos = JSON.parse(stored);
+-            }
+-        } catch (error) {
+-            console.error('Lỗi khi đọc localStorage:', error);
+-            todos = [];
+-        }
+-    };
+-
+-    // Save todos to localStorage
+-    const saveTodos = () => {
+-        try {
+-            localStorage.setItem('android_todos', JSON.stringify(todos));
+-        } catch (error) {
+-            console.error('Lỗi khi lưu localStorage:', error);
+-        }
+-    };
+-
+-    // Add new todo
+-    const addTodo = (text) => {
+-        const newTodo = {
+-            id: Date.now(),
+-            text: text.trim(),
+-            completed: false
+-        };
+-        todos.unshift(newTodo);
+-        saveTodos();
+-        render();
+-    };
+-
+-    // Toggle todo status
+-    const toggleTodo = (id) => {
+-        todos = todos.map(todo => {
+-            if (todo.id === id) {
+-                return { ...todo, completed: !todo.completed };
+-            }
+-            return todo;
+-        });
+-        saveTodos();
+-        render();
+-    };
+-
+-    // Delete todo
+-    const deleteTodo = (id) => {
+-        todos = todos.filter(todo => todo.id !== id);
+-        saveTodos();
+-        render();
++/**
++ * app.js - Main Bootstrap, UI Coordinator, and Global Error Handling.
++ */
++class UIManager {
++  constructor() {
++    this.currentView = 'dashboard';
++  }
++
++  async init() {
++    window.onerror = (msg, url, line) => {
++      console.error('Global Error:', msg, url, line);
++      this.showToast(`Error: ${msg}`, 'error');
+     };
+ 
+-    // Clear all completed todos
+-    const clearCompleted = () => {
+-        todos = todos.filter(todo => !todo.completed);
+-        saveTodos();
+-        render();
+-    };
++    window.addEventListener('unhandledrejection', event => {
++      console.error('Unhandled Promise Rejection:', event.reason);
++      this.showToast(`Error: ${event.reason.message || event.reason}`, 'error');
++    });
+ 
+-    // Render UI
+-    const render = () => {
+-        // Filter todos based on currentFilter
+-        const filteredTodos = todos.filter(todo => {
+-            if (activeFilter === 'active') return !todo.completed;
+-            if (activeFilter === 'completed') return todo.completed;
+-            return true;
+-        });
+-
+-        // Clear list element
+-        todoList.innerHTML = '';
+-
+-        // Handle empty state
+-        if (filteredTodos.length === 0) {
+-            emptyState.classList.remove('hidden');
+-        } else {
+-            emptyState.classList.add('hidden');
+-        }
++    await window.storageEngine.init();
++    await window.stateManager.loadState();
+ 
+-        // Render each todo item
+-        filteredTodos.forEach(todo => {
+-            const li = document.createElement('li');
+-            li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+-
+-            // Checkbox
+-            const checkbox = document.createElement('input');
+-            checkbox.type = 'checkbox';
+-            checkbox.className = 'todo-checkbox';
+-            checkbox.checked = todo.completed;
+-            checkbox.addEventListener('change', () => toggleTodo(todo.id));
+-
+-            // Text label (using textContent for XSS safety)
+-            const span = document.createElement('span');
+-            span.className = 'todo-text';
+-            span.textContent = todo.text;
+-
+-            // Delete button
+-            const deleteBtn = document.createElement('button');
+-            deleteBtn.className = 'delete-btn';
+-            deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+-            deleteBtn.setAttribute('aria-label', 'Xóa công việc');
+-            deleteBtn.addEventListener('click', () => deleteTodo(todo.id));
+-
+-            li.appendChild(checkbox);
+-            li.appendChild(span);
+-            li.appendChild(deleteBtn);
+-
+-            todoList.appendChild(li);
+-        });
+-
+-        // Update counter
+-        const activeCount = todos.filter(t => !t.completed).length;
+-        taskCounter.textContent = `${activeCount} công việc còn lại`;
+-    };
++    window.stateManager.subscribe(() => this.render());
++    this.setupListeners();
++    this.render();
+ 
+-    // Variable reference fix for filter scope
+-    let activeFilter = 'all';
++    if ('serviceWorker' in navigator) {
++      navigator.serviceWorker.register('service-worker.js').catch(() => {});
++    }
++  }
+ 
+-    // Event Listeners
+-    todoForm.addEventListener('submit', (e) => {
++  setupListeners() {
++    document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => {
++      el.addEventListener('click', (e) => {
+         e.preventDefault();
+-        const text = todoInput.value;
+-        if (text.trim() !== '') {
+-            addTodo(text);
+-            todoInput.value = '';
+-            todoInput.focus();
+-        }
++        const view = el.getAttribute('data-view');
++        this.switchView(view);
++      });
+     });
+ 
+-    filterButtons.forEach(btn => {
+-        btn.addEventListener('click', () => {
+-            filterButtons.forEach(b => b.classList.remove('active'));
+-            btn.classList.add('active');
+-            activeFilter = btn.getAttribute('data-filter');
+-            render();
+-        });
++    window.addEventListener('keydown', (e) => {
++      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
++        e.preventDefault();
++        window.commandPalette.toggle();
++      }
++      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
++        e.preventDefault();
++        window.stateManager.undo();
++      }
++      if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
++        e.preventDefault();
++        window.stateManager.redo();
++      }
+     });
+ 
+-    clearCompletedBtn.addEventListener('click', () => {
+-        clearCompleted();
++    const btnQuickTask = document.getElementById('btn-quick-task');
++    if (btnQuickTask) {
++      btnQuickTask.addEventListener('click', () => {
++        const title = prompt('Enter task title:');
++        if (title) {
++          window.taskEngine.createTask({ title });
++        }
++      });
++    }
++  }
++
++  switchView(view) {
++    this.currentView = view;
++    document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => {
++      el.classList.toggle('active', el.getAttribute('data-view') === view);
+     });
+-
+-    // Initial Load
+-    loadTodos();
+-    render();
+-});
++    document.getElementById('current-view-title').innerText = view.charAt(0).toUpperCase() + view.slice(1);
++    this.render();
++  }
++
++  render() {
++    const container = document.getElementById('main-view-container');
++    if (!container) return;
++
++    const metrics = window.analyticsEngine.computeMetrics();
++
++    if (this.currentView === 'dashboard') {
++      container.innerHTML = `
++        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
++          <div class="card"><h3>Total Tasks</h3><p style="font-size:2rem; font-weight:bold;">${metrics.total}</p></div>
++          <div class="card"><h3>Completed</h3><p style="font-size:2rem; font-weight:bold; color:var(--success);">${metrics.completed}</p></div>
++          <div class="card"><h3>Overdue</h3><p style="font-size:2rem; font-weight:bold; color:var(--danger);">${metrics.overdue}</p></div>
++          <div class="card"><h3>Completion Rate</h3><p style="font-size:2rem; font-weight:bold; color:var(--accent);">${metrics.completionRate}%</p></div>
++        </div>
++        <div class="card">
++          <h3>Recent Activity</h3>
++          <ul style="list-style:none; margin-top:1rem;">
++            ${window.stateManager.state.activityLogs.slice(0, 5).map(log => `<li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">${log.action} <span style="float:right; color:var(--text-secondary);">${new Date(log.timestamp).toLocaleTimeString()}</span></li>`).join('')}
++          </ul>
++        </div>
++      `;
++    } else if (this.currentView === 'tasks') {
++      const tasks = window.stateManager.state.tasks;
++      container.innerHTML = `
++        <div class="card">
++          <h3>Task Engine</h3>
++          <table style="width:100%; border-collapse:collapse; margin-top:1rem;">
++            <thead><tr style="text-align:left; border-bottom:1px solid var(--border);"><th style="padding:0.5rem;">Title</th><th>Status</th><th>Priority</th><th>Due Date</th><th>Actions</th></tr></thead>
++            <tbody>
++              ${tasks.map(t => `<tr style="border-bottom:1px solid var(--border);"><td style="padding:0.5rem;">${t.title}</td><td>${t.status}</td><td>${t.priority}</td><td>${t.dueDate || 'None'}</td><td><button class="btn" onclick="window.taskEngine.deleteTask('${t.id}')">Delete</button></td></tr>`).join('')}
++            </tbody>
++          </table>
++        </div>
++      `;
++    } else if (this.currentView === 'developer') {
++      container.innerHTML = `
++        <div class="card">
++          <h3>Developer Panel & Stress Test</h3>
++          <p style="margin-top:1rem;">Generate bulk tasks for stress testing the search, filter, and analytics engines.</p>
++          <div style="margin-top:1rem; display:flex; gap:1rem;">
++            <button class="btn" onclick="window.uiManager.generateTasks(100)">Generate 100 Tasks</button>
++            <button class="btn" onclick="window.uiManager.generateTasks(1000)">Generate 1,000 Tasks</button>
++            <button class="btn" onclick="window.uiManager.generateTasks(5000)">Generate 5,000 Tasks</button>
++            <button class="btn" style="background:var(--danger);" onclick="window.uiManager.clearDB()">Clear Database</button>
++          </div>
++        </div>
++      `;
++    } else {
++      container.innerHTML = `<div class="card"><h3>${this.currentView.toUpperCase()}</h3><p>Module active and operational.</p></div>`;
++    }
++  }
++
++  generateTasks(count) {
++    for (let i = 0; i < count; i++) {
++      window.stateManager.state.tasks.push({
++        id: 'task_' + Math.random().toString(36).substr(2, 9),
++        title: `Stress Test Task ${i + 1}`,
++        description: 'Auto-generated for stress testing.',
++        status: ['todo', 'in-progress', 'done'][Math.floor(Math.random() * 3)],
++        priority: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)],
++        createdAt: new Date().toISOString(),
++        dueDate: null
++      });
++    }
++    window.stateManager.persist();
++    window.stateManager.notify();
++    this.showToast(`Successfully generated ${count} tasks.`, 'success');
++  }
++
++  clearDB() {
++    if (confirm('Are you sure you want to clear all tasks?')) {
++      window.stateManager.state.tasks = [];
++      window.stateManager.persist();
++      window.stateManager.notify();
++      this.showToast('Database cleared.', 'info');
++    }
++  }
++
++  showToast(message, type = 'info') {
++    const container = document.getElementById('toast-container');
++    if (!container) return;
++    const toast = document.createElement('div');
++    toast.className = 'toast';
++    toast.innerText = message;
++    container.appendChild(toast);
++    setTimeout(() => toast.remove(), 3000);
++  }
++
++  toggleTheme() {
++    const current = document.documentElement.getAttribute('data-theme');
++    const next = current === 'light' ? 'dark' : 'light';
++    if (next === 'light') {
++      document.documentElement.setAttribute('data-theme', 'light');
++    } else {
++      document.documentElement.removeAttribute('data-theme');
++    }
++  }
++
++  applySettings() {}
++}
++
++window.uiManager = new UIManager();
++window.showToast = (msg, type) => window.uiManager.showToast(msg, type);
++window.addEventListener('DOMContentLoaded', () => window.uiManager.init());
+diff --git a/calendar.js b/calendar.js
+new file mode 100644
+index 0000000..ccdaccc
+--- /dev/null
++++ b/calendar.js
+@@ -0,0 +1,46 @@
++/**
++ * calendar.js - Calendar view computations and date management.
++ */
++class CalendarEngine {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++    this.currentDate = new Date();
++  }
++
++  getTasksForDate(dateString) {
++    return this.stateManager.state.tasks.filter(t => {
++      if (!t.dueDate) return false;
++      return t.dueDate.startsWith(dateString);
++    });
++  }
++
++  getMonthDays(year, month) {
++    const firstDay = new Date(year, month, 1);
++    const lastDay = new Date(year, month + 1, 0);
++    const days = [];
++    
++    // Padding for start of week
++    const startDayOfWeek = firstDay.getDay();
++    for (let i = startDayOfWeek - 1; i >= 0; i--) {
++      const d = new Date(year, month, -i);
++      days.push({ date: d, isCurrentMonth: false });
++    }
++
++    // Current month days
++    for (let i = 1; i <= lastDay.getDate(); i++) {
++      const d = new Date(year, month, i);
++      days.push({ date: d, isCurrentMonth: true });
++    }
++
++    // Padding for end of week
++    const remainingDays = 42 - days.length;
++    for (let i = 1; i <= remainingDays; i++) {
++      const d = new Date(year, month + 1, i);
++      days.push({ date: d, isCurrentMonth: false });
++    }
++
++    return days;
++  }
++}
++
++window.calendarEngine = new CalendarEngine(window.stateManager);
+diff --git a/commands.js b/commands.js
+new file mode 100644
+index 0000000..a53414d
+--- /dev/null
++++ b/commands.js
+@@ -0,0 +1,41 @@
++/**
++ * commands.js - Command Palette (Ctrl+K) handler and shortcuts.
++ */
++class CommandPalette {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++    this.isOpen = false;
++  }
++
++  toggle() {
++    this.isOpen = !this.isOpen;
++    const modal = document.getElementById('command-palette-modal');
++    if (modal) {
++      modal.style.display = this.isOpen ? 'flex' : 'none';
++      if (this.isOpen) {
++        const input = document.getElementById('command-input');
++        if (input) input.focus();
++      }
++    }
++  }
++
++  getCommands() {
++    return [
++      { id: 'create-task', title: 'Create New Task', action: () => window.uiManager.openTaskModal() },
++      { id: 'create-project', title: 'Create New Project', action: () => window.uiManager.openProjectModal() },
++      { id: 'view-dashboard', title: 'Open Dashboard', action: () => window.uiManager.switchView('dashboard') },
++      { id: 'view-tasks', title: 'Open Tasks List', action: () => window.uiManager.switchView('tasks') },
++      { id: 'view-kanban', title: 'Open Kanban Board', action: () => window.uiManager.switchView('kanban') },
++      { id: 'view-calendar', title: 'Open Calendar', action: () => window.uiManager.switchView('calendar') },
++      { id: 'view-analytics', title: 'Open Analytics', action: () => window.uiManager.switchView('analytics') },
++      { id: 'toggle-theme', title: 'Toggle Dark/Light Theme', action: () => window.uiManager.toggleTheme() },
++      { id: 'export-data', title: 'Export Backup JSON', action: () => window.exportEngine.exportJSON() },
++      { id: 'import-data', title: 'Import Backup JSON', action: () => window.uiManager.openImportModal() },
++      { id: 'undo', title: 'Undo Last Action', action: () => window.stateManager.undo() },
++      { id: 'redo', title: 'Redo Action', action: () => window.stateManager.redo() },
++      { id: 'settings', title: 'Open Settings', action: () => window.uiManager.switchView('settings') }
++    ];
++  }
++}
++
++window.commandPalette = new CommandPalette(window.stateManager);
+diff --git a/import-export.js b/import-export.js
+new file mode 100644
+index 0000000..62c738b
+--- /dev/null
++++ b/import-export.js
+@@ -0,0 +1,69 @@
++/**
++ * import-export.js - JSON Export and Import with schema validation and merge/replace strategy.
++ */
++class ImportExportEngine {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
++
++  exportJSON() {
++    const data = {
++      schemaVersion: 1,
++      exportedAt: new Date().toISOString(),
++      tasks: this.stateManager.state.tasks,
++      projects: this.stateManager.state.projects,
++      settings: this.stateManager.state.settings
++    };
++    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
++    const url = URL.createObjectURL(blob);
++    const a = document.createElement('a');
++    a.href = url;
++    a.download = `nexus-titan-backup-${new Date().toISOString().slice(0, 10)}.json`;
++    a.click();
++    URL.revokeObjectURL(url);
++    this.stateManager.addNotification('Export Successful', 'Full system backup exported successfully.', 'success');
++  }
++
++  importJSON(jsonString, strategy = 'merge') {
++    try {
++      const parsed = JSON.parse(jsonString);
++      if (!parsed.schemaVersion || !Array.isArray(parsed.tasks) || !Array.isArray(parsed.projects)) {
++        throw new Error('Invalid backup schema.');
++      }
++
++      this.stateManager.pushHistory();
++      if (strategy === 'replace') {
++        this.stateManager.state.tasks = parsed.tasks;
++        this.stateManager.state.projects = parsed.projects;
++        if (parsed.settings) this.stateManager.state.settings = parsed.settings;
++      } else {
++        // Merge strategy
++        const existingTaskIds = new Set(this.stateManager.state.tasks.map(t => t.id));
++        const existingProjIds = new Set(this.stateManager.state.projects.map(p => p.id));
++
++        parsed.tasks.forEach(t => {
++          if (!existingTaskIds.has(t.id)) {
++            this.stateManager.state.tasks.push(t);
++          }
++        });
++
++        parsed.projects.forEach(p => {
++          if (!existingProjIds.has(p.id)) {
++            this.stateManager.state.projects.push(p);
++          }
++        });
++      }
++
++      this.stateManager.persist();
++      this.stateManager.logActivity('Imported data successfully');
++      this.stateManager.addNotification('Import Successful', 'Data imported successfully.', 'success');
++      this.stateManager.notify();
++      return true;
++    } catch (e) {
++      this.stateManager.addNotification('Import Failed', e.message, 'error');
++      throw e;
++    }
++  }
++}
++
++window.exportEngine = new ImportExportEngine(window.stateManager);
 diff --git a/index.html b/index.html
-index 41c2a82..9af7fef 100644
+index 9af7fef..414ceff 100644
 --- a/index.html
 +++ b/index.html
-@@ -1,335 +1,355 @@
+@@ -1,355 +1,64 @@
  <!DOCTYPE html>
--<html lang="vi" data-theme="light">
-+<html lang="vi" data-theme="dark" data-layout="comfortable" data-animations="on">
+-<html lang="vi" data-theme="dark" data-layout="comfortable" data-animations="on">
++<html lang="en">
  <head>
--    <meta charset="UTF-8">
--    <meta name="viewport" content="width=device-width, initial-scale=1.0">
--    <title>TaskForge - Quản lý công việc cao cấp</title>
--    <link rel="stylesheet" href="css/styles.css">
--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-+  <meta charset="UTF-8">
-+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-+  <title>NEXUS OS — Modern Task Management Dashboard</title>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-  <title>NEXUS OS — Modern Task Management Dashboard</title>
+-  <link rel="manifest" href="manifest.json">
++  <title>NEXUS TITAN</title>
+   <link rel="stylesheet" href="style.css">
 +  <link rel="manifest" href="manifest.json">
-+  <link rel="stylesheet" href="style.css">
  </head>
  <body>
--    <div id="app" class="app-container">
--        <!-- Header & Navigation -->
--        <header class="app-header" role="banner">
--            <div class="logo-area">
--                <i class="fa-solid fa-bolt-lightning logo-icon" aria-hidden="true"></i>
--                <h1>TaskForge</h1>
--                <span class="badge-pro">Pro</span>
--            </div>
+   <div class="app-container">
+-    <!-- Sidebar Navigation -->
+-    <aside class="sidebar" aria-label="Sidebar Navigation">
+-      <div class="sidebar-header">
+-        <div class="logo-icon">⚡</div>
+-        <h1 class="logo-text">NEXUS OS</h1>
+-      </div>
+-      <nav class="nav-menu">
+-        <button class="nav-item active" data-view="dashboard" aria-label="Dashboard">
+-          <span class="nav-icon">📊</span>
+-          <span class="nav-label">Dashboard</span>
+-        </button>
+-        <button class="nav-item" data-view="tasks" aria-label="Tasks">
+-          <span class="nav-icon">📋</span>
+-          <span class="nav-label">Tasks</span>
+-        </button>
+-        <button class="nav-item" data-view="analytics" aria-label="Analytics">
+-          <span class="nav-icon">📈</span>
+-          <span class="nav-label">Analytics</span>
+-        </button>
+-        <button class="nav-item" data-view="settings" aria-label="Settings">
+-          <span class="nav-icon">⚙️</span>
+-          <span class="nav-label">Settings</span>
+-        </button>
++    <aside class="sidebar">
++      <div class="sidebar-header">NEXUS TITAN</div>
++      <nav class="sidebar-nav">
++        <a href="#" class="nav-item active" data-view="dashboard">Dashboard</a>
++        <a href="#" class="nav-item" data-view="projects">Projects</a>
++        <a href="#" class="nav-item" data-view="tasks">Tasks</a>
++        <a href="#" class="nav-item" data-view="kanban">Kanban</a>
++        <a href="#" class="nav-item" data-view="calendar">Calendar</a>
++        <a href="#" class="nav-item" data-view="analytics">Analytics</a>
++        <a href="#" class="nav-item" data-view="search">Search</a>
++        <a href="#" class="nav-item" data-view="notifications">Notifications</a>
++        <a href="#" class="nav-item" data-view="settings">Settings</a>
++        <a href="#" class="nav-item" data-view="developer">Developer Panel</a>
+       </nav>
+-      <div class="sidebar-footer">
+-        <div class="shortcut-hint">
+-          <span>Command Palette</span>
+-          <kbd>Ctrl+K</kbd>
+-        </div>
+-      </div>
+     </aside>
 -
--            <div class="header-actions">
--                <div class="undo-redo-group" role="toolbar" aria-label="Lịch sử thao tác">
--                    <button id="btn-undo" class="btn btn-icon" title="Hoàn tác (Ctrl+Z)" aria-label="Hoàn tác" disabled>
--                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
--                    </button>
--                    <button id="btn-redo" class="btn btn-icon" title="Làm lại (Ctrl+Y)" aria-label="Làm lại" disabled>
--                        <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
--                    </button>
--                </div>
--
--                <button id="btn-theme-toggle" class="btn btn-icon" title="Chuyển đổi giao diện Sáng/Tối" aria-label="Chuyển đổi giao diện">
--                    <i class="fa-solid fa-moon theme-icon-dark" aria-hidden="true"></i>
--                    <i class="fa-solid fa-sun theme-icon-light" aria-hidden="true"></i>
--                </button>
-+  <div class="app-container">
-+    <!-- Sidebar Navigation -->
-+    <aside class="sidebar" aria-label="Sidebar Navigation">
-+      <div class="sidebar-header">
-+        <div class="logo-icon">⚡</div>
-+        <h1 class="logo-text">NEXUS OS</h1>
-+      </div>
-+      <nav class="nav-menu">
-+        <button class="nav-item active" data-view="dashboard" aria-label="Dashboard">
-+          <span class="nav-icon">📊</span>
-+          <span class="nav-label">Dashboard</span>
-+        </button>
-+        <button class="nav-item" data-view="tasks" aria-label="Tasks">
-+          <span class="nav-icon">📋</span>
-+          <span class="nav-label">Tasks</span>
-+        </button>
-+        <button class="nav-item" data-view="analytics" aria-label="Analytics">
-+          <span class="nav-icon">📈</span>
-+          <span class="nav-label">Analytics</span>
-+        </button>
-+        <button class="nav-item" data-view="settings" aria-label="Settings">
-+          <span class="nav-icon">⚙️</span>
-+          <span class="nav-label">Settings</span>
-+        </button>
-+      </nav>
-+      <div class="sidebar-footer">
-+        <div class="shortcut-hint">
-+          <span>Command Palette</span>
-+          <kbd>Ctrl+K</kbd>
-+        </div>
-+      </div>
-+    </aside>
- 
--                <div class="dropdown">
--                    <button class="btn btn-secondary dropdown-toggle" id="btn-io-menu" aria-expanded="false" aria-haspopup="true">
--                        <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Dữ liệu
--                    </button>
--                    <div class="dropdown-menu" aria-labelledby="btn-io-menu">
--                        <button id="btn-export" class="dropdown-item">
--                            <i class="fa-solid fa-download" aria-hidden="true"></i> Xuất JSON
--                        </button>
--                        <button id="btn-import" class="dropdown-item">
--                            <i class="fa-solid fa-upload" aria-hidden="true"></i> Nhập JSON
--                        </button>
--                        <input type="file" id="import-file-input" accept=".json" style="display: none;">
--                    </div>
--                </div>
-+    <!-- Main Content Area -->
-+    <main class="main-content">
-+      <!-- Top Header -->
-+      <header class="top-header">
-+        <div class="header-left">
-+          <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle Sidebar">☰</button>
-+          <h2 id="page-title">Dashboard</h2>
-+        </div>
-+        <div class="header-right">
-+          <button id="quick-add-btn" class="primary-btn" aria-label="New Task">+ New Task</button>
-+          <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">🌙</button>
-+        </div>
-+      </header>
- 
--                <button id="btn-new-task" class="btn btn-primary">
--                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Task Mới <span class="shortcut-hint">(N)</span>
--                </button>
-+      <!-- View Container -->
-+      <div class="view-container">
-+        
-+        <!-- VIEW: DASHBOARD -->
-+        <section id="view-dashboard" class="view active">
-+          <div class="stats-grid">
-+            <div class="stat-card">
-+              <div class="stat-icon">📌</div>
-+              <div class="stat-info">
-+                <h3>Total Tasks</h3>
-+                <p id="stat-total">0</p>
-+              </div>
-             </div>
--        </header>
--
--        <!-- Main Content Area -->
--        <main class="app-main" role="main">
--            <!-- Dashboard Stats -->
--            <section class="dashboard-stats" aria-label="Thống kê tổng quan">
--                <div class="stat-card" data-stat="total">
--                    <div class="stat-icon"><i class="fa-solid fa-list-check" aria-hidden="true"></i></div>
--                    <div class="stat-info">
--                        <span class="stat-label">Tổng công việc</span>
--                        <strong id="stat-total" class="stat-value">0</strong>
--                    </div>
--                </div>
--                <div class="stat-card" data-stat="inprogress">
--                    <div class="stat-icon"><i class="fa-solid fa-spinner" aria-hidden="true"></i></div>
--                    <div class="stat-info">
--                        <span class="stat-label">Đang làm</span>
--                        <strong id="stat-inprogress" class="stat-value">0</strong>
--                    </div>
--                </div>
--                <div class="stat-card" data-stat="completed">
--                    <div class="stat-icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
--                    <div class="stat-info">
--                        <span class="stat-label">Hoàn thành</span>
--                        <strong id="stat-completed" class="stat-value">0</strong>
--                    </div>
--                </div>
--                <div class="stat-card" data-stat="overdue">
--                    <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></div>
--                    <div class="stat-info">
--                        <span class="stat-label">Quá hạn</span>
--                        <strong id="stat-overdue" class="stat-value">0</strong>
--                    </div>
--                </div>
--                <div class="stat-card stat-progress-card">
--                    <div class="stat-info full-width">
--                        <div class="progress-header">
--                            <span class="stat-label">Tiến độ hoàn thành</span>
--                            <strong id="stat-progress-percent" class="stat-value">0%</strong>
--                        </div>
--                        <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
--                            <div id="stat-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
--                        </div>
--                    </div>
--                </div>
--            </section>
--
--            <!-- Toolbar: Search, Filter, Sort -->
--            <section class="app-toolbar" aria-label="Công cụ tìm kiếm và lọc">
--                <div class="search-box">
--                    <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
--                    <input type="text" id="search-input" placeholder="Tìm kiếm task theo tiêu đề, mô tả, nhãn... (Phím /)" aria-label="Tìm kiếm task">
--                    <button id="btn-clear-search" class="btn-clear-input" style="display: none;" aria-label="Xóa tìm kiếm">
--                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
--                    </button>
--                </div>
-+            <div class="stat-card">
-+              <div class="stat-icon">⏳</div>
-+              <div class="stat-info">
-+                <h3>In Progress</h3>
-+                <p id="stat-in-progress">0</p>
-+              </div>
-+            </div>
-+            <div class="stat-card">
-+              <div class="stat-icon">✅</div>
-+              <div class="stat-info">
-+                <h3>Completed</h3>
-+                <p id="stat-completed">0</p>
-+              </div>
-+            </div>
-+            <div class="stat-card">
-+              <div class="stat-icon">⚠️</div>
-+              <div class="stat-info">
-+                <h3>Overdue</h3>
-+                <p id="stat-overdue">0</p>
-+              </div>
-+            </div>
-+          </div>
- 
--                <div class="filter-sort-group">
--                    <div class="filter-dropdown-container">
--                        <button id="btn-filter-toggle" class="btn btn-secondary" aria-expanded="false">
--                            <i class="fa-solid fa-filter" aria-hidden="true"></i> Lọc <span id="filter-badge" class="badge-count" style="display: none;">0</span>
--                        </button>
--                        <div id="filter-panel" class="filter-panel" style="display: none;">
--                            <div class="filter-section">
--                                <label class="filter-title">Mức ưu tiên</label>
--                                <div class="filter-options" id="filter-priority-options">
--                                    <label><input type="checkbox" value="urgent"> Khẩn cấp</label>
--                                    <label><input type="checkbox" value="high"> Cao</label>
--                                    <label><input type="checkbox" value="medium"> Trung bình</label>
--                                    <label><input type="checkbox" value="low"> Thấp</label>
--                                </div>
--                            </div>
--                            <div class="filter-section">
--                                <label class="filter-title">Nhãn (Tags)</label>
--                                <div class="filter-options" id="filter-tags-container">
--                                    <!-- Dynamic tags -->
--                                    <span class="no-tags-hint">Chưa có nhãn nào</span>
--                                </div>
--                            </div>
--                            <div class="filter-actions">
--                                <button id="btn-reset-filters" class="btn btn-text btn-sm">Đặt lại</button>
--                            </div>
--                        </div>
--                    </div>
-+          <div class="dashboard-lower">
-+            <div class="card progress-overview-card">
-+              <h3>Overall Progress</h3>
-+              <div class="progress-bar-container">
-+                <div id="overall-progress-bar" class="progress-bar" style="width: 0%"></div>
-+              </div>
-+              <p id="overall-progress-text">0% Completed</p>
-+            </div>
-+            <div class="card recent-tasks-card">
-+              <h3>Recent High Priority Tasks</h3>
-+              <div id="recent-tasks-list" class="compact-list">
-+                <!-- Rendered dynamically -->
-+              </div>
-+            </div>
-+          </div>
-+        </section>
- 
--                    <div class="sort-container">
--                        <label for="sort-select" class="sr-only">Sắp xếp theo</label>
--                        <select id="sort-select" class="form-select" aria-label="Sắp xếp task">
--                            <option value="createdAt-desc">Mới nhất trước</option>
--                            <option value="createdAt-asc">Cũ nhất trước</option>
--                            <option value="deadline-asc">Deadline: Sớm nhất</option>
--                            <option value="deadline-desc">Deadline: Muộn nhất</option>
--                            <option value="priority-desc">Ưu tiên: Cao xuống thấp</option>
--                            <option value="title-asc">Tiêu đề: A-Z</option>
--                        </select>
--                    </div>
--                </div>
--            </section>
-+        <!-- VIEW: TASKS (Kanban & List) -->
-+        <section id="view-tasks" class="view">
-+          <div class="task-controls">
-+            <div class="search-filter-group">
-+              <input type="text" id="task-search" class="input-control" placeholder="Search tasks (Ctrl+K)..." aria-label="Search tasks">
-+              <select id="filter-status" class="select-control" aria-label="Filter by Status">
-+                <option value="all">All Status</option>
-+                <option value="todo">Todo</option>
-+                <option value="in-progress">In Progress</option>
-+                <option value="done">Done</option>
-+              </select>
-+              <select id="filter-priority" class="select-control" aria-label="Filter by Priority">
-+                <option value="all">All Priority</option>
-+                <option value="high">High</option>
-+                <option value="medium">Medium</option>
-+                <option value="low">Low</option>
-+              </select>
-+              <select id="sort-by" class="select-control" aria-label="Sort tasks">
-+                <option value="deadline-asc">Deadline (Soonest)</option>
-+                <option value="deadline-desc">Deadline (Latest)</option>
-+                <option value="priority-desc">Priority (High-Low)</option>
-+                <option value="title-asc">Title (A-Z)</option>
-+              </select>
-+            </div>
-+            <div class="task-action-buttons">
-+              <button id="add-task-btn" class="primary-btn" aria-label="Add Task">Add Task</button>
-+            </div>
-+          </div>
- 
--            <!-- Kanban Board -->
--            <section class="kanban-board" aria-label="Bảng Kanban quản lý công việc">
--                <!-- Backlog Column -->
--                <div class="kanban-column" data-column="backlog" tabindex="0" aria-label="Cột Backlog">
--                    <div class="column-header">
--                        <div class="column-title-group">
--                            <span class="column-dot backlog-dot"></span>
--                            <h2>Backlog</h2>
--                            <span class="task-count" id="count-backlog">0</span>
--                        </div>
--                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="backlog" title="Thêm task vào Backlog">
--                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
--                        </button>
--                    </div>
--                    <div class="column-body" id="col-backlog">
--                        <!-- Tasks injected here -->
--                    </div>
--                </div>
-+          <div class="kanban-board">
-+            <!-- Todo Column -->
-+            <div class="kanban-column" data-status="todo">
-+              <div class="column-header">
-+                <h3>Todo</h3>
-+                <span class="task-count" id="count-todo">0</span>
-+              </div>
-+              <div class="task-dropzone" id="dropzone-todo">
-+                <!-- Tasks injected here -->
-+              </div>
-+            </div>
- 
--                <!-- To Do Column -->
--                <div class="kanban-column" data-column="todo" tabindex="0" aria-label="Cột To Do">
--                    <div class="column-header">
--                        <div class="column-title-group">
--                            <span class="column-dot todo-dot"></span>
--                            <h2>To Do</h2>
--                            <span class="task-count" id="count-todo">0</span>
--                        </div>
--                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="todo" title="Thêm task vào To Do">
--                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
--                        </button>
--                    </div>
--                    <div class="column-body" id="col-todo">
--                        <!-- Tasks injected here -->
--                    </div>
--                </div>
-+            <!-- In Progress Column -->
-+            <div class="kanban-column" data-status="in-progress">
-+              <div class="column-header">
-+                <h3>In Progress</h3>
-+                <span class="task-count" id="count-in-progress">0</span>
-+              </div>
-+              <div class="task-dropzone" id="dropzone-in-progress">
-+                <!-- Tasks injected here -->
-+              </div>
-+            </div>
- 
--                <!-- In Progress Column -->
--                <div class="kanban-column" data-column="inprogress" tabindex="0" aria-label="Cột In Progress">
--                    <div class="column-header">
--                        <div class="column-title-group">
--                            <span class="column-dot inprogress-dot"></span>
--                            <h2>In Progress</h2>
--                            <span class="task-count" id="count-inprogress">0</span>
--                        </div>
--                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="inprogress" title="Thêm task vào In Progress">
--                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
--                        </button>
--                    </div>
--                    <div class="column-body" id="col-inprogress">
--                        <!-- Tasks injected here -->
--                    </div>
--                </div>
-+            <!-- Done Column -->
-+            <div class="kanban-column" data-status="done">
-+              <div class="column-header">
-+                <h3>Done</h3>
-+                <span class="task-count" id="count-done">0</span>
-+              </div>
-+              <div class="task-dropzone" id="dropzone-done">
-+                <!-- Tasks injected here -->
-+              </div>
-+            </div>
-+          </div>
-+        </section>
- 
--                <!-- Done Column -->
--                <div class="kanban-column" data-column="done" tabindex="0" aria-label="Cột Done">
--                    <div class="column-header">
--                        <div class="column-title-group">
--                            <span class="column-dot done-dot"></span>
--                            <h2>Done</h2>
--                            <span class="task-count" id="count-done">0</span>
--                        </div>
--                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="done" title="Thêm task vào Done">
--                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
--                        </button>
--                    </div>
--                    <div class="column-body" id="col-done">
--                        <!-- Tasks injected here -->
--                    </div>
-+        <!-- VIEW: ANALYTICS -->
-+        <section id="view-analytics" class="view">
-+          <div class="analytics-grid">
-+            <div class="card">
-+              <h3>Task Distribution by Status</h3>
-+              <div class="chart-container">
-+                <div class="custom-bar-chart" id="chart-status">
-+                  <!-- Rendered via JS -->
-                 </div>
--            </section>
--        </main>
--
--        <!-- Task Modal (Create / Edit) -->
--        <div id="task-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;">
--            <div class="modal-backdrop"></div>
--            <div class="modal-content">
--                <div class="modal-header">
--                    <h3 id="modal-title">Thêm task mới</h3>
--                    <button type="button" class="btn btn-icon btn-close-modal" aria-label="Đóng modal">
--                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
--                    </button>
-+              </div>
-+            </div>
-+            <div class="card">
-+              <h3>Task Distribution by Priority</h3>
-+              <div class="chart-container">
-+                <div class="custom-bar-chart" id="chart-priority">
-+                  <!-- Rendered via JS -->
-                 </div>
--                <form id="task-form" novalidate>
--                    <input type="hidden" id="task-id">
--                    
--                    <div class="form-group">
--                        <label for="task-title-input">Tiêu đề <span class="required">*</span></label>
--                        <input type="text" id="task-title-input" class="form-control" placeholder="Nhập tiêu đề công việc..." required>
--                        <div class="error-message" id="error-title">Vui lòng nhập tiêu đề công việc.</div>
--                    </div>
--
--                    <div class="form-group">
--                        <label for="task-desc-input">Mô tả</label>
--                        <textarea id="task-desc-input" class="form-control" rows="3" placeholder="Nhập chi tiết mô tả công việc..."></textarea>
--                    </div>
-+              </div>
-+            </div>
-+          </div>
-+          <div class="card analytics-summary-card">
-+            <h3>Productivity Metrics</h3>
-+            <div class="metrics-grid">
-+              <div class="metric-item">
-+                <span>Completion Rate</span>
-+                <strong id="metric-completion-rate">0%</strong>
-+              </div>
-+              <div class="metric-item">
-+                <span>High Priority Pending</span>
-+                <strong id="metric-high-pending">0</strong>
-+              </div>
-+              <div class="metric-item">
-+                <span>Total Active Tasks</span>
-+                <strong id="metric-active">0</strong>
-+              </div>
-+            </div>
-+          </div>
-+        </section>
- 
--                    <div class="form-row">
--                        <div class="form-group">
--                            <label for="task-status-input">Trạng thái</label>
--                            <select id="task-status-input" class="form-select">
--                                <option value="backlog">Backlog</option>
--                                <option value="todo">To Do</option>
--                                <option value="inprogress">In Progress</option>
--                                <option value="done">Done</option>
--                            </select>
--                        </div>
-+        <!-- VIEW: SETTINGS -->
-+        <section id="view-settings" class="view">
-+          <div class="settings-card card">
-+            <h3>Preferences</h3>
-+            <div class="setting-row">
-+              <div>
-+                <strong>Theme Mode</strong>
-+                <p>Switch between Dark and Light appearance.</p>
-+              </div>
-+              <button id="settings-theme-btn" class="secondary-btn">Toggle Dark/Light</button>
-+            </div>
-+            <div class="setting-row">
-+              <div>
-+                <strong>Layout Density</strong>
-+                <p>Choose compact or comfortable spacing.</p>
-+              </div>
-+              <select id="settings-layout" class="select-control">
-+                <option value="comfortable">Comfortable</option>
-+                <option value="compact">Compact</option>
-+              </select>
-+            </div>
-+            <div class="setting-row">
-+              <div>
-+                <strong>Animations</strong>
-+                <p>Enable or disable UI transitions and animations.</p>
-+              </div>
-+              <select id="settings-animation" class="select-control">
-+                <option value="on">Enabled</option>
-+                <option value="off">Disabled</option>
-+              </select>
-+            </div>
-+          </div>
- 
--                        <div class="form-group">
--                            <label for="task-priority-input">Mức ưu tiên</label>
--                            <select id="task-priority-input" class="form-select">
--                                <option value="low">Thấp</option>
--                                <option value="medium" selected>Trung bình</option>
--                                <option value="high">Cao</option>
--                                <option value="urgent">Khẩn cấp</option>
--                            </select>
--                        </div>
--                    </div>
-+          <div class="settings-card card">
-+            <h3>Data Management</h3>
-+            <div class="setting-row">
-+              <div>
-+                <strong>Export Data</strong>
-+                <p>Download all tasks and settings as a JSON file.</p>
-+              </div>
-+              <button id="export-btn" class="secondary-btn">Export JSON</button>
-+            </div>
-+            <div class="setting-row">
-+              <div>
-+                <strong>Import Data</strong>
-+                <p>Restore tasks from a backup JSON file.</p>
-+              </div>
-+              <label class="secondary-btn file-input-label">
-+                Import JSON <input type="file" id="import-file" accept=".json" style="display: none;">
-+              </label>
-+            </div>
-+            <div class="setting-row danger-zone">
-+              <div>
-+                <strong>Clear All Data</strong>
-+                <p>Permanently delete all tasks and reset state.</p>
-+              </div>
-+              <button id="clear-all-btn" class="danger-btn">Clear All Tasks</button>
-+            </div>
-+          </div>
-+        </section>
- 
--                    <div class="form-row">
--                        <div class="form-group">
--                            <label for="task-deadline-input">Deadline</label>
--                            <input type="datetime-local" id="task-deadline-input" class="form-control">
--                        </div>
-+      </div>
-+    </main>
-+  </div>
- 
--                        <div class="form-group">
--                            <label for="task-tags-input">Nhãn (cách nhau bằng dấu phẩy)</label>
--                            <input type="text" id="task-tags-input" class="form-control" placeholder="frontend, bug, release">
--                        </div>
--                    </div>
-+  <!-- Command Palette Modal -->
-+  <div id="command-palette" class="modal-backdrop" style="display: none;" aria-hidden="true">
-+    <div class="command-modal card">
-+      <div class="command-search-bar">
-+        <span class="search-icon">🔍</span>
-+        <input type="text" id="command-input" placeholder="Type a command or search tasks (ESC to close)..." autocomplete="off">
-+      </div>
-+      <div id="command-results" class="command-results">
-+        <!-- Rendered dynamically -->
-+      </div>
-+    </div>
-+  </div>
- 
--                    <div class="modal-footer">
--                        <button type="button" class="btn btn-secondary btn-close-modal">Hủy</button>
--                        <button type="submit" class="btn btn-primary" id="btn-save-task">Lưu công việc</button>
--                    </div>
--                </form>
--            </div>
-+  <!-- Task Modal (Create / Edit) -->
-+  <div id="task-modal" class="modal-backdrop" style="display: none;" aria-hidden="true">
-+    <div class="modal card">
-+      <h3 id="task-modal-title">Create New Task</h3>
-+      <form id="task-form">
-+        <input type="hidden" id="task-id">
-+        <div class="form-group">
-+          <label for="task-title">Task Title *</label>
-+          <input type="text" id="task-title" class="input-control" required placeholder="Enter task title...">
+-    <!-- Main Content Area -->
+     <main class="main-content">
+-      <!-- Top Header -->
+-      <header class="top-header">
+-        <div class="header-left">
+-          <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle Sidebar">☰</button>
+-          <h2 id="page-title">Dashboard</h2>
+-        </div>
+-        <div class="header-right">
+-          <button id="quick-add-btn" class="primary-btn" aria-label="New Task">+ New Task</button>
+-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">🌙</button>
++      <header class="topbar">
++        <div class="topbar-title" id="current-view-title">Dashboard</div>
++        <div class="topbar-actions">
++          <button class="btn" id="btn-quick-task">+ New Task</button>
          </div>
+       </header>
 -
--        <!-- Mobile Status Action Modal (Alternative to Drag and Drop on Mobile) -->
--        <div id="mobile-action-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mobile-modal-title" style="display: none;">
--            <div class="modal-backdrop"></div>
--            <div class="modal-content modal-sm">
--                <div class="modal-header">
--                    <h3 id="mobile-modal-title">Di chuyển task</h3>
--                    <button type="button" class="btn btn-icon btn-close-modal" aria-label="Đóng modal">
--                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
--                    </button>
--                </div>
--                <div class="modal-body">
--                    <p class="mobile-task-title-preview" id="mobile-task-preview-name"></p>
--                    <div class="mobile-status-actions">
--                        <button class="btn btn-secondary btn-full btn-move-status" data-status="backlog">
--                            <span class="column-dot backlog-dot"></span> Chuyển sang Backlog
--                        </button>
--                        <button class="btn btn-secondary btn-full btn-move-status" data-status="todo">
--                            <span class="column-dot todo-dot"></span> Chuyển sang To Do
--                        </button>
--                        <button class="btn btn-secondary btn-full btn-move-status" data-status="inprogress">
--                            <span class="column-dot inprogress-dot"></span> Chuyển sang In Progress
--                        </button>
--                        <button class="btn btn-secondary btn-full btn-move-status" data-status="done">
--                            <span class="column-dot done-dot"></span> Chuyển sang Done
--                        </button>
--                    </div>
--                </div>
+-      <!-- View Container -->
+-      <div class="view-container">
+-        
+-        <!-- VIEW: DASHBOARD -->
+-        <section id="view-dashboard" class="view active">
+-          <div class="stats-grid">
+-            <div class="stat-card">
+-              <div class="stat-icon">📌</div>
+-              <div class="stat-info">
+-                <h3>Total Tasks</h3>
+-                <p id="stat-total">0</p>
+-              </div>
 -            </div>
-+        <div class="form-group">
-+          <label for="task-desc">Description</label>
-+          <textarea id="task-desc" class="input-control" rows="3" placeholder="Optional details..."></textarea>
-+        </div>
-+        <div class="form-row">
-+          <div class="form-group">
-+            <label for="task-priority">Priority</label>
-+            <select id="task-priority" class="select-control">
-+              <option value="low">Low</option>
-+              <option value="medium" selected>Medium</option>
-+              <option value="high">High</option>
-+            </select>
-+          </div>
-+          <div class="form-group">
-+            <label for="task-status">Status</label>
-+            <select id="task-status" class="select-control">
-+              <option value="todo" selected>Todo</option>
-+              <option value="in-progress">In Progress</option>
-+              <option value="done">Done</option>
-+            </select>
-+          </div>
-+        </div>
-+        <div class="form-group">
-+          <label for="task-deadline">Deadline</label>
-+          <input type="date" id="task-deadline" class="input-control">
-         </div>
-+        <div class="modal-actions">
-+          <button type="button" id="task-cancel-btn" class="secondary-btn">Cancel</button>
-+          <button type="submit" class="primary-btn">Save Task</button>
-+        </div>
-+      </form>
-+    </div>
-+  </div>
+-            <div class="stat-card">
+-              <div class="stat-icon">⏳</div>
+-              <div class="stat-info">
+-                <h3>In Progress</h3>
+-                <p id="stat-in-progress">0</p>
+-              </div>
+-            </div>
+-            <div class="stat-card">
+-              <div class="stat-icon">✅</div>
+-              <div class="stat-info">
+-                <h3>Completed</h3>
+-                <p id="stat-completed">0</p>
+-              </div>
+-            </div>
+-            <div class="stat-card">
+-              <div class="stat-icon">⚠️</div>
+-              <div class="stat-info">
+-                <h3>Overdue</h3>
+-                <p id="stat-overdue">0</p>
+-              </div>
+-            </div>
+-          </div>
+-
+-          <div class="dashboard-lower">
+-            <div class="card progress-overview-card">
+-              <h3>Overall Progress</h3>
+-              <div class="progress-bar-container">
+-                <div id="overall-progress-bar" class="progress-bar" style="width: 0%"></div>
+-              </div>
+-              <p id="overall-progress-text">0% Completed</p>
+-            </div>
+-            <div class="card recent-tasks-card">
+-              <h3>Recent High Priority Tasks</h3>
+-              <div id="recent-tasks-list" class="compact-list">
+-                <!-- Rendered dynamically -->
+-              </div>
+-            </div>
+-          </div>
+-        </section>
+-
+-        <!-- VIEW: TASKS (Kanban & List) -->
+-        <section id="view-tasks" class="view">
+-          <div class="task-controls">
+-            <div class="search-filter-group">
+-              <input type="text" id="task-search" class="input-control" placeholder="Search tasks (Ctrl+K)..." aria-label="Search tasks">
+-              <select id="filter-status" class="select-control" aria-label="Filter by Status">
+-                <option value="all">All Status</option>
+-                <option value="todo">Todo</option>
+-                <option value="in-progress">In Progress</option>
+-                <option value="done">Done</option>
+-              </select>
+-              <select id="filter-priority" class="select-control" aria-label="Filter by Priority">
+-                <option value="all">All Priority</option>
+-                <option value="high">High</option>
+-                <option value="medium">Medium</option>
+-                <option value="low">Low</option>
+-              </select>
+-              <select id="sort-by" class="select-control" aria-label="Sort tasks">
+-                <option value="deadline-asc">Deadline (Soonest)</option>
+-                <option value="deadline-desc">Deadline (Latest)</option>
+-                <option value="priority-desc">Priority (High-Low)</option>
+-                <option value="title-asc">Title (A-Z)</option>
+-              </select>
+-            </div>
+-            <div class="task-action-buttons">
+-              <button id="add-task-btn" class="primary-btn" aria-label="Add Task">Add Task</button>
+-            </div>
+-          </div>
+-
+-          <div class="kanban-board">
+-            <!-- Todo Column -->
+-            <div class="kanban-column" data-status="todo">
+-              <div class="column-header">
+-                <h3>Todo</h3>
+-                <span class="task-count" id="count-todo">0</span>
+-              </div>
+-              <div class="task-dropzone" id="dropzone-todo">
+-                <!-- Tasks injected here -->
+-              </div>
+-            </div>
+-
+-            <!-- In Progress Column -->
+-            <div class="kanban-column" data-status="in-progress">
+-              <div class="column-header">
+-                <h3>In Progress</h3>
+-                <span class="task-count" id="count-in-progress">0</span>
+-              </div>
+-              <div class="task-dropzone" id="dropzone-in-progress">
+-                <!-- Tasks injected here -->
+-              </div>
+-            </div>
+-
+-            <!-- Done Column -->
+-            <div class="kanban-column" data-status="done">
+-              <div class="column-header">
+-                <h3>Done</h3>
+-                <span class="task-count" id="count-done">0</span>
+-              </div>
+-              <div class="task-dropzone" id="dropzone-done">
+-                <!-- Tasks injected here -->
+-              </div>
+-            </div>
+-          </div>
+-        </section>
+-
+-        <!-- VIEW: ANALYTICS -->
+-        <section id="view-analytics" class="view">
+-          <div class="analytics-grid">
+-            <div class="card">
+-              <h3>Task Distribution by Status</h3>
+-              <div class="chart-container">
+-                <div class="custom-bar-chart" id="chart-status">
+-                  <!-- Rendered via JS -->
+-                </div>
+-              </div>
+-            </div>
+-            <div class="card">
+-              <h3>Task Distribution by Priority</h3>
+-              <div class="chart-container">
+-                <div class="custom-bar-chart" id="chart-priority">
+-                  <!-- Rendered via JS -->
+-                </div>
+-              </div>
+-            </div>
+-          </div>
+-          <div class="card analytics-summary-card">
+-            <h3>Productivity Metrics</h3>
+-            <div class="metrics-grid">
+-              <div class="metric-item">
+-                <span>Completion Rate</span>
+-                <strong id="metric-completion-rate">0%</strong>
+-              </div>
+-              <div class="metric-item">
+-                <span>High Priority Pending</span>
+-                <strong id="metric-high-pending">0</strong>
+-              </div>
+-              <div class="metric-item">
+-                <span>Total Active Tasks</span>
+-                <strong id="metric-active">0</strong>
+-              </div>
+-            </div>
+-          </div>
+-        </section>
+-
+-        <!-- VIEW: SETTINGS -->
+-        <section id="view-settings" class="view">
+-          <div class="settings-card card">
+-            <h3>Preferences</h3>
+-            <div class="setting-row">
+-              <div>
+-                <strong>Theme Mode</strong>
+-                <p>Switch between Dark and Light appearance.</p>
+-              </div>
+-              <button id="settings-theme-btn" class="secondary-btn">Toggle Dark/Light</button>
+-            </div>
+-            <div class="setting-row">
+-              <div>
+-                <strong>Layout Density</strong>
+-                <p>Choose compact or comfortable spacing.</p>
+-              </div>
+-              <select id="settings-layout" class="select-control">
+-                <option value="comfortable">Comfortable</option>
+-                <option value="compact">Compact</option>
+-              </select>
+-            </div>
+-            <div class="setting-row">
+-              <div>
+-                <strong>Animations</strong>
+-                <p>Enable or disable UI transitions and animations.</p>
+-              </div>
+-              <select id="settings-animation" class="select-control">
+-                <option value="on">Enabled</option>
+-                <option value="off">Disabled</option>
+-              </select>
+-            </div>
+-          </div>
+-
+-          <div class="settings-card card">
+-            <h3>Data Management</h3>
+-            <div class="setting-row">
+-              <div>
+-                <strong>Export Data</strong>
+-                <p>Download all tasks and settings as a JSON file.</p>
+-              </div>
+-              <button id="export-btn" class="secondary-btn">Export JSON</button>
+-            </div>
+-            <div class="setting-row">
+-              <div>
+-                <strong>Import Data</strong>
+-                <p>Restore tasks from a backup JSON file.</p>
+-              </div>
+-              <label class="secondary-btn file-input-label">
+-                Import JSON <input type="file" id="import-file" accept=".json" style="display: none;">
+-              </label>
+-            </div>
+-            <div class="setting-row danger-zone">
+-              <div>
+-                <strong>Clear All Data</strong>
+-                <p>Permanently delete all tasks and reset state.</p>
+-              </div>
+-              <button id="clear-all-btn" class="danger-btn">Clear All Tasks</button>
+-            </div>
+-          </div>
+-        </section>
+-
++      <div class="content-view" id="main-view-container">
++        <!-- Dynamic views rendered here -->
+       </div>
+     </main>
+   </div>
  
--        <!-- Toast Notification Container -->
--        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
-+  <!-- Confirmation Modal -->
-+  <div id="confirm-modal" class="modal-backdrop" style="display: none;" aria-hidden="true">
-+    <div class="modal card confirm-box">
-+      <h3 id="confirm-title">Confirm Action</h3>
-+      <p id="confirm-message">Are you sure you want to proceed?</p>
-+      <div class="modal-actions">
-+        <button id="confirm-no-btn" class="secondary-btn">Cancel</button>
-+        <button id="confirm-yes-btn" class="danger-btn">Confirm</button>
-+      </div>
+-  <!-- Command Palette Modal -->
+-  <div id="command-palette" class="modal-backdrop" style="display: none;" aria-hidden="true">
+-    <div class="command-modal card">
+-      <div class="command-search-bar">
+-        <span class="search-icon">🔍</span>
+-        <input type="text" id="command-input" placeholder="Type a command or search tasks (ESC to close)..." autocomplete="off">
+-      </div>
+-      <div id="command-results" class="command-results">
+-        <!-- Rendered dynamically -->
+-      </div>
+-    </div>
+-  </div>
+-
+-  <!-- Task Modal (Create / Edit) -->
+-  <div id="task-modal" class="modal-backdrop" style="display: none;" aria-hidden="true">
+-    <div class="modal card">
+-      <h3 id="task-modal-title">Create New Task</h3>
+-      <form id="task-form">
+-        <input type="hidden" id="task-id">
+-        <div class="form-group">
+-          <label for="task-title">Task Title *</label>
+-          <input type="text" id="task-title" class="input-control" required placeholder="Enter task title...">
+-        </div>
+-        <div class="form-group">
+-          <label for="task-desc">Description</label>
+-          <textarea id="task-desc" class="input-control" rows="3" placeholder="Optional details..."></textarea>
+-        </div>
+-        <div class="form-row">
+-          <div class="form-group">
+-            <label for="task-priority">Priority</label>
+-            <select id="task-priority" class="select-control">
+-              <option value="low">Low</option>
+-              <option value="medium" selected>Medium</option>
+-              <option value="high">High</option>
+-            </select>
+-          </div>
+-          <div class="form-group">
+-            <label for="task-status">Status</label>
+-            <select id="task-status" class="select-control">
+-              <option value="todo" selected>Todo</option>
+-              <option value="in-progress">In Progress</option>
+-              <option value="done">Done</option>
+-            </select>
+-          </div>
+-        </div>
+-        <div class="form-group">
+-          <label for="task-deadline">Deadline</label>
+-          <input type="date" id="task-deadline" class="input-control">
+-        </div>
+-        <div class="modal-actions">
+-          <button type="button" id="task-cancel-btn" class="secondary-btn">Cancel</button>
+-          <button type="submit" class="primary-btn">Save Task</button>
+-        </div>
+-      </form>
+-    </div>
+-  </div>
+-
+-  <!-- Confirmation Modal -->
+-  <div id="confirm-modal" class="modal-backdrop" style="display: none;" aria-hidden="true">
+-    <div class="modal card confirm-box">
+-      <h3 id="confirm-title">Confirm Action</h3>
+-      <p id="confirm-message">Are you sure you want to proceed?</p>
+-      <div class="modal-actions">
+-        <button id="confirm-no-btn" class="secondary-btn">Cancel</button>
+-        <button id="confirm-yes-btn" class="danger-btn">Confirm</button>
+-      </div>
++  <div class="modal-overlay" id="command-palette-modal" style="display: none;">
++    <div class="modal">
++      <h3>Command Palette</h3>
++      <input type="text" id="command-input" placeholder="Type a command..." style="width:100%; padding:0.5rem; margin-top:1rem;">
++      <div id="command-list" style="margin-top:1rem; max-height:200px; overflow-y:auto;"></div>
      </div>
-+  </div>
-+
-+  <!-- Toast Notification Container -->
-+  <div id="toast-container" class="toast-container"></div>
+   </div>
  
--    <!-- Scripts -->
--    <script src="js/storage.js"></script>
--    <script src="js/state.js"></script>
--    <script src="js/tasks.js"></script>
--    <script src="js/kanban.js"></script>
--    <script src="js/import-export.js"></script>
--    <script src="js/ui.js"></script>
--    <script src="js/shortcuts.js"></script>
--    <script src="js/app.js"></script>
-+  <!-- App Script -->
-+  <script src="script.js"></script>
+-  <!-- Toast Notification Container -->
+-  <div id="toast-container" class="toast-container"></div>
+-
+-  <!-- App Script -->
+-  <script src="script.js"></script>
++  <div class="toast-container" id="toast-container"></div>
++
++  <!-- Scripts -->
++  <script src="storage.js"></script>
++  <script src="state.js"></script>
++  <script src="tasks.js"></script>
++  <script src="projects.js"></script>
++  <script src="calendar.js"></script>
++  <script src="analytics.js"></script>
++  <script src="search.js"></script>
++  <script src="commands.js"></script>
++  <script src="settings.js"></script>
++  <script src="notifications.js"></script>
++  <script src="import-export.js"></script>
++  <script src="app.js"></script>
  </body>
- </html>
+-</html>
 \ No newline at end of file
++</html>
 diff --git a/manifest.json b/manifest.json
-new file mode 100644
-index 0000000..ab90370
---- /dev/null
+index ab90370..49a8b77 100644
+--- a/manifest.json
 +++ b/manifest.json
-@@ -0,0 +1,20 @@
-+{
-+  "name": "NEXUS OS",
-+  "short_name": "NexusOS",
-+  "start_url": "./index.html",
-+  "display": "standalone",
-+  "background_color": "#0f172a",
-+  "theme_color": "#6366f1",
-+  "icons": [
-+    {
-+      "src": "https://via.placeholder.com/192.png?text=NEXUS",
-+      "sizes": "192x192",
-+      "type": "image/png"
-+    },
-+    {
-+      "src": "https://via.placeholder.com/512.png?text=NEXUS",
-+      "sizes": "512x512",
-+      "type": "image/png"
-+    }
-+  ]
-+}
+@@ -1,20 +1,9 @@
+ {
+-  "name": "NEXUS OS",
+-  "short_name": "NexusOS",
++  "name": "NEXUS TITAN",
++  "short_name": "NexusTitan",
+   "start_url": "./index.html",
+   "display": "standalone",
+   "background_color": "#0f172a",
+-  "theme_color": "#6366f1",
+-  "icons": [
+-    {
+-      "src": "https://via.placeholder.com/192.png?text=NEXUS",
+-      "sizes": "192x192",
+-      "type": "image/png"
+-    },
+-    {
+-      "src": "https://via.placeholder.com/512.png?text=NEXUS",
+-      "sizes": "512x512",
+-      "type": "image/png"
+-    }
+-  ]
+-}
 \ No newline at end of file
-diff --git a/script.js b/script.js
++  "theme_color": "#3b82f6",
++  "icons": []
++}
+diff --git a/notifications.js b/notifications.js
 new file mode 100644
-index 0000000..ca187f2
+index 0000000..f891674
 --- /dev/null
-+++ b/script.js
-@@ -0,0 +1,675 @@
++++ b/notifications.js
+@@ -0,0 +1,31 @@
 +/**
-+ * NEXUS OS — Main Application Logic
++ * notifications.js - Notification center management.
 + */
++class NotificationManager {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
 +
-+const STORAGE_KEY = 'nexus_os_data_v1';
-+const MAX_HISTORY = 20;
-+
-+let state = {
-+  tasks: [],
-+  settings: {
-+    theme: 'dark',
-+    layout: 'comfortable',
-+    animations: 'on'
-+  },
-+  history: [],
-+  redoStack: []
-+};
-+
-+// DOM Elements Cache
-+const DOM = {
-+  views: document.querySelectorAll('.view'),
-+  navItems: document.querySelectorAll('.nav-item'),
-+  pageTitle: document.getElementById('page-title'),
-+  sidebarToggle: document.getElementById('sidebar-toggle'),
-+  sidebar: document.querySelector('.sidebar'),
-+  themeToggle: document.getElementById('theme-toggle'),
-+  quickAddBtn: document.getElementById('quick-add-btn'),
-+  addTaskBtn: document.getElementById('add-task-btn'),
-+  taskModal: document.getElementById('task-modal'),
-+  taskForm: document.getElementById('task-form'),
-+  taskModalTitle: document.getElementById('task-modal-title'),
-+  taskCancelBtn: document.getElementById('task-cancel-btn'),
-+  taskId: document.getElementById('task-id'),
-+  taskTitle: document.getElementById('task-title'),
-+  taskDesc: document.getElementById('task-desc'),
-+  taskPriority: document.getElementById('task-priority'),
-+  taskStatus: document.getElementById('task-status'),
-+  taskDeadline: document.getElementById('task-deadline'),
-+  taskSearch: document.getElementById('task-search'),
-+  filterStatus: document.getElementById('filter-status'),
-+  filterPriority: document.getElementById('filter-priority'),
-+  sortBy: document.getElementById('sort-by'),
-+  commandPalette: document.getElementById('command-palette'),
-+  commandInput: document.getElementById('command-input'),
-+  commandResults: document.getElementById('command-results'),
-+  confirmModal: document.getElementById('confirm-modal'),
-+  confirmTitle: document.getElementById('confirm-title'),
-+  confirmMessage: document.getElementById('confirm-message'),
-+  confirmYesBtn: document.getElementById('confirm-yes-btn'),
-+  confirmNoBtn: document.getElementById('confirm-no-btn'),
-+  toastContainer: document.getElementById('toast-container'),
-+  exportBtn: document.getElementById('export-btn'),
-+  importFile: document.getElementById('import-file'),
-+  clearAllBtn: document.getElementById('clear-all-btn'),
-+  settingsThemeBtn: document.getElementById('settings-theme-btn'),
-+  settingsLayout: document.getElementById('settings-layout'),
-+  settingsAnimation: document.getElementById('settings-animation')
-+};
-+
-+let confirmCallback = null;
-+
-+// Initialize App
-+function init() {
-+  loadState();
-+  applySettings();
-+  setupEventListeners();
-+  renderAll();
-+  registerServiceWorker();
-+}
-+
-+// LocalStorage Management
-+function loadState() {
-+  try {
-+    const raw = localStorage.getItem(STORAGE_KEY);
-+    if (raw) {
-+      const parsed = JSON.parse(raw);
-+      if (parsed.tasks) state.tasks = parsed.tasks;
-+      if (parsed.settings) state.settings = { ...state.settings, ...parsed.settings };
-+    } else {
-+      // Seed initial demo tasks if empty
-+      state.tasks = [
-+        { id: '1', title: 'Welcome to NEXUS OS', description: 'Explore dashboard, Kanban, and command palette.', status: 'done', priority: 'high', deadline: new Date().toISOString().split('T')[0] },
-+        { id: '2', title: 'Setup project workflow', description: 'Define tasks and collaborate with team members.', status: 'in-progress', priority: 'medium', deadline: new Date(Date.now() + 86400000 * 2).toISOString().split('T')[0] },
-+        { id: '3', title: 'Review analytics & reports', description: 'Check productivity metrics and completed counts.', status: 'todo', priority: 'low', deadline: new Date(Date.now() + 86400000 * 5).toISOString().split('T')[0] }
-+      ];
-+      saveState(false);
++  markAsRead(id) {
++    const notif = this.stateManager.state.notifications.find(n => n.id === id);
++    if (notif) {
++      notif.read = true;
++      this.stateManager.persist();
++      this.stateManager.notify();
 +    }
-+  } catch (err) {
-+    console.error('Failed to load state from localStorage:', err);
-+    showToast('Error loading saved data.', 'error');
++  }
++
++  markAllRead() {
++    this.stateManager.state.notifications.forEach(n => n.read = true);
++    this.stateManager.persist();
++    this.stateManager.notify();
++  }
++
++  deleteNotification(id) {
++    this.stateManager.state.notifications = this.stateManager.state.notifications.filter(n => n.id !== id);
++    this.stateManager.persist();
++    this.stateManager.notify();
 +  }
 +}
 +
-+function saveState(recordHistory = true) {
-+  if (recordHistory) {
-+    pushHistory();
-+  }
-+  try {
-+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-+      tasks: state.tasks,
-+      settings: state.settings
-+    }));
-+  } catch (err) {
-+    console.error('Failed to save state:', err);
-+    showToast('Storage quota exceeded or error.', 'error');
-+  }
-+  renderAll();
-+}
-+
-+// History for Undo / Redo
-+function pushHistory() {
-+  state.history.push(JSON.stringify(state.tasks));
-+  if (state.history.length > MAX_HISTORY) {
-+    state.history.shift();
-+  }
-+  state.redoStack = [];
-+}
-+
-+function undo() {
-+  if (state.history.length === 0) {
-+    showToast('Nothing to undo.', 'error');
-+    return;
-+  }
-+  state.redoStack.push(JSON.stringify(state.tasks));
-+  const prev = state.history.pop();
-+  state.tasks = JSON.parse(prev);
-+  saveState(false);
-+  showToast('Undo successful.', 'success');
-+}
-+
-+function redo() {
-+  if (state.redoStack.length === 0) {
-+    showToast('Nothing to redo.', 'error');
-+    return;
-+  }
-+  state.history.push(JSON.stringify(state.tasks));
-+  const next = state.redoStack.pop();
-+  state.tasks = JSON.parse(next);
-+  saveState(false);
-+  showToast('Redo successful.', 'success');
-+}
-+
-+// UI Rendering
-+function renderAll() {
-+  renderDashboard();
-+  renderTasks();
-+  renderAnalytics();
-+  syncSettingsUI();
-+}
-+
-+function renderDashboard() {
-+  const total = state.tasks.length;
-+  const inProgress = state.tasks.filter(t => t.status === 'in-progress').length;
-+  const completed = state.tasks.filter(t => t.status === 'done').length;
-+  const todayStr = new Date().toISOString().split('T')[0];
-+  const overdue = state.tasks.filter(t => t.deadline && t.deadline < todayStr && t.status !== 'done').length;
-+
-+  document.getElementById('stat-total').textContent = total;
-+  document.getElementById('stat-in-progress').textContent = inProgress;
-+  document.getElementById('stat-completed').textContent = completed;
-+  document.getElementById('stat-overdue').textContent = overdue;
-+
-+  const pct = total === 0 ? 0 : Math.round((completed / total) * 100);
-+  document.getElementById('overall-progress-bar').style.width = pct + '%';
-+  document.getElementById('overall-progress-text').textContent = pct + '% Completed';
-+
-+  // Recent high priority
-+  const recentHigh = state.tasks.filter(t => t.priority === 'high' && t.status !== 'done').slice(0, 5);
-+  const recentListEl = document.getElementById('recent-tasks-list');
-+  recentListEl.innerHTML = '';
-+  if (recentHigh.length === 0) {
-+    recentListEl.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem;">No high priority pending tasks.</p>';
-+  } else {
-+    recentHigh.forEach(t => {
-+      const div = document.createElement('div');
-+      div.className = 'compact-item';
-+      div.innerHTML = `<span><strong>${escapeHtml(t.title)}</strong></span><span class="badge badge-high">High</span>`;
-+      recentListEl.appendChild(div);
-+    });
-+  }
-+}
-+
-+function renderTasks() {
-+  const search = DOM.taskSearch.value.toLowerCase();
-+  const fStatus = DOM.filterStatus.value;
-+  const fPriority = DOM.filterPriority.value;
-+  const sortBy = DOM.sortBy.value;
-+
-+  let filtered = state.tasks.filter(t => {
-+    const matchSearch = t.title.toLowerCase().includes(search) || (t.description && t.description.toLowerCase().includes(search));
-+    const matchStatus = fStatus === 'all' || t.status === fStatus;
-+    const matchPriority = fPriority === 'all' || t.priority === fPriority;
-+    return matchSearch && matchStatus && matchPriority;
-+  });
-+
-+  // Sort
-+  filtered.sort((a, b) => {
-+    if (sortBy === 'deadline-asc') {
-+      return (a.deadline || '9999-99-99').localeCompare(b.deadline || '9999-99-99');
-+    } else if (sortBy === 'deadline-desc') {
-+      return (b.deadline || '').localeCompare(a.deadline || '');
-+    } else if (sortBy === 'priority-desc') {
-+      const pMap = { high: 3, medium: 2, low: 1 };
-+      return pMap[b.priority] - pMap[a.priority];
-+    } else if (sortBy === 'title-asc') {
-+      return a.title.localeCompare(b.title);
-+    }
-+    return 0;
-+  });
-+
-+  // Clear dropzones
-+  const zones = {
-+    todo: document.getElementById('dropzone-todo'),
-+    'in-progress': document.getElementById('dropzone-in-progress'),
-+    done: document.getElementById('dropzone-done')
-+  };
-+  Object.values(zones).forEach(z => z.innerHTML = '');
-+
-+  const counts = { todo: 0, 'in-progress': 0, done: 0 };
-+
-+  filtered.forEach(t => {
-+    counts[t.status]++;
-+    const card = createTaskCard(t);
-+    if (zones[t.status]) {
-+      zones[t.status].appendChild(card);
-+    }
-+  });
-+
-+  document.getElementById('count-todo').textContent = counts.todo;
-+  document.getElementById('count-in-progress').textContent = counts['in-progress'];
-+  document.getElementById('count-done').textContent = counts.done;
-+}
-+
-+function createTaskCard(t) {
-+  const card = document.createElement('div');
-+  card.className = 'task-card';
-+  card.draggable = true;
-+  card.dataset.id = t.id;
-+
-+  card.addEventListener('dragstart', (e) => {
-+    e.dataTransfer.setData('text/plain', t.id);
-+    card.classList.add('dragging');
-+  });
-+  card.addEventListener('dragend', () => {
-+    card.classList.remove('dragging');
-+  });
-+
-+  card.innerHTML = `
-+    <div class="task-card-header">
-+      <span class="task-card-title">${escapeHtml(t.title)}</span>
-+      <span class="badge badge-${t.priority}">${t.priority}</span>
-+    </div>
-+    ${t.description ? `<div class="task-card-desc">${escapeHtml(t.description)}</div>` : ''}
-+    <div class="task-card-footer">
-+      <span>📅 ${t.deadline || 'No deadline'}</span>
-+      <div class="task-actions-menu">
-+        <button class="task-action-btn" onclick="editTask('${t.id}')" title="Edit">✏️</button>
-+        <button class="task-action-btn" onclick="deleteTask('${t.id}')" title="Delete">🗑️</button>
-+      </div>
-+    </div>
-+  `;
-+  return card;
-+}
-+
-+function renderAnalytics() {
-+  const total = state.tasks.length;
-+  const completed = state.tasks.filter(t => t.status === 'done').length;
-+  const highPending = state.tasks.filter(t => t.priority === 'high' && t.status !== 'done').length;
-+
-+  document.getElementById('metric-completion-rate').textContent = (total === 0 ? 0 : Math.round((completed / total) * 100)) + '%';
-+  document.getElementById('metric-high-pending').textContent = highPending;
-+  document.getElementById('metric-active').textContent = state.tasks.filter(t => t.status !== 'done').length;
-+
-+  // Status chart
-+  const statusCounts = {
-+    todo: state.tasks.filter(t => t.status === 'todo').length,
-+    'in-progress': state.tasks.filter(t => t.status === 'in-progress').length,
-+    done: state.tasks.filter(t => t.status === 'done').length
-+  };
-+  const chartStatus = document.getElementById('chart-status');
-+  chartStatus.innerHTML = `
-+    <div class="chart-row"><span class="chart-label">Todo</span><div class="chart-bar-wrapper"><div class="chart-bar" style="width: ${total ? (statusCounts.todo/total)*100 : 0}%"></div></div><span class="chart-val">${statusCounts.todo}</span></div>
-+    <div class="chart-row"><span class="chart-label">In Progress</span><div class="chart-bar-wrapper"><div class="chart-bar" style="width: ${total ? (statusCounts['in-progress']/total)*100 : 0}%"></div></div><span class="chart-val">${statusCounts['in-progress']}</span></div>
-+    <div class="chart-row"><span class="chart-label">Done</span><div class="chart-bar-wrapper"><div class="chart-bar" style="width: ${total ? (statusCounts.done/total)*100 : 0}%"></div></div><span class="chart-val">${statusCounts.done}</span></div>
-+  `;
-+
-+  // Priority chart
-+  const priorityCounts = {
-+    high: state.tasks.filter(t => t.priority === 'high').length,
-+    medium: state.tasks.filter(t => t.priority === 'medium').length,
-+    low: state.tasks.filter(t => t.priority === 'low').length
-+  };
-+  const chartPriority = document.getElementById('chart-priority');
-+  chartPriority.innerHTML = `
-+    <div class="chart-row"><span class="chart-label">High</span><div class="chart-bar-wrapper"><div class="chart-bar" style="width: ${total ? (priorityCounts.high/total)*100 : 0}%; background-color: var(--danger);"></div></div><span class="chart-val">${priorityCounts.high}</span></div>
-+    <div class="chart-row"><span class="chart-label">Medium</span><div class="chart-bar-wrapper"><div class="chart-bar" style="width: ${total ? (priorityCounts.medium/total)*100 : 0}%; background-color: var(--warning);"></div></div><span class="chart-val">${priorityCounts.medium}</span></div>
-+    <div class="chart-row"><span class="chart-label">Low</span><div class="chart-bar-wrapper"><div class="chart-bar" style="width: ${total ? (priorityCounts.low/total)*100 : 0}%; background-color: var(--info);"></div></div><span class="chart-val">${priorityCounts.low}</span></div>
-+  `;
-+}
-+
-+// Settings Management
-+function applySettings() {
-+  document.documentElement.setAttribute('data-theme', state.settings.theme);
-+  document.documentElement.setAttribute('data-layout', state.settings.layout);
-+  document.documentElement.setAttribute('data-animations', state.settings.animations);
-+  DOM.themeToggle.textContent = state.settings.theme === 'dark' ? '🌙' : '☀️';
-+}
-+
-+function syncSettingsUI() {
-+  DOM.settingsLayout.value = state.settings.layout;
-+  DOM.settingsAnimation.value = state.settings.animations;
-+}
-+
-+function toggleTheme() {
-+  state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark';
-+  applySettings();
-+  saveState(false);
-+  showToast(`Switched to ${state.settings.theme} mode.`, 'success');
-+}
-+
-+// Navigation Views
-+function switchView(viewName) {
-+  DOM.views.forEach(v => v.classList.remove('active'));
-+  DOM.navItems.forEach(n => n.classList.remove('active'));
-+
-+  const targetView = document.getElementById(`view-${viewName}`);
-+  const targetNav = document.querySelector(`.nav-item[data-view="${viewName}"]`);
-+
-+  if (targetView) targetView.classList.add('active');
-+  if (targetNav) targetNav.classList.add('active');
-+
-+  DOM.pageTitle.textContent = viewName.charAt(0).toUpperCase() + viewName.slice(1);
-+  DOM.sidebar.classList.remove('mobile-open');
-+}
-+
-+// Task Modal & CRUD
-+function openTaskModal(taskId = null) {
-+  DOM.taskForm.reset();
-+  if (taskId) {
-+    const task = state.tasks.find(t => t.id === taskId);
-+    if (task) {
-+      DOM.taskModalTitle.textContent = 'Edit Task';
-+      DOM.taskId.value = task.id;
-+      DOM.taskTitle.value = task.title;
-+      DOM.taskDesc.value = task.description || '';
-+      DOM.taskPriority.value = task.priority;
-+      DOM.taskStatus.value = task.status;
-+      DOM.taskDeadline.value = task.deadline || '';
-+    }
-+  } else {
-+    DOM.taskModalTitle.textContent = 'Create New Task';
-+    DOM.taskId.value = '';
-+    DOM.taskDeadline.value = new Date().toISOString().split('T')[0];
-+  }
-+  DOM.taskModal.style.display = 'flex';
-+  DOM.taskModal.setAttribute('aria-hidden', 'false');
-+  DOM.taskTitle.focus();
-+}
-+
-+function closeTaskModal() {
-+  DOM.taskModal.style.display = 'none';
-+  DOM.taskModal.setAttribute('aria-hidden', 'true');
-+}
-+
-+window.editTask = function(id) {
-+  openTaskModal(id);
-+};
-+
-+window.deleteTask = function(id) {
-+  showConfirm('Delete Task', 'Are you sure you want to delete this task?', () => {
-+    state.tasks = state.tasks.filter(t => t.id !== id);
-+    saveState(true);
-+    showToast('Task deleted.', 'success');
-+  });
-+};
-+
-+// Event Listeners setup
-+function setupEventListeners() {
-+  // Navigation
-+  DOM.navItems.forEach(item => {
-+    item.addEventListener('click', () => {
-+      switchView(item.dataset.view);
-+    });
-+  });
-+
-+  DOM.sidebarToggle.addEventListener('click', () => {
-+    DOM.sidebar.classList.toggle('mobile-open');
-+  });
-+
-+  DOM.themeToggle.addEventListener('click', toggleTheme);
-+  DOM.settingsThemeBtn.addEventListener('click', toggleTheme);
-+
-+  // Task modals
-+  DOM.quickAddBtn.addEventListener('click', () => openTaskModal());
-+  DOM.addTaskBtn.addEventListener('click', () => openTaskModal());
-+  DOM.taskCancelBtn.addEventListener('click', closeTaskModal);
-+
-+  DOM.taskForm.addEventListener('submit', (e) => {
-+    e.preventDefault();
-+    const id = DOM.taskId.value;
-+    const title = DOM.taskTitle.value.trim();
-+    const description = DOM.taskDesc.value.trim();
-+    const priority = DOM.taskPriority.value;
-+    const status = DOM.taskStatus.value;
-+    const deadline = DOM.taskDeadline.value;
-+
-+    if (!title) {
-+      showToast('Task title cannot be empty.', 'error');
-+      return;
-+    }
-+
-+    if (id) {
-+      // Edit
-+      state.tasks = state.tasks.map(t => t.id === id ? { ...t, title, description, priority, status, deadline } : t);
-+      showToast('Task updated successfully.', 'success');
-+    } else {
-+      // Create
-+      const newTask = {
-+        id: 't_' + Date.now() + Math.random().toString(36).substr(2, 4),
-+        title,
-+        description,
-+        priority,
-+        status,
-+        deadline
-+      };
-+      state.tasks.push(newTask);
-+      showToast('Task created successfully.', 'success');
-+    }
-+
-+    closeTaskModal();
-+    saveState(true);
-+  });
-+
-+  // Filters & Search
-+  DOM.taskSearch.addEventListener('input', renderTasks);
-+  DOM.filterStatus.addEventListener('change', renderTasks);
-+  DOM.filterPriority.addEventListener('change', renderTasks);
-+  DOM.sortBy.addEventListener('change', renderTasks);
-+
-+  // Drag and Drop
-+  document.querySelectorAll('.kanban-column').forEach(col => {
-+    const dropzone = col.querySelector('.task-dropzone');
-+    const status = col.dataset.status;
-+
-+    dropzone.addEventListener('dragover', (e) => {
-+      e.preventDefault();
-+    });
-+
-+    dropzone.addEventListener('drop', (e) => {
-+      e.preventDefault();
-+      const taskId = e.dataTransfer.getData('text/plain');
-+      if (taskId) {
-+        const task = state.tasks.find(t => t.id === taskId);
-+        if (task && task.status !== status) {
-+          task.status = status;
-+          saveState(true);
-+          showToast(`Task moved to ${status}.`, 'success');
-+        }
-+      }
-+    });
-+  });
-+
-+  // Settings changes
-+  DOM.settingsLayout.addEventListener('change', (e) => {
-+    state.settings.layout = e.target.value;
-+    applySettings();
-+    saveState(false);
-+  });
-+
-+  DOM.settingsAnimation.addEventListener('change', (e) => {
-+    state.settings.animations = e.target.value;
-+    applySettings();
-+    saveState(false);
-+  });
-+
-+  // Export / Import
-+  DOM.exportBtn.addEventListener('click', exportData);
-+  DOM.importFile.addEventListener('change', importData);
-+
-+  // Clear All
-+  DOM.clearAllBtn.addEventListener('click', () => {
-+    showConfirm('Clear All Tasks', 'Are you sure you want to delete all tasks? This action cannot be undone easily.', () => {
-+      state.tasks = [];
-+      saveState(true);
-+      showToast('All tasks cleared.', 'success');
-+    });
-+  });
-+
-+  // Keyboard Shortcuts (Ctrl+K, Ctrl+Z, Ctrl+Y, ESC)
-+  window.addEventListener('keydown', (e) => {
-+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-+      e.preventDefault();
-+      openCommandPalette();
-+    } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-+      e.preventDefault();
-+      undo();
-+    } else if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'y' || (e.shiftKey && e.key.toLowerCase() === 'z'))) {
-+      e.preventDefault();
-+      redo();
-+    } else if (e.key === 'Escape') {
-+      closeCommandPalette();
-+      closeTaskModal();
-+      closeConfirmModal();
-+    }
-+  });
-+
-+  // Command Palette input
-+  DOM.commandInput.addEventListener('input', updateCommandResults);
-+  DOM.commandPalette.addEventListener('click', (e) => {
-+    if (e.target === DOM.commandPalette) closeCommandPalette();
-+  });
-+}
-+
-+// Command Palette
-+function openCommandPalette() {
-+  DOM.commandPalette.style.display = 'flex';
-+  DOM.commandPalette.setAttribute('aria-hidden', 'false');
-+  DOM.commandInput.value = '';
-+  updateCommandResults();
-+  DOM.commandInput.focus();
-+}
-+
-+function closeCommandPalette() {
-+  DOM.commandPalette.style.display = 'none';
-+  DOM.commandPalette.setAttribute('aria-hidden', 'true');
-+}
-+
-+function updateCommandResults() {
-+  const query = DOM.commandInput.value.toLowerCase();
-+  const commands = [
-+    { label: 'Create new task', action: () => { closeCommandPalette(); openTaskModal(); } },
-+    { label: 'Go to Dashboard', action: () => { closeCommandPalette(); switchView('dashboard'); } },
-+    { label: 'Go to Tasks (Kanban)', action: () => { closeCommandPalette(); switchView('tasks'); } },
-+    { label: 'Go to Analytics', action: () => { closeCommandPalette(); switchView('analytics'); } },
-+    { label: 'Go to Settings', action: () => { closeCommandPalette(); switchView('settings'); } },
-+    { label: 'Toggle Theme (Dark/Light)', action: () => { closeCommandPalette(); toggleTheme(); } },
-+    { label: 'Export Data JSON', action: () => { closeCommandPalette(); exportData(); } },
-+    { label: 'Clear Completed Tasks', action: () => {
-+      closeCommandPalette();
-+      showConfirm('Clear Completed', 'Delete all completed tasks?', () => {
-+        state.tasks = state.tasks.filter(t => t.status !== 'done');
-+        saveState(true);
-+        showToast('Completed tasks cleared.', 'success');
-+      });
-+    }}
-+  ];
-+
-+  const matched = commands.filter(c => c.label.toLowerCase().includes(query));
-+  DOM.commandResults.innerHTML = '';
-+
-+  if (matched.length === 0) {
-+    DOM.commandResults.innerHTML = '<div class="command-item" style="color: var(--text-secondary);">No matching commands found.</div>';
-+    return;
-+  }
-+
-+  matched.forEach(cmd => {
-+    const div = document.createElement('div');
-+    div.className = 'command-item';
-+    div.textContent = cmd.label;
-+    div.addEventListener('click', cmd.action);
-+    DOM.commandResults.appendChild(div);
-+  });
-+}
-+
-+// Import / Export
-+function exportData() {
-+  try {
-+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
-+      tasks: state.tasks,
-+      settings: state.settings
-+    }, null, 2));
-+    const downloadAnchor = document.createElement('a');
-+    downloadAnchor.setAttribute("href", dataStr);
-+    downloadAnchor.setAttribute("download", `nexus_os_backup_${new Date().toISOString().split('T')[0]}.json`);
-+    document.body.appendChild(downloadAnchor);
-+    downloadAnchor.click();
-+    downloadAnchor.remove();
-+    showToast('Data exported successfully.', 'success');
-+  } catch (err) {
-+    console.error('Export failed:', err);
-+    showToast('Export failed.', 'error');
-+  }
-+}
-+
-+function importData(e) {
-+  const file = e.target.files[0];
-+  if (!file) return;
-+
-+  const reader = new FileReader();
-+  reader.onload = function(event) {
-+    try {
-+      const parsed = JSON.parse(event.target.result);
-+      if (!parsed || !Array.isArray(parsed.tasks)) {
-+        throw new Error('Invalid JSON structure. Missing tasks array.');
-+      }
-+      state.tasks = parsed.tasks;
-+      if (parsed.settings) {
-+        state.settings = { ...state.settings, ...parsed.settings };
-+      }
-+      applySettings();
-+      saveState(true);
-+      showToast('Data imported successfully.', 'success');
-+    } catch (err) {
-+      console.error('Import parse error:', err);
-+      showToast('Invalid JSON file format. Could not import.', 'error');
-+    } finally {
-+      DOM.importFile.value = '';
-+    }
-+  };
-+  reader.readAsText(file);
-+}
-+
-+// Confirmation Modal
-+function showConfirm(title, message, onConfirm) {
-+  DOM.confirmTitle.textContent = title;
-+  DOM.confirmMessage.textContent = message;
-+  confirmCallback = onConfirm;
-+  DOM.confirmModal.style.display = 'flex';
-+  DOM.confirmModal.setAttribute('aria-hidden', 'false');
-+}
-+
-+function closeConfirmModal() {
-+  DOM.confirmModal.style.display = 'none';
-+  DOM.confirmModal.setAttribute('aria-hidden', 'true');
-+  confirmCallback = null;
-+}
-+
-+DOM.confirmYesBtn.addEventListener('click', () => {
-+  if (typeof confirmCallback === 'function') {
-+    confirmCallback();
-+  }
-+  closeConfirmModal();
-+});
-+
-+DOM.confirmNoBtn.addEventListener('click', closeConfirmModal);
-+DOM.confirmModal.addEventListener('click', (e) => {
-+  if (e.target === DOM.confirmModal) closeConfirmModal();
-+});
-+
-+// Toasts
-+function showToast(message, type = 'success') {
-+  const toast = document.createElement('div');
-+  toast.className = `toast ${type}`;
-+  toast.textContent = message;
-+  DOM.toastContainer.appendChild(toast);
-+  setTimeout(() => {
-+    toast.style.opacity = '0';
-+    setTimeout(() => toast.remove(), 300);
-+  }, 3000);
-+}
-+
-+// Utilities
-+function escapeHtml(str) {
-+  if (!str) return '';
-+  return str.replace(/[&<>'"/]/g, s => ({
-+    '&': '&amp;',
-+    '<': '&lt;',
-+    '>': '&gt;',
-+    "'": '&#39;',
-+    '"': '&quot;',
-+    '/': '&#x2F;'
-+  }[s]));
-+}
-+
-+// PWA Service Worker Registration
-+function registerServiceWorker() {
-+  if ('serviceWorker' in navigator) {
-+    navigator.serviceWorker.register('service-worker.js')
-+      .then(() => console.log('Service Worker registered successfully.'))
-+      .catch(err => console.warn('Service Worker registration failed:', err));
-+  }
-+}
-+
-+// Run on load
-+document.addEventListener('DOMContentLoaded', init);
-\ No newline at end of file
-diff --git a/service-worker.js b/service-worker.js
++window.notificationManager = new NotificationManager(window.stateManager);
+diff --git a/projects.js b/projects.js
 new file mode 100644
-index 0000000..727135f
+index 0000000..41f2779
 --- /dev/null
-+++ b/service-worker.js
++++ b/projects.js
+@@ -0,0 +1,86 @@
++/**
++ * projects.js - Project Management handling CRUD, archive, restore, and statistics.
++ */
++class ProjectEngine {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
++
++  createProject(data) {
++    if (!data.name || data.name.trim() === '') {
++      throw new Error('Project name cannot be empty.');
++    }
++    this.stateManager.pushHistory();
++    const newProj = {
++      id: 'proj_' + Math.random().toString(36).substr(2, 9),
++      name: data.name.trim(),
++      description: data.description || '',
++      color: data.color || '#3b82f6',
++      createdAt: new Date().toISOString(),
++      updatedAt: new Date().toISOString(),
++      archived: false
++    };
++    this.stateManager.state.projects.push(newProj);
++    this.stateManager.persist();
++    this.stateManager.logActivity(`Created project: ${newProj.name}`);
++    this.stateManager.addNotification('Project Created', `Created project "${newProj.name}"`, 'success');
++    this.stateManager.notify();
++    return newProj;
++  }
++
++  updateProject(id, updates) {
++    this.stateManager.pushHistory();
++    const projects = this.stateManager.state.projects;
++    const index = projects.findIndex(p => p.id === id);
++    if (index === -1) throw new Error('Project not found.');
++
++    projects[index] = {
++      ...projects[index],
++      ...updates,
++      updatedAt: new Date().toISOString()
++    };
++    this.stateManager.persist();
++    this.stateManager.logActivity(`Updated project: ${projects[index].name}`);
++    this.stateManager.notify();
++    return projects[index];
++  }
++
++  deleteProject(id, force = false) {
++    const tasks = this.stateManager.state.tasks;
++    const hasTasks = tasks.some(t => t.projectId === id);
++    if (hasTasks && !force) {
++      throw new Error('Project contains tasks. Confirm deletion or move tasks first.');
++    }
++
++    this.stateManager.pushHistory();
++    const projects = this.stateManager.state.projects;
++    const index = projects.findIndex(p => p.id === id);
++    if (index === -1) throw new Error('Project not found.');
++    const removed = projects.splice(index, 1)[0];
++
++    // Optionally unassign tasks
++    tasks.forEach(t => {
++      if (t.projectId === id) t.projectId = '';
++    });
++
++    this.stateManager.persist();
++    this.stateManager.logActivity(`Deleted project: ${removed.name}`);
++    this.stateManager.addNotification('Project Deleted', `Deleted project "${removed.name}"`, 'info');
++    this.stateManager.notify();
++    return removed;
++  }
++
++  archiveProject(id, archived = true) {
++    return this.updateProject(id, { archived });
++  }
++
++  getProjectStats(projectId) {
++    const tasks = this.stateManager.state.tasks.filter(t => t.projectId === projectId);
++    const total = tasks.length;
++    const completed = tasks.filter(t => t.status === 'done').length;
++    const rate = total > 0 ? Math.round((completed / total) * 100) : 0;
++    return { total, completed, rate };
++  }
++}
++
++window.projectEngine = new ProjectEngine(window.stateManager);
+diff --git a/search.js b/search.js
+new file mode 100644
+index 0000000..580b375
+--- /dev/null
++++ b/search.js
 @@ -0,0 +1,48 @@
-+const CACHE_NAME = 'nexus-os-cache-v1';
-+const ASSETS = [
-+  './index.html',
-+  './style.css',
-+  './script.js',
-+  './manifest.json'
-+];
++/**
++ * search.js - Advanced search engine supporting syntax like status:done priority:high.
++ */
++class SearchEngine {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
 +
-+self.addEventListener('install', (e) => {
-+  e.waitUntil(
-+    caches.open(CACHE_NAME).then((cache) => {
-+      return cache.addAll(ASSETS);
-+    })
-+  );
-+  self.skipWaiting();
++  search(query) {
++    const tasks = this.stateManager.state.tasks;
++    if (!query || query.trim() === '') return tasks;
++
++    const tokens = query.toLowerCase().split(/\s+/);
++    const filters = {};
++    const textTerms = [];
++
++    tokens.forEach(token => {
++      if (token.includes(':')) {
++        const [key, value] = token.split(':');
++        filters[key] = value;
++      } else {
++        textTerms.push(token);
++      }
++    });
++
++    return tasks.filter(task => {
++      // Check filters
++      if (filters.status && task.status !== filters.status) return false;
++      if (filters.priority && task.priority !== filters.priority) return false;
++      if (filters.project && task.projectId !== filters.project) return false;
++      if (filters.tag && (!task.tags || !task.tags.includes(filters.tag))) return false;
++      if (filters.overdue === 'true') {
++        if (!task.dueDate || new Date(task.dueDate) >= new Date() || task.status === 'done') return false;
++      }
++
++      // Check text terms
++      if (textTerms.length > 0) {
++        const combinedText = `${task.title} ${task.description} ${task.notes}`.toLowerCase();
++        const matchesAll = textTerms.every(term => combinedText.includes(term));
++        if (!matchesAll) return false;
++      }
++
++      return true;
++    });
++  }
++}
++
++window.searchEngine = new SearchEngine(window.stateManager);
+diff --git a/service-worker.js b/service-worker.js
+index 727135f..07675ef 100644
+--- a/service-worker.js
++++ b/service-worker.js
+@@ -1,48 +1,29 @@
+-const CACHE_NAME = 'nexus-os-cache-v1';
++const CACHE_NAME = 'nexus-titan-v1';
+ const ASSETS = [
+   './index.html',
+   './style.css',
+-  './script.js',
+-  './manifest.json'
++  './app.js',
++  './state.js',
++  './storage.js',
++  './tasks.js',
++  './projects.js',
++  './calendar.js',
++  './analytics.js',
++  './search.js',
++  './commands.js',
++  './settings.js',
++  './notifications.js',
++  './import-export.js'
+ ];
+ 
+ self.addEventListener('install', (e) => {
+   e.waitUntil(
+-    caches.open(CACHE_NAME).then((cache) => {
+-      return cache.addAll(ASSETS);
+-    })
++    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).catch(() => {})
+   );
+-  self.skipWaiting();
+-});
+-
+-self.addEventListener('activate', (e) => {
+-  e.waitUntil(
+-    caches.keys().then((keys) => {
+-      return Promise.all(
+-        keys.map((key) => {
+-          if (key !== CACHE_NAME) {
+-            return caches.delete(key);
+-          }
+-        })
+-      );
+-    })
+-  );
+-  self.clients.claim();
+ });
+ 
+ self.addEventListener('fetch', (e) => {
+   e.respondWith(
+-    caches.match(e.request).then((cachedResponse) => {
+-      return cachedResponse || fetch(e.request).then((response) => {
+-        return caches.open(CACHE_NAME).then((cache) => {
+-          cache.put(e.request, response.clone());
+-          return response;
+-        });
+-      }).catch(() => {
+-        if (e.request.mode === 'navigate') {
+-          return caches.match('./index.html');
+-        }
+-      });
+-    })
++    caches.match(e.request).then(response => response || fetch(e.request)).catch(() => caches.match('./index.html'))
+   );
+-});
+\ No newline at end of file
 +});
+diff --git a/settings.js b/settings.js
+new file mode 100644
+index 0000000..8a7a8f1
+--- /dev/null
++++ b/settings.js
+@@ -0,0 +1,22 @@
++/**
++ * settings.js - Settings management and persistence.
++ */
++class SettingsManager {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
 +
-+self.addEventListener('activate', (e) => {
-+  e.waitUntil(
-+    caches.keys().then((keys) => {
-+      return Promise.all(
-+        keys.map((key) => {
-+          if (key !== CACHE_NAME) {
-+            return caches.delete(key);
-+          }
-+        })
-+      );
-+    })
-+  );
-+  self.clients.claim();
-+});
++  updateSettings(newSettings) {
++    this.stateManager.pushHistory();
++    this.stateManager.state.settings = {
++      ...this.stateManager.state.settings,
++      ...newSettings
++    };
++    this.stateManager.persist();
++    this.stateManager.logActivity('Updated settings');
++    this.stateManager.notify();
++    window.uiManager.applySettings();
++  }
++}
 +
-+self.addEventListener('fetch', (e) => {
-+  e.respondWith(
-+    caches.match(e.request).then((cachedResponse) => {
-+      return cachedResponse || fetch(e.request).then((response) => {
-+        return caches.open(CACHE_NAME).then((cache) => {
-+          cache.put(e.request, response.clone());
-+          return response;
-+        });
-+      }).catch(() => {
-+        if (e.request.mode === 'navigate') {
-+          return caches.match('./index.html');
++window.settingsManager = new SettingsManager(window.stateManager);
+diff --git a/state.js b/state.js
+new file mode 100644
+index 0000000..8948f73
+--- /dev/null
++++ b/state.js
+@@ -0,0 +1,137 @@
++/**
++ * state.js - Central State Management, PubSub, and Undo/Redo history stack.
++ */
++class StateManager {
++  constructor() {
++    this.state = {
++      tasks: [],
++      projects: [],
++      settings: {
++        theme: 'system',
++        accent: 'blue',
++        compactMode: false,
++        animations: true,
++        reducedMotion: false,
++        defaultPriority: 'medium',
++        defaultStatus: 'todo',
++        itemsPerPage: 25,
++        confirmDelete: true,
++        notificationsEnabled: true
++      },
++      activityLogs: [],
++      notifications: []
++    };
++    this.listeners = [];
++    this.history = [];
++    this.redoStack = [];
++    this.maxHistory = 50;
++  }
++
++  subscribe(listener) {
++    this.listeners.push(listener);
++    return () => {
++      this.listeners = this.listeners.filter(l => l !== listener);
++    };
++  }
++
++  notify() {
++    this.listeners.forEach(listener => listener(this.state));
++  }
++
++  async loadState() {
++    const tasks = await window.storageEngine.get('nexus_tasks') || [];
++    const projects = await window.storageEngine.get('nexus_projects') || [];
++    const settings = await window.storageEngine.get('nexus_settings') || this.state.settings;
++    const activityLogs = await window.storageEngine.get('nexus_activity') || [];
++    const notifications = await window.storageEngine.get('nexus_notifications') || [];
++
++    this.state = { tasks, projects, settings, activityLogs, notifications };
++    this.notify();
++  }
++
++  async persist() {
++    await window.storageEngine.set('nexus_tasks', this.state.tasks);
++    await window.storageEngine.set('nexus_projects', this.state.projects);
++    await window.storageEngine.set('nexus_settings', this.state.settings);
++    await window.storageEngine.set('nexus_activity', this.state.activityLogs);
++    await window.storageEngine.set('nexus_notifications', this.state.notifications);
++  }
++
++  pushHistory() {
++    const snapshot = JSON.parse(JSON.stringify({
++      tasks: this.state.tasks,
++      projects: this.state.projects,
++      settings: this.state.settings
++    }));
++    this.history.push(snapshot);
++    if (this.history.length > this.maxHistory) {
++      this.history.shift();
++    }
++    this.redoStack = [];
++  }
++
++  undo() {
++    if (this.history.length === 0) return false;
++    const currentSnapshot = JSON.parse(JSON.stringify({
++      tasks: this.state.tasks,
++      projects: this.state.projects,
++      settings: this.state.settings
++    }));
++    this.redoStack.push(currentSnapshot);
++    const previous = this.history.pop();
++    this.state.tasks = previous.tasks;
++    this.state.projects = previous.projects;
++    this.state.settings = previous.settings;
++    this.persist();
++    this.notify();
++    this.logActivity('Undo performed');
++    return true;
++  }
++
++  redo() {
++    if (this.redoStack.length === 0) return false;
++    const currentSnapshot = JSON.parse(JSON.stringify({
++      tasks: this.state.tasks,
++      projects: this.state.projects,
++      settings: this.state.settings
++    }));
++    this.history.push(currentSnapshot);
++    const next = this.redoStack.pop();
++    this.state.tasks = next.tasks;
++    this.state.projects = next.projects;
++    this.state.settings = next.settings;
++    this.persist();
++    this.notify();
++    this.logActivity('Redo performed');
++    return true;
++  }
++
++  logActivity(action) {
++    const log = {
++      id: 'act_' + Math.random().toString(36).substr(2, 9),
++      action,
++      timestamp: new Date().toISOString()
++    };
++    this.state.activityLogs.unshift(log);
++    if (this.state.activityLogs.length > 200) this.state.activityLogs.pop();
++    window.storageEngine.set('nexus_activity', this.state.activityLogs);
++  }
++
++  addNotification(title, message, type = 'info') {
++    if (!this.state.settings.notificationsEnabled) return;
++    const notif = {
++      id: 'notif_' + Math.random().toString(36).substr(2, 9),
++      title,
++      message,
++      type,
++      read: false,
++      timestamp: new Date().toISOString()
++    };
++    this.state.notifications.unshift(notif);
++    window.storageEngine.set('nexus_notifications', this.state.notifications);
++    this.notify();
++    if (window.showToast) window.showToast(message, type);
++  }
++}
++
++window.stateManager = new StateManager();
+diff --git a/storage.js b/storage.js
+new file mode 100644
+index 0000000..f159e10
+--- /dev/null
++++ b/storage.js
+@@ -0,0 +1,118 @@
++/**
++ * storage.js - IndexedDB storage engine with localStorage fallback and version migration.
++ */
++const DB_NAME = 'NexusTitanDB';
++const DB_VERSION = 1;
++const STORE_NAME = 'titan_store';
++
++class StorageEngine {
++  constructor() {
++    this.db = null;
++    this.isIndexedDBSupported = typeof indexedDB !== 'undefined';
++  }
++
++  async init() {
++    if (!this.isIndexedDBSupported) return Promise.resolve();
++    return new Promise((resolve, reject) => {
++      const request = indexedDB.open(DB_NAME, DB_VERSION);
++      request.onupgradeneeded = (event) => {
++        const db = event.target.result;
++        if (!db.objectStoreNames.contains(STORE_NAME)) {
++          db.createObjectStore(STORE_NAME);
++        }
++      };
++      request.onsuccess = (event) => {
++        this.db = event.target.result;
++        resolve(this.db);
++      };
++      request.onerror = (event) => {
++        console.warn('IndexedDB failed, falling back to localStorage', event.target.error);
++        this.isIndexedDBSupported = false;
++        resolve(null);
++      };
++    });
++  }
++
++  async get(key) {
++    if (this.isIndexedDBSupported && this.db) {
++      return new Promise((resolve, reject) => {
++        try {
++          const transaction = this.db.transaction(STORE_NAME, 'readonly');
++          const store = transaction.objectStore(STORE_NAME);
++          const request = store.get(key);
++          request.onsuccess = () => resolve(request.result !== undefined ? request.result : null);
++          request.onerror = () => reject(request.error);
++        } catch (e) {
++          resolve(this._getFromLocalStorage(key));
 +        }
 +      });
-+    })
-+  );
-+});
-\ No newline at end of file
++    }
++    return this._getFromLocalStorage(key);
++  }
++
++  async set(key, value) {
++    if (this.isIndexedDBSupported && this.db) {
++      return new Promise((resolve, reject) => {
++        try {
++          const transaction = this.db.transaction(STORE_NAME, 'readwrite');
++          const store = transaction.objectStore(STORE_NAME);
++          const request = store.put(value, key);
++          request.onsuccess = () => resolve(true);
++          request.onerror = () => reject(request.error);
++        } catch (e) {
++          resolve(this._setToLocalStorage(key, value));
++        }
++      });
++    }
++    return this._setToLocalStorage(key, value);
++  }
++
++  async remove(key) {
++    if (this.isIndexedDBSupported && this.db) {
++      return new Promise((resolve, reject) => {
++        try {
++          const transaction = this.db.transaction(STORE_NAME, 'readwrite');
++          const store = transaction.objectStore(STORE_NAME);
++          const request = store.delete(key);
++          request.onsuccess = () => resolve(true);
++          request.onerror = () => reject(request.error);
++        } catch (e) {
++          resolve(this._removeFromLocalStorage(key));
++        }
++      });
++    }
++    return this._removeFromLocalStorage(key);
++  }
++
++  _getFromLocalStorage(key) {
++    try {
++      const item = localStorage.getItem(key);
++      return item ? JSON.parse(item) : null;
++    } catch (e) {
++      console.error('LocalStorage read error', e);
++      return null;
++    }
++  }
++
++  _setToLocalStorage(key, value) {
++    try {
++      localStorage.setItem(key, JSON.stringify(value));
++      return true;
++    } catch (e) {
++      console.error('LocalStorage write error', e);
++      return false;
++    }
++  }
++
++  _removeFromLocalStorage(key) {
++    try {
++      localStorage.removeItem(key);
++      return true;
++    } catch (e) {
++      console.error('LocalStorage remove error', e);
++      return false;
++    }
++  }
++}
++
++window.storageEngine = new StorageEngine();
 diff --git a/style.css b/style.css
-index de16de5..be8c4fa 100644
+index be8c4fa..859772f 100644
 --- a/style.css
 +++ b/style.css
-@@ -1,299 +1,789 @@
- :root {
--    --primary: #6200ee;
--    --primary-variant: #3700b3;
--    --secondary: #03dac6;
--    --background: #f5f5f7;
--    --surface: #ffffff;
--    --on-primary: #ffffff;
--    --on-background: #121212;
--    --on-surface: #121212;
--    --gray-light: #e0e0e0;
--    --gray: #9e9e9e;
--    --danger: #b00020;
--    --success: #4caf50;
--    --radius: 12px;
--    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-+  --bg-primary: #0f172a;
-+  --bg-secondary: #1e293b;
-+  --bg-card: #1e293b;
-+  --bg-hover: #334155;
-+  --text-primary: #f8fafc;
-+  --text-secondary: #94a3b8;
-+  --border-color: #334155;
-+  --accent: #6366f1;
-+  --accent-hover: #4f46e5;
+@@ -2,788 +2,45 @@
+   --bg-primary: #0f172a;
+   --bg-secondary: #1e293b;
+   --bg-card: #1e293b;
+-  --bg-hover: #334155;
+   --text-primary: #f8fafc;
+   --text-secondary: #94a3b8;
+-  --border-color: #334155;
+-  --accent: #6366f1;
+-  --accent-hover: #4f46e5;
+-  --danger: #ef4444;
+-  --danger-hover: #dc2626;
++  --accent: #3b82f6;
++  --border: #334155;
+   --success: #22c55e;
+   --warning: #f59e0b;
+-  --info: #3b82f6;
+-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.18);
+-  --radius: 12px;
+-  --spacing: 1.5rem;
+-  --transition: all 0.2s ease;
 +  --danger: #ef4444;
-+  --danger-hover: #dc2626;
-+  --success: #22c55e;
-+  --warning: #f59e0b;
-+  --info: #3b82f6;
-+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.18);
-+  --radius: 12px;
-+  --spacing: 1.5rem;
-+  --transition: all 0.2s ease;
-+}
-+
-+[data-theme="light"] {
-+  --bg-primary: #f8fafc;
-+  --bg-secondary: #ffffff;
-+  --bg-card: #ffffff;
-+  --bg-hover: #f1f5f9;
-+  --text-primary: #0f172a;
-+  --text-secondary: #64748b;
-+  --border-color: #e2e8f0;
-+  --accent: #6366f1;
-+  --accent-hover: #4f46e5;
-+  --danger: #ef4444;
-+  --danger-hover: #dc2626;
-+  --success: #22c55e;
-+  --warning: #f59e0b;
-+  --info: #3b82f6;
-+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-+}
-+
-+[data-layout="compact"] {
-+  --spacing: 0.75rem;
-+  --radius: 6px;
-+}
-+
-+[data-animations="off"] * {
-+  transition: none !important;
-+  animation: none !important;
  }
  
- * {
--    box-sizing: border-box;
--    margin: 0;
--    padding: 0;
--    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
--    -webkit-tap-highlight-color: transparent;
-+  box-sizing: border-box;
-+  margin: 0;
-+  padding: 0;
-+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-+  transition: var(--transition);
- }
- 
- body {
--    background-color: var(--background);
--    color: var(--on-background);
--    display: flex;
--    justify-content: center;
--    align-items: center;
--    min-height: 100vh;
--    padding: 0;
-+  background-color: var(--bg-primary);
-+  color: var(--text-primary);
-+  min-height: 100vh;
-+  overflow-x: hidden;
- }
- 
--/* Mobile Container (optimized for Android screens) */
- .app-container {
--    width: 100%;
--    max-width: 480px;
--    height: 100vh;
--    background-color: var(--surface);
--    display: flex;
--    flex-direction: column;
--    box-shadow: var(--shadow);
--    position: relative;
--    overflow: hidden;
-+  display: flex;
-+  min-height: 100vh;
-+}
-+
-+/* Sidebar */
-+.sidebar {
-+  width: 260px;
-+  background-color: var(--bg-secondary);
-+  border-right: 1px solid var(--border-color);
-+  display: flex;
-+  flex-direction: column;
-+  position: fixed;
-+  top: 0;
-+  bottom: 0;
-+  left: 0;
-+  z-index: 100;
- }
- 
--@media (min-width: 481px) {
--    .app-container {
--        height: 85vh;
--        border-radius: 24px;
--    }
-+.sidebar-header {
-+  padding: 1.5rem;
-+  display: flex;
-+  align-items: center;
-+  gap: 0.75rem;
-+  border-bottom: 1px solid var(--border-color);
- }
- 
--/* Header */
--.app-header {
--    background-color: var(--primary);
--    color: var(--on-primary);
--    padding: 24px 20px 20px 20px;
--    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
--    z-index: 10;
-+.logo-icon {
-+  font-size: 1.5rem;
- }
- 
--.app-header h1 {
--    font-size: 24px;
--    font-weight: 700;
--    display: flex;
--    align-items: center;
--    gap: 10px;
-+.logo-text {
-+  font-size: 1.2rem;
-+  font-weight: 700;
-+  letter-spacing: 0.5px;
- }
- 
--.app-header p {
--    font-size: 14px;
--    opacity: 0.85;
--    margin-top: 4px;
-+.nav-menu {
-+  padding: 1rem;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 0.5rem;
-+  flex: 1;
- }
- 
--/* Input Section */
--.input-section {
--    padding: 16px 20px;
--    background-color: var(--surface);
-+.nav-item {
-+  display: flex;
-+  align-items: center;
-+  gap: 0.75rem;
-+  width: 100%;
-+  padding: 0.75rem 1rem;
-+  background: transparent;
-+  border: none;
-+  border-radius: var(--radius);
-+  color: var(--text-secondary);
-+  font-size: 0.95rem;
-+  font-weight: 500;
-+  cursor: pointer;
-+  text-align: left;
- }
- 
--#todo-form {
--    display: flex;
--    gap: 10px;
+ [data-theme="light"] {
+   --bg-primary: #f8fafc;
+   --bg-secondary: #ffffff;
+   --bg-card: #ffffff;
+-  --bg-hover: #f1f5f9;
+   --text-primary: #0f172a;
+   --text-secondary: #64748b;
+-  --border-color: #e2e8f0;
+-  --accent: #6366f1;
+-  --accent-hover: #4f46e5;
+-  --danger: #ef4444;
+-  --danger-hover: #dc2626;
+-  --success: #22c55e;
+-  --warning: #f59e0b;
+-  --info: #3b82f6;
+-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
 -}
 -
--#todo-input {
--    flex: 1;
--    height: 48px;
--    padding: 0 16px;
--    font-size: 16px;
--    border: 2px solid var(--gray-light);
--    border-radius: var(--radius);
--    outline: none;
--    background-color: #fafafa;
--    transition: border-color 0.2s;
+-[data-layout="compact"] {
+-  --spacing: 0.75rem;
+-  --radius: 6px;
 -}
 -
--#todo-input:focus {
--    border-color: var(--primary);
--    background-color: var(--surface);
+-[data-animations="off"] * {
+-  transition: none !important;
+-  animation: none !important;
 -}
 -
--#add-btn {
--    width: 48px;
--    height: 48px;
--    background-color: var(--primary);
--    color: var(--on-primary);
--    border: none;
--    border-radius: var(--radius);
--    font-size: 18px;
--    cursor: pointer;
--    display: flex;
--    align-items: center;
--    justify-content: center;
--    box-shadow: 0 2px 6px rgba(98, 0, 238, 0.3);
--    transition: background-color 0.2s, transform 0.1s;
-+.nav-item:hover {
-+  background-color: var(--bg-hover);
-+  color: var(--text-primary);
- }
- 
--#add-btn:active {
--    transform: scale(0.95);
--    background-color: var(--primary-variant);
-+.nav-item.active {
-+  background-color: var(--accent);
-+  color: white;
- }
- 
--/* Filter Section */
--.filter-section {
--    display: flex;
--    padding: 0 20px 12px 20px;
--    gap: 8px;
--    background-color: var(--surface);
--    border-bottom: 1px solid var(--gray-light);
-+.sidebar-footer {
-+  padding: 1rem 1.5rem;
-+  border-top: 1px solid var(--border-color);
- }
- 
--.filter-btn {
--    flex: 1;
--    padding: 8px 12px;
--    font-size: 14px;
--    font-weight: 500;
--    background-color: #f0f0f0;
--    border: none;
--    border-radius: 8px;
--    color: var(--gray);
--    cursor: pointer;
--    transition: all 0.2s;
-+.shortcut-hint {
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+  font-size: 0.8rem;
-+  color: var(--text-secondary);
- }
- 
--.filter-btn.active {
--    background-color: rgba(98, 0, 238, 0.1);
--    color: var(--primary);
--    font-weight: 600;
-+kbd {
-+  background: var(--bg-hover);
-+  padding: 0.2rem 0.4rem;
-+  border-radius: 4px;
-+  border: 1px solid var(--border-color);
-+  font-size: 0.75rem;
- }
- 
--/* List Section */
--.list-section {
--    flex: 1;
--    overflow-y: auto;
--    padding: 12px 20px;
--    background-color: var(--background);
-+/* Main Content */
-+.main-content {
-+  flex: 1;
-+  margin-left: 260px;
-+  display: flex;
-+  flex-direction: column;
-+  min-height: 100vh;
- }
- 
--#todo-list {
--    list-style: none;
--    display: flex;
--    flex-direction: column;
--    gap: 10px;
-+.top-header {
-+  height: 70px;
-+  background-color: var(--bg-secondary);
-+  border-bottom: 1px solid var(--border-color);
-+  display: flex;
-+  align-items: center;
-+  justify-content: space-between;
-+  padding: 0 2rem;
-+  position: sticky;
-+  top: 0;
-+  z-index: 90;
- }
- 
--.todo-item {
--    display: flex;
--    align-items: center;
--    background-color: var(--surface);
--    padding: 12px 16px;
--    border-radius: var(--radius);
--    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
--    transition: transform 0.2s, opacity 0.2s;
--    animation: fadeIn 0.25s ease-in-out;
--    gap: 12px;
-+.header-left {
-+  display: flex;
-+  align-items: center;
-+  gap: 1rem;
-+}
-+
-+#sidebar-toggle {
-+  display: none;
-+}
-+
-+.header-right {
-+  display: flex;
-+  align-items: center;
-+  gap: 1rem;
-+}
-+
-+.view-container {
-+  padding: var(--spacing);
-+  flex: 1;
-+  max-width: 1400px;
-+  width: 100%;
-+  margin: 0 auto;
-+}
-+
-+.view {
-+  display: none;
-+  animation: fadeIn 0.3s ease;
-+}
-+
-+.view.active {
-+  display: block;
- }
- 
- @keyframes fadeIn {
--    from { opacity: 0; transform: translateY(8px); }
--    to { opacity: 1; transform: translateY(0); }
+-* {
+-  box-sizing: border-box;
+-  margin: 0;
+-  padding: 0;
+-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+-  transition: var(--transition);
 -}
 -
--.todo-checkbox {
--    appearance: none;
--    -webkit-appearance: none;
--    width: 24px;
--    height: 24px;
--    border: 2px solid var(--gray);
--    border-radius: 50%;
--    outline: none;
--    cursor: pointer;
+-body {
+-  background-color: var(--bg-primary);
+-  color: var(--text-primary);
+-  min-height: 100vh;
+-  overflow-x: hidden;
+-}
+-
+-.app-container {
+-  display: flex;
+-  min-height: 100vh;
+-}
+-
+-/* Sidebar */
+-.sidebar {
+-  width: 260px;
+-  background-color: var(--bg-secondary);
+-  border-right: 1px solid var(--border-color);
+-  display: flex;
+-  flex-direction: column;
+-  position: fixed;
+-  top: 0;
+-  bottom: 0;
+-  left: 0;
+-  z-index: 100;
+-}
+-
+-.sidebar-header {
+-  padding: 1.5rem;
+-  display: flex;
+-  align-items: center;
+-  gap: 0.75rem;
+-  border-bottom: 1px solid var(--border-color);
+-}
+-
+-.logo-icon {
+-  font-size: 1.5rem;
+-}
+-
+-.logo-text {
+-  font-size: 1.2rem;
+-  font-weight: 700;
+-  letter-spacing: 0.5px;
+-}
+-
+-.nav-menu {
+-  padding: 1rem;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0.5rem;
+-  flex: 1;
+-}
+-
+-.nav-item {
+-  display: flex;
+-  align-items: center;
+-  gap: 0.75rem;
+-  width: 100%;
+-  padding: 0.75rem 1rem;
+-  background: transparent;
+-  border: none;
+-  border-radius: var(--radius);
+-  color: var(--text-secondary);
+-  font-size: 0.95rem;
+-  font-weight: 500;
+-  cursor: pointer;
+-  text-align: left;
+-}
+-
+-.nav-item:hover {
+-  background-color: var(--bg-hover);
+-  color: var(--text-primary);
+-}
+-
+-.nav-item.active {
+-  background-color: var(--accent);
+-  color: white;
+-}
+-
+-.sidebar-footer {
+-  padding: 1rem 1.5rem;
+-  border-top: 1px solid var(--border-color);
+-}
+-
+-.shortcut-hint {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  font-size: 0.8rem;
+-  color: var(--text-secondary);
+-}
+-
+-kbd {
+-  background: var(--bg-hover);
+-  padding: 0.2rem 0.4rem;
+-  border-radius: 4px;
+-  border: 1px solid var(--border-color);
+-  font-size: 0.75rem;
+-}
+-
+-/* Main Content */
+-.main-content {
+-  flex: 1;
+-  margin-left: 260px;
+-  display: flex;
+-  flex-direction: column;
+-  min-height: 100vh;
+-}
+-
+-.top-header {
+-  height: 70px;
+-  background-color: var(--bg-secondary);
+-  border-bottom: 1px solid var(--border-color);
+-  display: flex;
+-  align-items: center;
+-  justify-content: space-between;
+-  padding: 0 2rem;
+-  position: sticky;
+-  top: 0;
+-  z-index: 90;
+-}
+-
+-.header-left {
+-  display: flex;
+-  align-items: center;
+-  gap: 1rem;
+-}
+-
+-#sidebar-toggle {
+-  display: none;
+-}
+-
+-.header-right {
+-  display: flex;
+-  align-items: center;
+-  gap: 1rem;
+-}
+-
+-.view-container {
+-  padding: var(--spacing);
+-  flex: 1;
+-  max-width: 1400px;
+-  width: 100%;
+-  margin: 0 auto;
+-}
+-
+-.view {
+-  display: none;
+-  animation: fadeIn 0.3s ease;
+-}
+-
+-.view.active {
+-  display: block;
+-}
+-
+-@keyframes fadeIn {
+-  from { opacity: 0; transform: translateY(4px); }
+-  to { opacity: 1; transform: translateY(0); }
+-}
+-
+-/* Cards & Dashboard */
+-.card {
+-  background-color: var(--bg-card);
+-  border: 1px solid var(--border-color);
+-  border-radius: var(--radius);
+-  padding: 1.5rem;
+-  box-shadow: var(--shadow);
+-}
+-
+-.stats-grid {
+-  display: grid;
+-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+-  gap: 1.5rem;
+-  margin-bottom: 1.5rem;
+-}
+-
+-.stat-card {
+-  background-color: var(--bg-card);
+-  border: 1px solid var(--border-color);
+-  border-radius: var(--radius);
+-  padding: 1.25rem;
+-  display: flex;
+-  align-items: center;
+-  gap: 1rem;
+-  box-shadow: var(--shadow);
+-}
+-
+-.stat-icon {
+-  font-size: 2rem;
+-  padding: 0.75rem;
+-  background-color: var(--bg-hover);
+-  border-radius: var(--radius);
+-}
+-
+-.stat-info h3 {
+-  font-size: 0.85rem;
+-  color: var(--text-secondary);
+-  font-weight: 500;
+-}
+-
+-.stat-info p {
+-  font-size: 1.75rem;
+-  font-weight: 700;
+-  margin-top: 0.2rem;
+-}
+-
+-.dashboard-lower {
+-  display: grid;
+-  grid-template-columns: 1fr 1fr;
+-  gap: 1.5rem;
+-}
+-
+-@media(max-width: 900px) {
+-  .dashboard-lower {
+-    grid-template-columns: 1fr;
+-  }
+-}
+-
+-.progress-bar-container {
+-  background-color: var(--bg-hover);
+-  border-radius: 999px;
+-  height: 12px;
+-  width: 100%;
+-  overflow: hidden;
+-  margin: 1rem 0 0.5rem 0;
+-}
+-
+-.progress-bar {
+-  background-color: var(--accent);
+-  height: 100%;
+-  border-radius: 999px;
+-}
+-
+-.compact-list {
+-  margin-top: 1rem;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0.75rem;
+-}
+-
+-.compact-item {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  padding: 0.75rem;
+-  background-color: var(--bg-hover);
+-  border-radius: var(--radius);
+-  font-size: 0.9rem;
+-}
+-
+-/* Task Controls & Kanban */
+-.task-controls {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  margin-bottom: 1.5rem;
+-  gap: 1rem;
+-  flex-wrap: wrap;
+-}
+-
+-.search-filter-group {
+-  display: flex;
+-  gap: 0.75rem;
+-  flex-wrap: wrap;
+-  flex: 1;
+-}
+-
+-.input-control, .select-control {
+-  background-color: var(--bg-secondary);
+-  border: 1px solid var(--border-color);
+-  color: var(--text-primary);
+-  padding: 0.6rem 1rem;
+-  border-radius: var(--radius);
+-  font-size: 0.9rem;
+-  outline: none;
+-}
+-
+-.input-control:focus, .select-control:focus {
+-  border-color: var(--accent);
+-}
+-
+-.primary-btn {
+-  background-color: var(--accent);
+-  color: white;
+-  border: none;
+-  padding: 0.6rem 1.2rem;
+-  border-radius: var(--radius);
+-  font-weight: 600;
+-  cursor: pointer;
+-}
+-
+-.primary-btn:hover {
+-  background-color: var(--accent-hover);
+-}
+-
+-.secondary-btn {
+-  background-color: var(--bg-hover);
+-  color: var(--text-primary);
+-  border: 1px solid var(--border-color);
+-  padding: 0.6rem 1.2rem;
+-  border-radius: var(--radius);
+-  font-weight: 500;
+-  cursor: pointer;
+-}
+-
+-.secondary-btn:hover {
+-  background-color: var(--border-color);
+-}
+-
+-.danger-btn {
+-  background-color: var(--danger);
+-  color: white;
+-  border: none;
+-  padding: 0.6rem 1.2rem;
+-  border-radius: var(--radius);
+-  font-weight: 600;
+-  cursor: pointer;
+-}
+-
+-.danger-btn:hover {
+-  background-color: var(--danger-hover);
+-}
+-
+-.icon-btn {
+-  background: transparent;
+-  border: 1px solid var(--border-color);
+-  color: var(--text-primary);
+-  width: 40px;
+-  height: 40px;
+-  border-radius: var(--radius);
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  cursor: pointer;
++  --accent: #2563eb;
++  --border: #e2e8f0;
+ }
+ 
+-.icon-btn:hover {
+-  background-color: var(--bg-hover);
+-}
+-
+-.kanban-board {
+-  display: grid;
+-  grid-template-columns: repeat(3, 1fr);
+-  gap: 1.5rem;
+-  min-height: 600px;
+-}
+-
+-@media(max-width: 1024px) {
+-  .kanban-board {
+-    grid-template-columns: 1fr;
+-  }
+-}
+-
+-.kanban-column {
+-  background-color: var(--bg-secondary);
+-  border: 1px solid var(--border-color);
+-  border-radius: var(--radius);
+-  display: flex;
+-  flex-direction: column;
+-}
+-
+-.column-header {
+-  padding: 1rem 1.25rem;
+-  border-bottom: 1px solid var(--border-color);
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-}
+-
+-.column-header h3 {
+-  font-size: 1rem;
+-  font-weight: 600;
+-}
+-
+-.task-count {
+-  background-color: var(--bg-hover);
+-  padding: 0.2rem 0.6rem;
+-  border-radius: 999px;
+-  font-size: 0.8rem;
+-  font-weight: 600;
+-}
++* { box-sizing: border-box; margin: 0; padding: 0; }
++body { font-family: system-ui, -apple-system, sans-serif; background-color: var(--bg-primary); color: var(--text-primary); line-height: 1.5; }
+ 
+-.task-dropzone {
+-  padding: 1rem;
+-  flex: 1;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 1rem;
+-  overflow-y: auto;
+-  min-height: 200px;
+-}
+-
+-.task-card {
+-  background-color: var(--bg-card);
+-  border: 1px solid var(--border-color);
+-  border-radius: var(--radius);
+-  padding: 1rem;
+-  cursor: grab;
+-  box-shadow: var(--shadow);
+-  position: relative;
+-}
++.app-container { display: flex; height: 100vh; overflow: hidden; }
++.sidebar { width: 260px; background-color: var(--bg-secondary); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
++.sidebar-header { padding: 1.5rem; font-size: 1.25rem; font-weight: bold; border-bottom: 1px solid var(--border); }
++.sidebar-nav { flex: 1; overflow-y: auto; padding: 1rem; }
++.nav-item { display: block; padding: 0.75rem 1rem; color: var(--text-secondary); text-decoration: none; border-radius: 0.375rem; margin-bottom: 0.25rem; }
++.nav-item:hover, .nav-item.active { background-color: var(--accent); color: white; }
+ 
+-.task-card:active {
+-  cursor: grabbing;
+-}
++.main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
++.topbar { height: 64px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; background-color: var(--bg-secondary); }
++.content-view { flex: 1; overflow-y: auto; padding: 2rem; }
+ 
+-.task-card.dragging {
+-  opacity: 0.4;
+-}
+-
+-.task-card-header {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: flex-start;
+-  margin-bottom: 0.5rem;
+-}
+-
+-.task-card-title {
+-  font-size: 0.95rem;
+-  font-weight: 600;
+-  color: var(--text-primary);
+-}
+-
+-.task-card-desc {
+-  font-size: 0.85rem;
+-  color: var(--text-secondary);
+-  margin-bottom: 0.75rem;
+-  display: -webkit-box;
+-  -webkit-line-clamp: 2;
+-  -webkit-box-orient: vertical;
+-  overflow: hidden;
+-}
+-
+-.task-card-footer {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  font-size: 0.75rem;
+-  color: var(--text-secondary);
+-  border-top: 1px solid var(--border-color);
+-  padding-top: 0.75rem;
+-  margin-top: 0.75rem;
+-}
+-
+-.badge {
+-  padding: 0.2rem 0.5rem;
+-  border-radius: 4px;
+-  font-weight: 600;
+-  font-size: 0.7rem;
+-  text-transform: uppercase;
+-}
+-
+-.badge-high { background-color: rgba(239, 68, 68, 0.2); color: var(--danger); }
+-.badge-medium { background-color: rgba(245, 158, 11, 0.2); color: var(--warning); }
+-.badge-low { background-color: rgba(59, 130, 246, 0.2); color: var(--info); }
+-
+-.task-actions-menu {
+-  display: flex;
+-  gap: 0.4rem;
+-}
+-
+-.task-action-btn {
+-  background: transparent;
+-  border: none;
+-  color: var(--text-secondary);
+-  cursor: pointer;
+-  font-size: 0.85rem;
+-  padding: 0.2rem;
+-}
+-
+-.task-action-btn:hover {
+-  color: var(--text-primary);
+-}
+-
+-/* Analytics */
+-.analytics-grid {
+-  display: grid;
+-  grid-template-columns: 1fr 1fr;
+-  gap: 1.5rem;
+-  margin-bottom: 1.5rem;
+-}
+-
+-@media(max-width: 900px) {
+-  .analytics-grid {
+-    grid-template-columns: 1fr;
+-  }
+-}
+-
+-.chart-container {
+-  margin-top: 1rem;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0.75rem;
+-}
+-
+-.chart-row {
+-  display: flex;
+-  align-items: center;
+-  gap: 1rem;
+-}
+-
+-.chart-label {
+-  width: 100px;
+-  font-size: 0.85rem;
+-  color: var(--text-secondary);
+-}
+-
+-.chart-bar-wrapper {
+-  flex: 1;
+-  background-color: var(--bg-hover);
+-  border-radius: 999px;
+-  height: 10px;
+-  overflow: hidden;
+-}
+-
+-.chart-bar {
+-  height: 100%;
+-  background-color: var(--accent);
+-  border-radius: 999px;
+-}
+-
+-.chart-val {
+-  width: 40px;
+-  text-align: right;
+-  font-size: 0.85rem;
+-  font-weight: 600;
+-}
++.card { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; }
++.btn { background-color: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 0.375rem; cursor: pointer; }
++.btn:hover { opacity: 0.9; }
+ 
+-.metrics-grid {
+-  display: grid;
+-  grid-template-columns: repeat(3, 1fr);
+-  gap: 1rem;
+-  margin-top: 1rem;
+-}
+-
+-.metric-item {
+-  background-color: var(--bg-hover);
+-  padding: 1rem;
+-  border-radius: var(--radius);
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0.25rem;
+-}
+-
+-.metric-item span {
+-  font-size: 0.8rem;
+-  color: var(--text-secondary);
+-}
+-
+-.metric-item strong {
+-  font-size: 1.25rem;
+-}
+-
+-/* Settings */
+-.settings-card {
+-  margin-bottom: 1.5rem;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 1.25rem;
+-}
+-
+-.setting-row {
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  padding-bottom: 1rem;
+-  border-bottom: 1px solid var(--border-color);
+-}
+-
+-.setting-row:last-child {
+-  border-bottom: none;
+-  padding-bottom: 0;
+-}
+-
+-.setting-row p {
+-  font-size: 0.85rem;
+-  color: var(--text-secondary);
+-  margin-top: 0.2rem;
+-}
+-
+-.file-input-label {
+-  display: inline-block;
+-  cursor: pointer;
+-}
+-
+-/* Modals */
+-.modal-backdrop {
+-  position: fixed;
+-  top: 0;
+-  left: 0;
+-  right: 0;
+-  bottom: 0;
+-  background-color: rgba(0, 0, 0, 0.6);
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  z-index: 1000;
+-  padding: 1rem;
+-  animation: fadeIn 0.2s ease;
+-}
+-
+-.modal {
+-  width: 100%;
+-  max-width: 500px;
+-  background-color: var(--bg-card);
+-  border: 1px solid var(--border-color);
+-  border-radius: var(--radius);
+-  padding: 2rem;
+-  box-shadow: var(--shadow);
+-}
+-
+-.modal h3 {
+-  margin-bottom: 1.25rem;
+-  font-size: 1.2rem;
+-}
+-
+-.form-group {
+-  margin-bottom: 1rem;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0.4rem;
+-}
+-
+-.form-group label {
+-  font-size: 0.85rem;
+-  font-weight: 500;
+-  color: var(--text-secondary);
+-}
+-
+-.form-row {
+-  display: grid;
+-  grid-template-columns: 1fr 1fr;
+-  gap: 1rem;
+-}
+-
+-.modal-actions {
+-  display: flex;
+-  justify-content: flex-end;
+-  gap: 0.75rem;
+-  margin-top: 1.5rem;
+-}
+-
+-/* Command Palette */
+-.command-modal {
+-  width: 100%;
+-  max-width: 600px;
+-  padding: 0;
+-  overflow: hidden;
+-}
+-
+-.command-search-bar {
+-  display: flex;
+-  align-items: center;
+-  padding: 1rem 1.25rem;
+-  border-bottom: 1px solid var(--border-color);
+-  gap: 0.75rem;
+-}
+-
+-.command-search-bar input {
+-  flex: 1;
+-  background: transparent;
+-  border: none;
+-  color: var(--text-primary);
+-  font-size: 1rem;
+-  outline: none;
+-}
+-
+-.command-results {
+-  max-height: 350px;
+-  overflow-y: auto;
+-  padding: 0.5rem;
+-}
+-
+-.command-item {
+-  padding: 0.75rem 1rem;
+-  border-radius: var(--radius);
+-  cursor: pointer;
+-  display: flex;
+-  justify-content: space-between;
+-  align-items: center;
+-  font-size: 0.9rem;
+-}
+-
+-.command-item:hover, .command-item.selected {
+-  background-color: var(--bg-hover);
+-  color: var(--text-primary);
+-}
+-
+-/* Toasts */
+-.toast-container {
+-  position: fixed;
+-  bottom: 1.5rem;
+-  right: 1.5rem;
+-  display: flex;
+-  flex-direction: column;
+-  gap: 0.75rem;
+-  z-index: 2000;
+-}
+-
+-.toast {
+-  background-color: var(--bg-secondary);
+-  border: 1px solid var(--border-color);
+-  color: var(--text-primary);
+-  padding: 0.75rem 1.25rem;
+-  border-radius: var(--radius);
+-  box-shadow: var(--shadow);
+-  font-size: 0.9rem;
+-  animation: slideIn 0.3s ease;
+-}
+-
+-.toast.success { border-left: 4px solid var(--success); }
+-.toast.error { border-left: 4px solid var(--danger); }
+-
+-@keyframes slideIn {
+-  from { transform: translateX(100%); opacity: 0; }
+-  to { transform: translateX(0); opacity: 1; }
+-}
++.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
++.modal { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 0.5rem; padding: 2rem; width: 500px; max-width: 90%; }
+ 
+-/* Responsive Mobile */
+-@media (max-width: 768px) {
+-  .sidebar {
+-    transform: translateX(-100%);
+-  }
+-  .sidebar.mobile-open {
+-    transform: translateX(0);
+-  }
+-  .main-content {
+-    margin-left: 0;
+-  }
+-  #sidebar-toggle {
 -    display: flex;
--    align-items: center;
--    justify-content: center;
--    transition: all 0.2s;
--    flex-shrink: 0;
-+  from { opacity: 0; transform: translateY(4px); }
-+  to { opacity: 1; transform: translateY(0); }
- }
- 
--.todo-checkbox:checked {
--    background-color: var(--success);
--    border-color: var(--success);
-+/* Cards & Dashboard */
-+.card {
-+  background-color: var(--bg-card);
-+  border: 1px solid var(--border-color);
-+  border-radius: var(--radius);
-+  padding: 1.5rem;
-+  box-shadow: var(--shadow);
- }
- 
--.todo-checkbox:checked::after {
--    content: "\f00c";
--    font-family: "Font Awesome 6 Free";
--    font-weight: 900;
--    font-size: 12px;
--    color: white;
-+.stats-grid {
-+  display: grid;
-+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-+  gap: 1.5rem;
-+  margin-bottom: 1.5rem;
- }
- 
--.todo-text {
--    flex: 1;
--    font-size: 16px;
--    color: var(--on-surface);
--    word-break: break-word;
--    overflow-wrap: break-word;
--    transition: color 0.2s, text-decoration 0.2s;
-+.stat-card {
-+  background-color: var(--bg-card);
-+  border: 1px solid var(--border-color);
-+  border-radius: var(--radius);
-+  padding: 1.25rem;
-+  display: flex;
-+  align-items: center;
-+  gap: 1rem;
-+  box-shadow: var(--shadow);
- }
- 
--.todo-item.completed .todo-text {
--    text-decoration: line-through;
--    color: var(--gray);
-+.stat-icon {
-+  font-size: 2rem;
-+  padding: 0.75rem;
-+  background-color: var(--bg-hover);
-+  border-radius: var(--radius);
- }
- 
--.delete-btn {
--    background: none;
--    border: none;
--    color: var(--gray);
--    font-size: 16px;
--    width: 36px;
--    height: 36px;
--    border-radius: 50%;
--    cursor: pointer;
--    display: flex;
--    align-items: center;
--    justify-content: center;
--    transition: background-color 0.2s, color 0.2s;
--    flex-shrink: 0;
-+.stat-info h3 {
-+  font-size: 0.85rem;
-+  color: var(--text-secondary);
-+  font-weight: 500;
- }
- 
--.delete-btn:hover, .delete-btn:active {
--    background-color: rgba(176, 0, 32, 0.1);
--    color: var(--danger);
-+.stat-info p {
-+  font-size: 1.75rem;
-+  font-weight: 700;
-+  margin-top: 0.2rem;
- }
- 
--/* Empty State */
--.empty-state {
--    display: flex;
--    flex-direction: column;
--    align-items: center;
--    justify-content: center;
--    height: 100%;
--    color: var(--gray);
--    text-align: center;
--    gap: 10px;
-+.dashboard-lower {
-+  display: grid;
-+  grid-template-columns: 1fr 1fr;
-+  gap: 1.5rem;
- }
- 
--.empty-state i {
--    font-size: 48px;
--    color: var(--gray-light);
-+@media(max-width: 900px) {
-+  .dashboard-lower {
-+    grid-template-columns: 1fr;
-+  }
- }
- 
--.empty-state.hidden {
--    display: none;
-+.progress-bar-container {
-+  background-color: var(--bg-hover);
-+  border-radius: 999px;
-+  height: 12px;
-+  width: 100%;
-+  overflow: hidden;
-+  margin: 1rem 0 0.5rem 0;
- }
- 
--/* Footer */
--.app-footer {
--    padding: 16px 20px;
--    background-color: var(--surface);
--    border-top: 1px solid var(--gray-light);
--    display: flex;
--    justify-content: space-between;
--    align-items: center;
--    font-size: 13px;
--    color: var(--gray);
-+.progress-bar {
-+  background-color: var(--accent);
-+  height: 100%;
-+  border-radius: 999px;
-+}
-+
-+.compact-list {
-+  margin-top: 1rem;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 0.75rem;
-+}
-+
-+.compact-item {
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+  padding: 0.75rem;
-+  background-color: var(--bg-hover);
-+  border-radius: var(--radius);
-+  font-size: 0.9rem;
-+}
-+
-+/* Task Controls & Kanban */
-+.task-controls {
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+  margin-bottom: 1.5rem;
-+  gap: 1rem;
-+  flex-wrap: wrap;
-+}
-+
-+.search-filter-group {
-+  display: flex;
-+  gap: 0.75rem;
-+  flex-wrap: wrap;
-+  flex: 1;
-+}
-+
-+.input-control, .select-control {
-+  background-color: var(--bg-secondary);
-+  border: 1px solid var(--border-color);
-+  color: var(--text-primary);
-+  padding: 0.6rem 1rem;
-+  border-radius: var(--radius);
-+  font-size: 0.9rem;
-+  outline: none;
-+}
-+
-+.input-control:focus, .select-control:focus {
-+  border-color: var(--accent);
-+}
-+
-+.primary-btn {
-+  background-color: var(--accent);
-+  color: white;
-+  border: none;
-+  padding: 0.6rem 1.2rem;
-+  border-radius: var(--radius);
-+  font-weight: 600;
-+  cursor: pointer;
- }
- 
--.clear-btn {
--    background: none;
--    border: none;
--    color: var(--primary);
--    font-size: 13px;
--    font-weight: 600;
--    cursor: pointer;
--    padding: 4px 8px;
--    border-radius: 4px;
--    transition: background-color 0.2s;
-+.primary-btn:hover {
-+  background-color: var(--accent-hover);
- }
- 
--.clear-btn:active {
--    background-color: rgba(98, 0, 238, 0.1);
-+.secondary-btn {
-+  background-color: var(--bg-hover);
-+  color: var(--text-primary);
-+  border: 1px solid var(--border-color);
-+  padding: 0.6rem 1.2rem;
-+  border-radius: var(--radius);
-+  font-weight: 500;
-+  cursor: pointer;
- }
-+
-+.secondary-btn:hover {
-+  background-color: var(--border-color);
-+}
-+
-+.danger-btn {
-+  background-color: var(--danger);
-+  color: white;
-+  border: none;
-+  padding: 0.6rem 1.2rem;
-+  border-radius: var(--radius);
-+  font-weight: 600;
-+  cursor: pointer;
-+}
-+
-+.danger-btn:hover {
-+  background-color: var(--danger-hover);
-+}
-+
-+.icon-btn {
-+  background: transparent;
-+  border: 1px solid var(--border-color);
-+  color: var(--text-primary);
-+  width: 40px;
-+  height: 40px;
-+  border-radius: var(--radius);
-+  display: flex;
-+  align-items: center;
-+  justify-content: center;
-+  cursor: pointer;
-+}
-+
-+.icon-btn:hover {
-+  background-color: var(--bg-hover);
-+}
-+
-+.kanban-board {
-+  display: grid;
-+  grid-template-columns: repeat(3, 1fr);
-+  gap: 1.5rem;
-+  min-height: 600px;
-+}
-+
-+@media(max-width: 1024px) {
-+  .kanban-board {
-+    grid-template-columns: 1fr;
-+  }
-+}
-+
-+.kanban-column {
-+  background-color: var(--bg-secondary);
-+  border: 1px solid var(--border-color);
-+  border-radius: var(--radius);
-+  display: flex;
-+  flex-direction: column;
-+}
-+
-+.column-header {
-+  padding: 1rem 1.25rem;
-+  border-bottom: 1px solid var(--border-color);
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+}
-+
-+.column-header h3 {
-+  font-size: 1rem;
-+  font-weight: 600;
-+}
-+
-+.task-count {
-+  background-color: var(--bg-hover);
-+  padding: 0.2rem 0.6rem;
-+  border-radius: 999px;
-+  font-size: 0.8rem;
-+  font-weight: 600;
-+}
-+
-+.task-dropzone {
-+  padding: 1rem;
-+  flex: 1;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 1rem;
-+  overflow-y: auto;
-+  min-height: 200px;
-+}
-+
-+.task-card {
-+  background-color: var(--bg-card);
-+  border: 1px solid var(--border-color);
-+  border-radius: var(--radius);
-+  padding: 1rem;
-+  cursor: grab;
-+  box-shadow: var(--shadow);
-+  position: relative;
-+}
-+
-+.task-card:active {
-+  cursor: grabbing;
-+}
-+
-+.task-card.dragging {
-+  opacity: 0.4;
-+}
-+
-+.task-card-header {
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: flex-start;
-+  margin-bottom: 0.5rem;
-+}
-+
-+.task-card-title {
-+  font-size: 0.95rem;
-+  font-weight: 600;
-+  color: var(--text-primary);
-+}
-+
-+.task-card-desc {
-+  font-size: 0.85rem;
-+  color: var(--text-secondary);
-+  margin-bottom: 0.75rem;
-+  display: -webkit-box;
-+  -webkit-line-clamp: 2;
-+  -webkit-box-orient: vertical;
-+  overflow: hidden;
-+}
-+
-+.task-card-footer {
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+  font-size: 0.75rem;
-+  color: var(--text-secondary);
-+  border-top: 1px solid var(--border-color);
-+  padding-top: 0.75rem;
-+  margin-top: 0.75rem;
-+}
-+
-+.badge {
-+  padding: 0.2rem 0.5rem;
-+  border-radius: 4px;
-+  font-weight: 600;
-+  font-size: 0.7rem;
-+  text-transform: uppercase;
-+}
-+
-+.badge-high { background-color: rgba(239, 68, 68, 0.2); color: var(--danger); }
-+.badge-medium { background-color: rgba(245, 158, 11, 0.2); color: var(--warning); }
-+.badge-low { background-color: rgba(59, 130, 246, 0.2); color: var(--info); }
-+
-+.task-actions-menu {
-+  display: flex;
-+  gap: 0.4rem;
-+}
-+
-+.task-action-btn {
-+  background: transparent;
-+  border: none;
-+  color: var(--text-secondary);
-+  cursor: pointer;
-+  font-size: 0.85rem;
-+  padding: 0.2rem;
-+}
-+
-+.task-action-btn:hover {
-+  color: var(--text-primary);
-+}
-+
-+/* Analytics */
-+.analytics-grid {
-+  display: grid;
-+  grid-template-columns: 1fr 1fr;
-+  gap: 1.5rem;
-+  margin-bottom: 1.5rem;
-+}
-+
-+@media(max-width: 900px) {
-+  .analytics-grid {
-+    grid-template-columns: 1fr;
-+  }
-+}
-+
-+.chart-container {
-+  margin-top: 1rem;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 0.75rem;
-+}
-+
-+.chart-row {
-+  display: flex;
-+  align-items: center;
-+  gap: 1rem;
-+}
-+
-+.chart-label {
-+  width: 100px;
-+  font-size: 0.85rem;
-+  color: var(--text-secondary);
-+}
-+
-+.chart-bar-wrapper {
-+  flex: 1;
-+  background-color: var(--bg-hover);
-+  border-radius: 999px;
-+  height: 10px;
-+  overflow: hidden;
-+}
-+
-+.chart-bar {
-+  height: 100%;
-+  background-color: var(--accent);
-+  border-radius: 999px;
-+}
-+
-+.chart-val {
-+  width: 40px;
-+  text-align: right;
-+  font-size: 0.85rem;
-+  font-weight: 600;
-+}
-+
-+.metrics-grid {
-+  display: grid;
-+  grid-template-columns: repeat(3, 1fr);
-+  gap: 1rem;
-+  margin-top: 1rem;
-+}
-+
-+.metric-item {
-+  background-color: var(--bg-hover);
-+  padding: 1rem;
-+  border-radius: var(--radius);
-+  display: flex;
-+  flex-direction: column;
-+  gap: 0.25rem;
-+}
-+
-+.metric-item span {
-+  font-size: 0.8rem;
-+  color: var(--text-secondary);
-+}
-+
-+.metric-item strong {
-+  font-size: 1.25rem;
-+}
-+
-+/* Settings */
-+.settings-card {
-+  margin-bottom: 1.5rem;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 1.25rem;
-+}
-+
-+.setting-row {
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+  padding-bottom: 1rem;
-+  border-bottom: 1px solid var(--border-color);
-+}
-+
-+.setting-row:last-child {
-+  border-bottom: none;
-+  padding-bottom: 0;
-+}
-+
-+.setting-row p {
-+  font-size: 0.85rem;
-+  color: var(--text-secondary);
-+  margin-top: 0.2rem;
-+}
-+
-+.file-input-label {
-+  display: inline-block;
-+  cursor: pointer;
-+}
-+
-+/* Modals */
-+.modal-backdrop {
-+  position: fixed;
-+  top: 0;
-+  left: 0;
-+  right: 0;
-+  bottom: 0;
-+  background-color: rgba(0, 0, 0, 0.6);
-+  display: flex;
-+  align-items: center;
-+  justify-content: center;
-+  z-index: 1000;
-+  padding: 1rem;
-+  animation: fadeIn 0.2s ease;
-+}
-+
-+.modal {
-+  width: 100%;
-+  max-width: 500px;
-+  background-color: var(--bg-card);
-+  border: 1px solid var(--border-color);
-+  border-radius: var(--radius);
-+  padding: 2rem;
-+  box-shadow: var(--shadow);
-+}
-+
-+.modal h3 {
-+  margin-bottom: 1.25rem;
-+  font-size: 1.2rem;
-+}
-+
-+.form-group {
-+  margin-bottom: 1rem;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 0.4rem;
-+}
-+
-+.form-group label {
-+  font-size: 0.85rem;
-+  font-weight: 500;
-+  color: var(--text-secondary);
-+}
-+
-+.form-row {
-+  display: grid;
-+  grid-template-columns: 1fr 1fr;
-+  gap: 1rem;
-+}
-+
-+.modal-actions {
-+  display: flex;
-+  justify-content: flex-end;
-+  gap: 0.75rem;
-+  margin-top: 1.5rem;
-+}
-+
-+/* Command Palette */
-+.command-modal {
-+  width: 100%;
-+  max-width: 600px;
-+  padding: 0;
-+  overflow: hidden;
-+}
-+
-+.command-search-bar {
-+  display: flex;
-+  align-items: center;
-+  padding: 1rem 1.25rem;
-+  border-bottom: 1px solid var(--border-color);
-+  gap: 0.75rem;
-+}
-+
-+.command-search-bar input {
-+  flex: 1;
-+  background: transparent;
-+  border: none;
-+  color: var(--text-primary);
-+  font-size: 1rem;
-+  outline: none;
-+}
-+
-+.command-results {
-+  max-height: 350px;
-+  overflow-y: auto;
-+  padding: 0.5rem;
-+}
-+
-+.command-item {
-+  padding: 0.75rem 1rem;
-+  border-radius: var(--radius);
-+  cursor: pointer;
-+  display: flex;
-+  justify-content: space-between;
-+  align-items: center;
-+  font-size: 0.9rem;
-+}
-+
-+.command-item:hover, .command-item.selected {
-+  background-color: var(--bg-hover);
-+  color: var(--text-primary);
-+}
-+
-+/* Toasts */
-+.toast-container {
-+  position: fixed;
-+  bottom: 1.5rem;
-+  right: 1.5rem;
-+  display: flex;
-+  flex-direction: column;
-+  gap: 0.75rem;
-+  z-index: 2000;
-+}
-+
-+.toast {
-+  background-color: var(--bg-secondary);
-+  border: 1px solid var(--border-color);
-+  color: var(--text-primary);
-+  padding: 0.75rem 1.25rem;
-+  border-radius: var(--radius);
-+  box-shadow: var(--shadow);
-+  font-size: 0.9rem;
-+  animation: slideIn 0.3s ease;
-+}
-+
-+.toast.success { border-left: 4px solid var(--success); }
-+.toast.error { border-left: 4px solid var(--danger); }
-+
-+@keyframes slideIn {
-+  from { transform: translateX(100%); opacity: 0; }
-+  to { transform: translateX(0); opacity: 1; }
-+}
-+
-+/* Responsive Mobile */
-+@media (max-width: 768px) {
-+  .sidebar {
-+    transform: translateX(-100%);
-+  }
-+  .sidebar.mobile-open {
-+    transform: translateX(0);
-+  }
-+  .main-content {
-+    margin-left: 0;
-+  }
-+  #sidebar-toggle {
-+    display: flex;
-+  }
-+}
+-  }
+-}
 \ No newline at end of file
++.toast-container { position: fixed; bottom: 1rem; right: 1rem; z-index: 2000; }
++.toast { background: var(--bg-secondary); border: 1px solid var(--border); padding: 1rem; border-radius: 0.375rem; margin-top: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+diff --git a/tasks.js b/tasks.js
+new file mode 100644
+index 0000000..1c49caf
+--- /dev/null
++++ b/tasks.js
+@@ -0,0 +1,126 @@
++/**
++ * tasks.js - Task Engine handling CRUD, validation, subtasks, tags, and time tracking.
++ */
++class TaskEngine {
++  constructor(stateManager) {
++    this.stateManager = stateManager;
++  }
++
++  validateTask(taskData, existingTasks = []) {
++    if (!taskData.title || typeof taskData.title !== 'string' || taskData.title.trim() === '') {
++      throw new Error('Task title cannot be empty.');
++    }
++    if (taskData.id && existingTasks.some(t => t.id === taskData.id && t !== taskData._original)) {
++      throw new Error('Task ID must be unique.');
++    }
++    if (taskData.dependencies && taskData.id && taskData.dependencies.includes(taskData.id)) {
++      throw new Error('Task cannot depend on itself.');
++    }
++    // Cycle check
++    if (taskData.dependencies && taskData.dependencies.length > 0 && taskData.id) {
++      for (const depId of taskData.dependencies) {
++        if (this._hasDependencyCycle(depId, taskData.id, existingTasks)) {
++          throw new Error('Dependency cycle detected.');
++        }
++      }
++    }
++    return true;
++  }
++
++  _hasDependencyCycle(currentId, targetId, tasks) {
++    const task = tasks.find(t => t.id === currentId);
++    if (!task || !task.dependencies) return false;
++    if (task.dependencies.includes(targetId)) return true;
++    return task.dependencies.some(depId => this._hasDependencyCycle(depId, targetId, tasks));
++  }
++
++  createTask(data) {
++    this.stateManager.pushHistory();
++    const newTask = {
++      id: 'task_' + Math.random().toString(36).substr(2, 9),
++      title: data.title.trim(),
++      description: data.description || '',
++      status: data.status || this.stateManager.state.settings.defaultStatus,
++      priority: data.priority || this.stateManager.state.settings.defaultPriority,
++      projectId: data.projectId || '',
++      tags: data.tags || [],
++      createdAt: new Date().toISOString(),
++      updatedAt: new Date().toISOString(),
++      dueDate: data.dueDate || null,
++      completedAt: data.status === 'done' ? new Date().toISOString() : null,
++      estimatedMinutes: Number(data.estimatedMinutes) || 0,
++      actualMinutes: Number(data.actualMinutes) || 0,
++      subtasks: data.subtasks || [],
++      dependencies: data.dependencies || [],
++      notes: data.notes || ''
++    };
++
++    this.validateTask(newTask, this.stateManager.state.tasks);
++    this.stateManager.state.tasks.push(newTask);
++    this.stateManager.persist();
++    this.stateManager.logActivity(`Created task: ${newTask.title}`);
++    this.stateManager.addNotification('Task Created', `Successfully created task "${newTask.title}"`, 'success');
++    this.stateManager.notify();
++    return newTask;
++  }
++
++  updateTask(id, updates) {
++    this.stateManager.pushHistory();
++    const tasks = this.stateManager.state.tasks;
++    const index = tasks.findIndex(t => t.id === id);
++    if (index === -1) throw new Error('Task not found.');
++
++    const updated = {
++      ...tasks[index],
++      ...updates,
++      updatedAt: new Date().toISOString()
++    };
++    if (updates.status === 'done' && tasks[index].status !== 'done') {
++      updated.completedAt = new Date().toISOString();
++    } else if (updates.status && updates.status !== 'done') {
++      updated.completedAt = null;
++    }
++
++    updated._original = tasks[index];
++    this.validateTask(updated, tasks);
++    delete updated._original;
++
++    tasks[index] = updated;
++    this.stateManager.persist();
++    this.stateManager.logActivity(`Updated task: ${updated.title}`);
++    this.stateManager.notify();
++    return updated;
++  }
++
++  deleteTask(id) {
++    this.stateManager.pushHistory();
++    const tasks = this.stateManager.state.tasks;
++    const index = tasks.findIndex(t => t.id === id);
++    if (index === -1) throw new Error('Task not found.');
++    const removed = tasks.splice(index, 1)[0];
++    this.stateManager.persist();
++    this.stateManager.logActivity(`Deleted task: ${removed.title}`);
++    this.stateManager.addNotification('Task Deleted', `Deleted task "${removed.title}"`, 'info');
++    this.stateManager.notify();
++    return removed;
++  }
++
++  duplicateTask(id) {
++    const tasks = this.stateManager.state.tasks;
++    const task = tasks.find(t => t.id === id);
++    if (!task) return null;
++    return this.createTask({
++      ...task,
++      title: `${task.title} (Copy)`,
++      id: undefined
++    });
++  }
++
++  completeTask(id, completed = true) {
++    return this.updateTask(id, {
++      status: completed ? 'done' : 'todo'
++    });
++  }
++}
++
++window.taskEngine = new TaskEngine(window.stateManager);
+diff --git a/worker.js b/worker.js
+new file mode 100644
+index 0000000..b2e6c92
+--- /dev/null
++++ b/worker.js
+@@ -0,0 +1,16 @@
++/**
++ * worker.js - Web Worker for heavy dataset computations and analytics.
++ */
++self.onmessage = function(e) {
++  const { type, tasks } = e.data;
++  if (type === 'COMPUTE_ANALYTICS') {
++    const total = tasks.length;
++    const completed = tasks.filter(t => t.status === 'done').length;
++    const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
++    
++    self.postMessage({
++      type: 'ANALYTICS_RESULT',
++      result: { total, completed, completionRate }
++    });
++  }
++};

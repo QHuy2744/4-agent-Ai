@@ -1,169 +1,179 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // DOM Elements
-    const todoForm = document.getElementById('todo-form');
-    const todoInput = document.getElementById('todo-input');
-    const todoList = document.getElementById('todo-list');
-    const emptyState = document.getElementById('empty-state');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const taskCounter = document.getElementById('task-counter');
-    const clearCompletedBtn = document.getElementById('clear-completed');
-    const dateDisplay = document.getElementById('date-display');
+/**
+ * app.js - Main Bootstrap, UI Coordinator, and Global Error Handling.
+ */
+class UIManager {
+  constructor() {
+    this.currentView = 'dashboard';
+  }
 
-    // State
-    let todos = [];
-    let currentFilter = 'all';
-
-    // Display current date nicely
-    const updateDate = () => {
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const today = new Date();
-        dateDisplay.textContent = today.toLocaleDateString('vi-VN', options);
-    };
-    updateDate();
-
-    // Load todos from localStorage
-    const loadTodos = () => {
-        try {
-            const stored = localStorage.getItem('android_todos');
-            if (stored) {
-                todos = JSON.parse(stored);
-            }
-        } catch (error) {
-            console.error('Lỗi khi đọc localStorage:', error);
-            todos = [];
-        }
+  async init() {
+    window.onerror = (msg, url, line) => {
+      console.error('Global Error:', msg, url, line);
+      this.showToast(`Error: ${msg}`, 'error');
     };
 
-    // Save todos to localStorage
-    const saveTodos = () => {
-        try {
-            localStorage.setItem('android_todos', JSON.stringify(todos));
-        } catch (error) {
-            console.error('Lỗi khi lưu localStorage:', error);
-        }
-    };
+    window.addEventListener('unhandledrejection', event => {
+      console.error('Unhandled Promise Rejection:', event.reason);
+      this.showToast(`Error: ${event.reason.message || event.reason}`, 'error');
+    });
 
-    // Add new todo
-    const addTodo = (text) => {
-        const newTodo = {
-            id: Date.now(),
-            text: text.trim(),
-            completed: false
-        };
-        todos.unshift(newTodo);
-        saveTodos();
-        render();
-    };
+    await window.storageEngine.init();
+    await window.stateManager.loadState();
 
-    // Toggle todo status
-    const toggleTodo = (id) => {
-        todos = todos.map(todo => {
-            if (todo.id === id) {
-                return { ...todo, completed: !todo.completed };
-            }
-            return todo;
-        });
-        saveTodos();
-        render();
-    };
+    window.stateManager.subscribe(() => this.render());
+    this.setupListeners();
+    this.render();
 
-    // Delete todo
-    const deleteTodo = (id) => {
-        todos = todos.filter(todo => todo.id !== id);
-        saveTodos();
-        render();
-    };
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    }
+  }
 
-    // Clear all completed todos
-    const clearCompleted = () => {
-        todos = todos.filter(todo => !todo.completed);
-        saveTodos();
-        render();
-    };
-
-    // Render UI
-    const render = () => {
-        // Filter todos based on currentFilter
-        const filteredTodos = todos.filter(todo => {
-            if (activeFilter === 'active') return !todo.completed;
-            if (activeFilter === 'completed') return todo.completed;
-            return true;
-        });
-
-        // Clear list element
-        todoList.innerHTML = '';
-
-        // Handle empty state
-        if (filteredTodos.length === 0) {
-            emptyState.classList.remove('hidden');
-        } else {
-            emptyState.classList.add('hidden');
-        }
-
-        // Render each todo item
-        filteredTodos.forEach(todo => {
-            const li = document.createElement('li');
-            li.className = `todo-item ${todo.completed ? 'completed' : ''}`;
-
-            // Checkbox
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'todo-checkbox';
-            checkbox.checked = todo.completed;
-            checkbox.addEventListener('change', () => toggleTodo(todo.id));
-
-            // Text label (using textContent for XSS safety)
-            const span = document.createElement('span');
-            span.className = 'todo-text';
-            span.textContent = todo.text;
-
-            // Delete button
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = 'delete-btn';
-            deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-            deleteBtn.setAttribute('aria-label', 'Xóa công việc');
-            deleteBtn.addEventListener('click', () => deleteTodo(todo.id));
-
-            li.appendChild(checkbox);
-            li.appendChild(span);
-            li.appendChild(deleteBtn);
-
-            todoList.appendChild(li);
-        });
-
-        // Update counter
-        const activeCount = todos.filter(t => !t.completed).length;
-        taskCounter.textContent = `${activeCount} công việc còn lại`;
-    };
-
-    // Variable reference fix for filter scope
-    let activeFilter = 'all';
-
-    // Event Listeners
-    todoForm.addEventListener('submit', (e) => {
+  setupListeners() {
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => {
+      el.addEventListener('click', (e) => {
         e.preventDefault();
-        const text = todoInput.value;
-        if (text.trim() !== '') {
-            addTodo(text);
-            todoInput.value = '';
-            todoInput.focus();
+        const view = el.getAttribute('data-view');
+        this.switchView(view);
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        window.commandPalette.toggle();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        e.preventDefault();
+        window.stateManager.undo();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+        e.preventDefault();
+        window.stateManager.redo();
+      }
+    });
+
+    const btnQuickTask = document.getElementById('btn-quick-task');
+    if (btnQuickTask) {
+      btnQuickTask.addEventListener('click', () => {
+        const title = prompt('Enter task title:');
+        if (title) {
+          window.taskEngine.createTask({ title });
         }
-    });
+      });
+    }
+  }
 
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeFilter = btn.getAttribute('data-filter');
-            render();
-        });
+  switchView(view) {
+    this.currentView = view;
+    document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-view') === view);
     });
+    document.getElementById('current-view-title').innerText = view.charAt(0).toUpperCase() + view.slice(1);
+    this.render();
+  }
 
-    clearCompletedBtn.addEventListener('click', () => {
-        clearCompleted();
-    });
+  render() {
+    const container = document.getElementById('main-view-container');
+    if (!container) return;
 
-    // Initial Load
-    loadTodos();
-    render();
-});
+    const metrics = window.analyticsEngine.computeMetrics();
+
+    if (this.currentView === 'dashboard') {
+      container.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem;">
+          <div class="card"><h3>Total Tasks</h3><p style="font-size:2rem; font-weight:bold;">${metrics.total}</p></div>
+          <div class="card"><h3>Completed</h3><p style="font-size:2rem; font-weight:bold; color:var(--success);">${metrics.completed}</p></div>
+          <div class="card"><h3>Overdue</h3><p style="font-size:2rem; font-weight:bold; color:var(--danger);">${metrics.overdue}</p></div>
+          <div class="card"><h3>Completion Rate</h3><p style="font-size:2rem; font-weight:bold; color:var(--accent);">${metrics.completionRate}%</p></div>
+        </div>
+        <div class="card">
+          <h3>Recent Activity</h3>
+          <ul style="list-style:none; margin-top:1rem;">
+            ${window.stateManager.state.activityLogs.slice(0, 5).map(log => `<li style="padding:0.5rem 0; border-bottom:1px solid var(--border);">${log.action} <span style="float:right; color:var(--text-secondary);">${new Date(log.timestamp).toLocaleTimeString()}</span></li>`).join('')}
+          </ul>
+        </div>
+      `;
+    } else if (this.currentView === 'tasks') {
+      const tasks = window.stateManager.state.tasks;
+      container.innerHTML = `
+        <div class="card">
+          <h3>Task Engine</h3>
+          <table style="width:100%; border-collapse:collapse; margin-top:1rem;">
+            <thead><tr style="text-align:left; border-bottom:1px solid var(--border);"><th style="padding:0.5rem;">Title</th><th>Status</th><th>Priority</th><th>Due Date</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${tasks.map(t => `<tr style="border-bottom:1px solid var(--border);"><td style="padding:0.5rem;">${t.title}</td><td>${t.status}</td><td>${t.priority}</td><td>${t.dueDate || 'None'}</td><td><button class="btn" onclick="window.taskEngine.deleteTask('${t.id}')">Delete</button></td></tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else if (this.currentView === 'developer') {
+      container.innerHTML = `
+        <div class="card">
+          <h3>Developer Panel & Stress Test</h3>
+          <p style="margin-top:1rem;">Generate bulk tasks for stress testing the search, filter, and analytics engines.</p>
+          <div style="margin-top:1rem; display:flex; gap:1rem;">
+            <button class="btn" onclick="window.uiManager.generateTasks(100)">Generate 100 Tasks</button>
+            <button class="btn" onclick="window.uiManager.generateTasks(1000)">Generate 1,000 Tasks</button>
+            <button class="btn" onclick="window.uiManager.generateTasks(5000)">Generate 5,000 Tasks</button>
+            <button class="btn" style="background:var(--danger);" onclick="window.uiManager.clearDB()">Clear Database</button>
+          </div>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `<div class="card"><h3>${this.currentView.toUpperCase()}</h3><p>Module active and operational.</p></div>`;
+    }
+  }
+
+  generateTasks(count) {
+    for (let i = 0; i < count; i++) {
+      window.stateManager.state.tasks.push({
+        id: 'task_' + Math.random().toString(36).substr(2, 9),
+        title: `Stress Test Task ${i + 1}`,
+        description: 'Auto-generated for stress testing.',
+        status: ['todo', 'in-progress', 'done'][Math.floor(Math.random() * 3)],
+        priority: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)],
+        createdAt: new Date().toISOString(),
+        dueDate: null
+      });
+    }
+    window.stateManager.persist();
+    window.stateManager.notify();
+    this.showToast(`Successfully generated ${count} tasks.`, 'success');
+  }
+
+  clearDB() {
+    if (confirm('Are you sure you want to clear all tasks?')) {
+      window.stateManager.state.tasks = [];
+      window.stateManager.persist();
+      window.stateManager.notify();
+      this.showToast('Database cleared.', 'info');
+    }
+  }
+
+  showToast(message, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    if (next === 'light') {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }
+
+  applySettings() {}
+}
+
+window.uiManager = new UIManager();
+window.showToast = (msg, type) => window.uiManager.showToast(msg, type);
+window.addEventListener('DOMContentLoaded', () => window.uiManager.init());

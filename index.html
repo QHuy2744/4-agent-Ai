@@ -1,355 +1,64 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="dark" data-layout="comfortable" data-animations="on">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NEXUS OS — Modern Task Management Dashboard</title>
-  <link rel="manifest" href="manifest.json">
+  <title>NEXUS TITAN</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
   <div class="app-container">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar" aria-label="Sidebar Navigation">
-      <div class="sidebar-header">
-        <div class="logo-icon">⚡</div>
-        <h1 class="logo-text">NEXUS OS</h1>
-      </div>
-      <nav class="nav-menu">
-        <button class="nav-item active" data-view="dashboard" aria-label="Dashboard">
-          <span class="nav-icon">📊</span>
-          <span class="nav-label">Dashboard</span>
-        </button>
-        <button class="nav-item" data-view="tasks" aria-label="Tasks">
-          <span class="nav-icon">📋</span>
-          <span class="nav-label">Tasks</span>
-        </button>
-        <button class="nav-item" data-view="analytics" aria-label="Analytics">
-          <span class="nav-icon">📈</span>
-          <span class="nav-label">Analytics</span>
-        </button>
-        <button class="nav-item" data-view="settings" aria-label="Settings">
-          <span class="nav-icon">⚙️</span>
-          <span class="nav-label">Settings</span>
-        </button>
+    <aside class="sidebar">
+      <div class="sidebar-header">NEXUS TITAN</div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-view="dashboard">Dashboard</a>
+        <a href="#" class="nav-item" data-view="projects">Projects</a>
+        <a href="#" class="nav-item" data-view="tasks">Tasks</a>
+        <a href="#" class="nav-item" data-view="kanban">Kanban</a>
+        <a href="#" class="nav-item" data-view="calendar">Calendar</a>
+        <a href="#" class="nav-item" data-view="analytics">Analytics</a>
+        <a href="#" class="nav-item" data-view="search">Search</a>
+        <a href="#" class="nav-item" data-view="notifications">Notifications</a>
+        <a href="#" class="nav-item" data-view="settings">Settings</a>
+        <a href="#" class="nav-item" data-view="developer">Developer Panel</a>
       </nav>
-      <div class="sidebar-footer">
-        <div class="shortcut-hint">
-          <span>Command Palette</span>
-          <kbd>Ctrl+K</kbd>
-        </div>
-      </div>
     </aside>
-
-    <!-- Main Content Area -->
     <main class="main-content">
-      <!-- Top Header -->
-      <header class="top-header">
-        <div class="header-left">
-          <button id="sidebar-toggle" class="icon-btn" aria-label="Toggle Sidebar">☰</button>
-          <h2 id="page-title">Dashboard</h2>
-        </div>
-        <div class="header-right">
-          <button id="quick-add-btn" class="primary-btn" aria-label="New Task">+ New Task</button>
-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">🌙</button>
+      <header class="topbar">
+        <div class="topbar-title" id="current-view-title">Dashboard</div>
+        <div class="topbar-actions">
+          <button class="btn" id="btn-quick-task">+ New Task</button>
         </div>
       </header>
-
-      <!-- View Container -->
-      <div class="view-container">
-        
-        <!-- VIEW: DASHBOARD -->
-        <section id="view-dashboard" class="view active">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-icon">📌</div>
-              <div class="stat-info">
-                <h3>Total Tasks</h3>
-                <p id="stat-total">0</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">⏳</div>
-              <div class="stat-info">
-                <h3>In Progress</h3>
-                <p id="stat-in-progress">0</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">✅</div>
-              <div class="stat-info">
-                <h3>Completed</h3>
-                <p id="stat-completed">0</p>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-icon">⚠️</div>
-              <div class="stat-info">
-                <h3>Overdue</h3>
-                <p id="stat-overdue">0</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="dashboard-lower">
-            <div class="card progress-overview-card">
-              <h3>Overall Progress</h3>
-              <div class="progress-bar-container">
-                <div id="overall-progress-bar" class="progress-bar" style="width: 0%"></div>
-              </div>
-              <p id="overall-progress-text">0% Completed</p>
-            </div>
-            <div class="card recent-tasks-card">
-              <h3>Recent High Priority Tasks</h3>
-              <div id="recent-tasks-list" class="compact-list">
-                <!-- Rendered dynamically -->
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- VIEW: TASKS (Kanban & List) -->
-        <section id="view-tasks" class="view">
-          <div class="task-controls">
-            <div class="search-filter-group">
-              <input type="text" id="task-search" class="input-control" placeholder="Search tasks (Ctrl+K)..." aria-label="Search tasks">
-              <select id="filter-status" class="select-control" aria-label="Filter by Status">
-                <option value="all">All Status</option>
-                <option value="todo">Todo</option>
-                <option value="in-progress">In Progress</option>
-                <option value="done">Done</option>
-              </select>
-              <select id="filter-priority" class="select-control" aria-label="Filter by Priority">
-                <option value="all">All Priority</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-              <select id="sort-by" class="select-control" aria-label="Sort tasks">
-                <option value="deadline-asc">Deadline (Soonest)</option>
-                <option value="deadline-desc">Deadline (Latest)</option>
-                <option value="priority-desc">Priority (High-Low)</option>
-                <option value="title-asc">Title (A-Z)</option>
-              </select>
-            </div>
-            <div class="task-action-buttons">
-              <button id="add-task-btn" class="primary-btn" aria-label="Add Task">Add Task</button>
-            </div>
-          </div>
-
-          <div class="kanban-board">
-            <!-- Todo Column -->
-            <div class="kanban-column" data-status="todo">
-              <div class="column-header">
-                <h3>Todo</h3>
-                <span class="task-count" id="count-todo">0</span>
-              </div>
-              <div class="task-dropzone" id="dropzone-todo">
-                <!-- Tasks injected here -->
-              </div>
-            </div>
-
-            <!-- In Progress Column -->
-            <div class="kanban-column" data-status="in-progress">
-              <div class="column-header">
-                <h3>In Progress</h3>
-                <span class="task-count" id="count-in-progress">0</span>
-              </div>
-              <div class="task-dropzone" id="dropzone-in-progress">
-                <!-- Tasks injected here -->
-              </div>
-            </div>
-
-            <!-- Done Column -->
-            <div class="kanban-column" data-status="done">
-              <div class="column-header">
-                <h3>Done</h3>
-                <span class="task-count" id="count-done">0</span>
-              </div>
-              <div class="task-dropzone" id="dropzone-done">
-                <!-- Tasks injected here -->
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- VIEW: ANALYTICS -->
-        <section id="view-analytics" class="view">
-          <div class="analytics-grid">
-            <div class="card">
-              <h3>Task Distribution by Status</h3>
-              <div class="chart-container">
-                <div class="custom-bar-chart" id="chart-status">
-                  <!-- Rendered via JS -->
-                </div>
-              </div>
-            </div>
-            <div class="card">
-              <h3>Task Distribution by Priority</h3>
-              <div class="chart-container">
-                <div class="custom-bar-chart" id="chart-priority">
-                  <!-- Rendered via JS -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card analytics-summary-card">
-            <h3>Productivity Metrics</h3>
-            <div class="metrics-grid">
-              <div class="metric-item">
-                <span>Completion Rate</span>
-                <strong id="metric-completion-rate">0%</strong>
-              </div>
-              <div class="metric-item">
-                <span>High Priority Pending</span>
-                <strong id="metric-high-pending">0</strong>
-              </div>
-              <div class="metric-item">
-                <span>Total Active Tasks</span>
-                <strong id="metric-active">0</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- VIEW: SETTINGS -->
-        <section id="view-settings" class="view">
-          <div class="settings-card card">
-            <h3>Preferences</h3>
-            <div class="setting-row">
-              <div>
-                <strong>Theme Mode</strong>
-                <p>Switch between Dark and Light appearance.</p>
-              </div>
-              <button id="settings-theme-btn" class="secondary-btn">Toggle Dark/Light</button>
-            </div>
-            <div class="setting-row">
-              <div>
-                <strong>Layout Density</strong>
-                <p>Choose compact or comfortable spacing.</p>
-              </div>
-              <select id="settings-layout" class="select-control">
-                <option value="comfortable">Comfortable</option>
-                <option value="compact">Compact</option>
-              </select>
-            </div>
-            <div class="setting-row">
-              <div>
-                <strong>Animations</strong>
-                <p>Enable or disable UI transitions and animations.</p>
-              </div>
-              <select id="settings-animation" class="select-control">
-                <option value="on">Enabled</option>
-                <option value="off">Disabled</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="settings-card card">
-            <h3>Data Management</h3>
-            <div class="setting-row">
-              <div>
-                <strong>Export Data</strong>
-                <p>Download all tasks and settings as a JSON file.</p>
-              </div>
-              <button id="export-btn" class="secondary-btn">Export JSON</button>
-            </div>
-            <div class="setting-row">
-              <div>
-                <strong>Import Data</strong>
-                <p>Restore tasks from a backup JSON file.</p>
-              </div>
-              <label class="secondary-btn file-input-label">
-                Import JSON <input type="file" id="import-file" accept=".json" style="display: none;">
-              </label>
-            </div>
-            <div class="setting-row danger-zone">
-              <div>
-                <strong>Clear All Data</strong>
-                <p>Permanently delete all tasks and reset state.</p>
-              </div>
-              <button id="clear-all-btn" class="danger-btn">Clear All Tasks</button>
-            </div>
-          </div>
-        </section>
-
+      <div class="content-view" id="main-view-container">
+        <!-- Dynamic views rendered here -->
       </div>
     </main>
   </div>
 
-  <!-- Command Palette Modal -->
-  <div id="command-palette" class="modal-backdrop" style="display: none;" aria-hidden="true">
-    <div class="command-modal card">
-      <div class="command-search-bar">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="command-input" placeholder="Type a command or search tasks (ESC to close)..." autocomplete="off">
-      </div>
-      <div id="command-results" class="command-results">
-        <!-- Rendered dynamically -->
-      </div>
+  <div class="modal-overlay" id="command-palette-modal" style="display: none;">
+    <div class="modal">
+      <h3>Command Palette</h3>
+      <input type="text" id="command-input" placeholder="Type a command..." style="width:100%; padding:0.5rem; margin-top:1rem;">
+      <div id="command-list" style="margin-top:1rem; max-height:200px; overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- Task Modal (Create / Edit) -->
-  <div id="task-modal" class="modal-backdrop" style="display: none;" aria-hidden="true">
-    <div class="modal card">
-      <h3 id="task-modal-title">Create New Task</h3>
-      <form id="task-form">
-        <input type="hidden" id="task-id">
-        <div class="form-group">
-          <label for="task-title">Task Title *</label>
-          <input type="text" id="task-title" class="input-control" required placeholder="Enter task title...">
-        </div>
-        <div class="form-group">
-          <label for="task-desc">Description</label>
-          <textarea id="task-desc" class="input-control" rows="3" placeholder="Optional details..."></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="task-priority">Priority</label>
-            <select id="task-priority" class="select-control">
-              <option value="low">Low</option>
-              <option value="medium" selected>Medium</option>
-              <option value="high">High</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="task-status">Status</label>
-            <select id="task-status" class="select-control">
-              <option value="todo" selected>Todo</option>
-              <option value="in-progress">In Progress</option>
-              <option value="done">Done</option>
-            </select>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="task-deadline">Deadline</label>
-          <input type="date" id="task-deadline" class="input-control">
-        </div>
-        <div class="modal-actions">
-          <button type="button" id="task-cancel-btn" class="secondary-btn">Cancel</button>
-          <button type="submit" class="primary-btn">Save Task</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <div class="toast-container" id="toast-container"></div>
 
-  <!-- Confirmation Modal -->
-  <div id="confirm-modal" class="modal-backdrop" style="display: none;" aria-hidden="true">
-    <div class="modal card confirm-box">
-      <h3 id="confirm-title">Confirm Action</h3>
-      <p id="confirm-message">Are you sure you want to proceed?</p>
-      <div class="modal-actions">
-        <button id="confirm-no-btn" class="secondary-btn">Cancel</button>
-        <button id="confirm-yes-btn" class="danger-btn">Confirm</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification Container -->
-  <div id="toast-container" class="toast-container"></div>
-
-  <!-- App Script -->
-  <script src="script.js"></script>
+  <!-- Scripts -->
+  <script src="storage.js"></script>
+  <script src="state.js"></script>
+  <script src="tasks.js"></script>
+  <script src="projects.js"></script>
+  <script src="calendar.js"></script>
+  <script src="analytics.js"></script>
+  <script src="search.js"></script>
+  <script src="commands.js"></script>
+  <script src="settings.js"></script>
+  <script src="notifications.js"></script>
+  <script src="import-export.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

@@ -1,105 +1,88 @@
-Dưới đây là kế hoạch chi tiết triển khai web app **"NEXUS OS"** theo đúng các yêu cầu được giao. Kế hoạch này được chuẩn bị để Agent Coder có thể thực hiện trực tiếp.
+*(Triển khai theo vai trò PLANNER. Không sửa code sản phẩm.)*
+
+Đã kiểm tra cấu trúc thư mục (thư mục hiện tại chưa có `.bangiao`, tiến hành thiết lập kế hoạch chi tiết). Dưới đây là kế hoạch hoàn chỉnh cho yêu cầu xây dựng web app **“NEXUS TITAN”** – hệ thống quản lý tác vụ cực lớn dùng để stress-test quy trình 4 agent.
 
 ---
 
-### 1. Mục tiêu
-Xây dựng một ứng dụng web quản lý công việc hiện đại có tên **"NEXUS OS"** hoàn toàn bằng HTML5, CSS3 và Vanilla JavaScript (không dùng framework, không dùng backend/API), chạy trên trình duyệt với các tính năng:
-- Giao diện Dashboard, Tasks, Analytics, Settings kèm hỗ trợ Dark/Light mode và Compact/Comfortable layout.
-- Quản lý Task toàn diện (CRUD, Priority, Status, Deadline, Search, Filter, Sort, Drag & Drop).
-- Hệ thống Undo/Redo (hỗ trợ phím tắt Ctrl+Z / Ctrl+Y và lịch sử thao tác).
-- Command Palette (mở bằng `Ctrl+K`).
-- Import / Export dữ liệu JSON (có validate, không crash app).
-- Lưu trữ dữ liệu và cài đặt qua `localStorage`.
-- Tính năng PWA cơ bản (`manifest.json` và `service-worker.js` hoạt động offline).
-- Đảm bảo tính năng Accessibility (A11y) và hiệu năng mượt mà.
+### 1. MỤC TIÊU VÀ PHẠM VI
+
+- **Mục tiêu:** Xây dựng một ứng dụng web quản lý công việc và năng suất quy mô lớn (“NEXUS TITAN”) hoàn toàn bằng HTML5, CSS3, ES6+ JavaScript thuần, IndexedDB (với fallback localStorage) và Web Worker, đạt tiêu chuẩn khắt khe về kiến trúc modular, hiệu năng, PWA, accessibility và tự kiểm thử (self-test).
+- **Phạm vi:** 
+  - Hoàn thiện toàn bộ danh sách 22 file theo đúng kiến trúc yêu cầu.
+  - Xây dựng app shell đầy đủ trạng thái (Dark/Light/System theme, Compact/Comfortable, Toast, Modal, Skeleton).
+  - Triển khai Dashboard, Task Engine (CRUD, Subtasks, Dependencies), Kanban (Drag & Drop), Project Management, Calendar, Advanced Search, Command Palette (Ctrl+K), Undo/Redo Engine, Persistence (IndexedDB + fallback), Import/Export, Activity Log, Analytics Engine, Web Worker xử lý dữ liệu nặng, Mass Data Test (1k - 10k tasks), Notification System, Settings, PWA (manifest, service-worker), Global Error Handling và Developer/Self-Test Panel.
 
 ---
 
-### 2. Các file cần tạo / thay đổi
-Toàn bộ là các file mới cần khởi tạo ở thư mục gốc của project:
-1. `index.html` — Khung giao diện chính, cấu trúc các trang (Dashboard, Tasks, Analytics, Settings), Command Palette modal, dialog xác nhận.
-2. `style.css` — Toàn bộ định dạng giao diện, biến màu (CSS variables) cho Dark/Light mode, layout compact/comfortable, animation, responsive styles, drag & drop states.
-3. `script.js` — Logic toàn bộ ứng dụng (Quản lý State, LocalStorage, Task Manager, Drag & Drop, Undo/Redo history, Command Palette, Filter/Sort/Search, Analytics, Settings, Event Listeners).
-4. `manifest.json` — Cấu hình Progressive Web App.
-5. `service-worker.js` — Service worker hỗ trợ caching và offline mode cơ bản.
+### 2. CÁC FILE CẦN TẠO / SỬA (Đường dẫn chính xác)
+
+Toàn bộ các file sau sẽ được tạo mới trong thư mục gốc của dự án:
+1. `index.html` - Khung HTML chính, chứa App Shell, các view container, modal, toast container, mobile bottom nav.
+2. `style.css` - CSS toàn cục, định nghĩa biến màu sắc (Dark/Light mode), layout (Sidebar, Topbar, Main), utility classes, animation và responsive media queries.
+3. `state.js` - Quản lý Global State, Event Emitter/PubSub cho UI reactive, quản lý lịch sử Undo/Redo.
+4. `storage.js` - Xử lý IndexedDB (với fallback sang localStorage), quản lý version migration, hàm save/load toàn cục.
+5. `tasks.js` - Task Engine: CRUD, validation (dependency cycles, empty title, v.v.), subtasks, tags, time tracking.
+6. `projects.js` - Project Management: CRUD, archive, restore, thống kê tiến độ từng project.
+7. `calendar.js` - Calendar view (Month/Week), tính toán ngày tháng, xử lý timezone, hiển thị deadline/overdue.
+8. `analytics.js` - Tính toán các chỉ số năng suất (completion rate, overdue rate, thời gian trung bình, phân phối priority/status).
+9. `search.js` - Advanced Search Engine: hỗ trợ query `status:`, `priority:`, `project:`, `tag:`, `overdue:true`, realtime highlight.
+10. `commands.js` - Command Palette (Ctrl+K), xử lý phím tắt, danh sách lệnh thực thi nhanh.
+11. `settings.js` - Quản lý cài đặt người dùng, lưu trữ cấu hình, áp dụng theme/compact mode.
+12. `notifications.js` - Notification Center: tạo, đọc, xóa thông báo, quản lý task sắp đến hạn/quá hạn.
+13. `import-export.js` - Xuất/Nhập dữ liệu JSON, validate schema, xử lý chế độ Replace/Merge.
+14. `worker.js` - Web Worker để xử lý tính toán analytics nặng và lọc dataset lớn (10,000 tasks) không block UI.
+15. `manifest.json` - PWA Manifest.
+16. `service-worker.js` - Service Worker cho caching cơ bản và offline fallback.
+17. `app.js` - File điều phối chính (Bootstrap), khởi tạo các module, thiết lập Global Error Handling (`onerror`, `unhandledrejection`), gắn event listener toàn cục.
+18. `README.md` - Tài liệu chi tiết về kiến trúc, data model, hướng dẫn chạy và giới hạn ứng dụng.
 
 ---
 
-### 3. Các bước thực hiện chi tiết cho Coder
+### 3. CÁC BƯỚC THỰC HIỆN (Cho Coder)
 
-#### Bước 1: Khởi tạo cấu trúc HTML (`index.html`)
-- Xây dựng layout chuẩn gồm:
-  - **Sidebar Navigation**: Chuyển đổi giữa các tab (Dashboard, Tasks, Analytics, Settings).
-  - **Main Content Area**: Chứa các view tương ứng ẩn/hiện bằng class CSS (`.view`).
-  - **Command Palette Modal**: Overlay tìm kiếm và thực hiện nhanh lệnh (`Ctrl+K`).
-  - **Notification/Toast Container**: Hiển thị thông báo thành công/lỗi.
-  - **Confirmation Dialog**: Dùng cho hành động Clear All hoặc xóa quan trọng.
-- Đảm bảo các button có `aria-label` và semantic HTML đúng chuẩn Accessibility.
-
-#### Bước 2: Thiết kế giao diện & Theme (`style.css`)
-- Định nghĩa hệ thống biến màu `:root` cho Light mode và `[data-theme="dark"]` cho Dark mode.
-- Cấu hình layout linh hoạt (Flexbox/Grid), hỗ trợ responsive cho mobile và desktop.
-- Thiết kế trạng thái cho Layout Compact (`--spacing-tight`) và Comfortable (`--spacing-relaxed`).
-- Style cho Drag & Drop (hiệu ứng kéo thả, drop zone, ghost element).
-- Tùy chỉnh animation nhẹ nhàng, hỗ trợ tắt animation khi setting được bật (`[data-animations="off"]`).
-
-#### Bước 3: Phát triển logic ứng dụng (`script.js`)
-Chia module logic trong file `script.js` rõ ràng:
-1. **State Management & LocalStorage**:
-   - Khởi tạo state mặc định (tasks, settings, history cho undo/redo).
-   - Hàm `saveState()` và `loadState()`.
-2. **Task CRUD & Validation**:
-   - Tạo/Sửa/Xóa task với validation (không để trống title, deadline hợp lệ).
-   - Đánh dấu hoàn thành, đổi status/priority.
-3. **Search, Filter & Sort**:
-   - Tìm kiếm theo từ khóa.
-   - Lọc theo `status` (Todo, In Progress, Done) và `priority` (Low, Medium, High).
-   - Sắp xếp theo Deadline hoặc Priority.
-4. **Drag & Drop**:
-   - HTML5 Drag and Drop API cho phép kéo task giữa các cột trạng thái (Todo, In Progress, Done).
-5. **Undo / Redo System**:
-   - Lưu trữ mảng lịch sử state trước đó (giới hạn tối đa 20 bước).
-   - Bắt sự kiện bàn phím `Ctrl+Z` (Undo) và `Ctrl+Y` / `Ctrl+Shift+Z` (Redo).
-6. **Command Palette (`Ctrl+K`)**:
-   - Lắng nghe sự kiện `Ctrl+K` để mở modal, `ESC` để đóng.
-   - Danh sách lệnh thực thi nhanh: Create task, Search task, Toggle theme, Export data, Clear completed.
-7. **Import / Export**:
-   - Export dữ liệu thành file `.json`.
-   - Import file JSON, kiểm tra cấu trúc dữ liệu hợp lệ, thông báo lỗi nếu sai định dạng mà không làm crash trang.
-8. **Analytics Engine**:
-   - Tính toán động tổng số task, số lượng theo status, số lượng task quá hạn, high priority từ state thực tế.
-   - Vẽ biểu đồ thống kê đơn giản bằng HTML/CSS/JS thuần.
-9. **Settings Handler**:
-   - Thay đổi Theme (Dark/Light), Layout (Compact/Comfortable), Animation (On/Off) và lưu ngay vào `localStorage`.
-
-#### Bước 4: Cấu hình PWA (`manifest.json` & `service-worker.js`)
-- **`manifest.json`**: Khai báo tên, short_name, icons, start_url, display (`standalone`), background_color, theme_color.
-- **`service-worker.js`**: Cài đặt sự kiện `install` (cache các file tĩnh `index.html`, `style.css`, `script.js`, `manifest.json`) và sự kiện `fetch` phục vụ offline mode. Bọc trong try/catch hoặc kiểm tra `navigator.serviceWorker` để không làm crash trang nếu môi trường không hỗ trợ.
+1. **Khởi tạo nền tảng cốt lõi:**
+   - Tạo `manifest.json` và `service-worker.js`.
+   - Viết `storage.js` để kết nối IndexedDB (hoặc fallback localStorage) với cơ chế DB versioning và migration an toàn.
+   - Viết `state.js` quản lý state trung tâm, tích hợp Undo/Redo stack (Ctrl+Z, Ctrl+Y).
+2. **Xây dựng UI Shell & Giao diện:**
+   - Viết `index.html` cấu trúc Semantic HTML chuẩn Accessibility (`aria-*`, keyboard navigation).
+   - Viết `style.css` hoàn chỉnh với hệ thống biến CSS cho Dark/Light mode, Compact/Comfortable mode, responsive layout cho Desktop/Tablet/Mobile, Toast, Modal, Skeleton loading.
+3. **Phát triển các Engine nghiệp vụ:**
+   - `tasks.js`: Xây dựng đầy đủ CRUD task, subtasks, validation chống dependency cycle, tính toán actual/estimated time.
+   - `projects.js`: Quản lý project, chống xóa project khi còn task liên quan nếu chưa có xác nhận.
+   - `calendar.js`: Render lịch Tháng/Tuần, map task deadline vào ngày tương ứng.
+   - `analytics.js` & `worker.js`: Xử lý phân tích dữ liệu qua Web Worker để đảm bảo mượt mà khi test dataset lớn.
+   - `search.js` & `commands.js`: Advanced search với query syntax và Command Palette (Ctrl+K).
+4. **Tích hợp tính năng phụ trợ & Developer Tools:**
+   - `import-export.js`: Backup và khôi phục dữ liệu JSON có kiểm tra schema/duplicate ID.
+   - `notifications.js`: Hệ thống thông báo thời gian thực và quản lý notification center.
+   - `settings.js`: Lưu trữ và áp dụng tùy chọn người dùng.
+   - Bổ sung Developer Panel trong `app.js` / giao diện để generate dữ liệu giả (100, 1k, 5k, 10k tasks) phục vụ stress test và chạy cơ chế Self-Test tự động (báo PASS/FAIL).
+5. **Bootstrap ứng dụng:**
+   - Viết `app.js` để gắn kết toàn bộ module, khởi tạo Global Error Handling, đăng ký Service Worker.
 
 ---
 
-### 4. Cách kiểm tra (Dành cho Tester)
-Tester sẽ kiểm tra dựa trên danh sách sau:
-1. **File tồn tại**: Kiểm tra đủ 5 file (`index.html`, `style.css`, `script.js`, `manifest.json`, `service-worker.js`).
-2. **Giao diện & Theme**: Chuyển đổi qua lại giữa Dark/Light mode, Compact/Comfortable layout, bật/tắt animation.
-3. **Task Manager**:
-   - Thêm task mới (test validation task rỗng / deadline không hợp lệ).
-   - Sửa, Xóa, Đánh dấu hoàn thành.
-   - Drag & drop task giữa các cột trạng thái.
-   - Tìm kiếm, lọc theo status/priority, sắp xếp.
-4. **Undo / Redo**: Thực hiện thao tác task, bấm `Ctrl+Z` để Undo và `Ctrl+Y` để Redo.
-5. **Command Palette**: Bấm `Ctrl+K`, thử chạy các lệnh, bấm `ESC` để đóng.
-6. **Import / Export**: Export ra file JSON, thử Import file JSON hợp lệ và file JSON sai định dạng (xem có báo lỗi và không crash app không).
-7. **LocalStorage**: Thêm task, reload trang xem dữ liệu có còn giữ nguyên không. Nút Clear All có popup xác nhận.
-8. **Analytics**: Kiểm tra số liệu trên trang Analytics phản ánh đúng thực tế task.
-9. **PWA / Offline**: Kiểm tra service worker đăng ký thành công.
+### 4. CÁCH KIỂM TRA (Dành cho Tester)
+
+Tester phải thực hiện kiểm tra thực tế (không được đoán mò) các tiêu chí sau:
+- **File Existence:** Kiểm tra đủ 18 file theo danh sách.
+- **Syntax & Execution:** Mở `index.html` trên trình duyệt, không có lỗi console trắng trang.
+- **CRUD & State:** Thêm, sửa, xóa, hoàn thành Task và Project; kiểm tra Undo (Ctrl+Z) và Redo (Ctrl+Y).
+- **Kanban & Drag-Drop:** Thao tác kéo thả task giữa các cột, kiểm tra state và localStorage/IndexedDB cập nhật đúng.
+- **Search & Filter:** Sử dụng advanced search với cú pháp `status:done priority:high`.
+- **Worker & Performance:** Chạy Developer Panel sinh 10,000 tasks, kiểm tra giao diện không bị treo, analytics load mượt mà nhờ Web Worker.
+- **Import/Export:** Xuất dữ liệu JSON và import lại thành công (kiểm tra validation schema).
+- **PWA & Offline:** Kiểm tra Service Worker đăng ký thành công và app hoạt động khi offline.
+- **Self-Test:** Chạy bộ tự kiểm tra trong Developer Settings và xác nhận kết quả `PASS` cho các test case.
 
 ---
 
-### 5. Rủi ro & Giải pháp
-- **Rủi ro**: Lỗi khi parse file JSON import gây crash ứng dụng.
-  - *Giải pháp*: Dùng `try...catch` khi `JSON.parse` và kiểm tra cấu trúc mảng/thuộc tính bắt buộc của task trước khi nạp vào state.
-- **Rủi ro**: Xung đột sự kiện Drag & Drop trên các thiết bị di động.
-  - *Giải pháp*: Kết hợp xử lý click/touch chuyển đổi status linh hoạt bên cạnh drag & drop cho mobile.
-- **Rủi ro**: Lỗi vòng lặp vô hạn trong State History (Undo/Redo).
-  - *Giải pháp*: Giới hạn kích thước lịch sử (max history length = 20) và chỉ ghi lịch sử khi state thực sự thay đổi qua các hành động rõ ràng.
+### 5. RỦI RO
+
+- **Rủi ro 1:** Xử lý Drag & Drop trên thiết bị di động (Touch devices) có thể gặp giật lag nếu không tối ưu hóa sự kiện touch. *Giải pháp:* Sử dụng Pointer Events API kết hợp tính năng keyboard fallback.
+- **Rủi ro 2:** Dataset lớn (10,000 tasks) có thể làm chậm DOM rendering. *Giải pháp:* Áp dụng pagination/virtualization đơn giản và chuyển toán tử nặng sang `worker.js`.
+- **Rủi ro 3:** IndexedDB lỗi trên một số trình duyệt ẩn danh (Incognito mode). *Giải pháp:* Xây dựng cơ chế fallback tự động sang `localStorage` được định nghĩa sẵn trong `storage.js`.
+
+---
+*(Kế hoạch đã sẵn sàng. Coder có thể tiến hành triển khai mã nguồn theo đúng các thông số kỹ thuật trên.)*
