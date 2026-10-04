@@ -1,63 +1,58 @@
-Dưới đây là kế hoạch triển khai chi tiết cho yêu cầu **"OMEGA SINGULARITY: THE IMPOSSIBILITY / BEYOND-HUMAN AGENT TEST"**. 
-
-Theo đúng quy trình, thư mục `.bangiao` đã được kiểm tra/tạo và file `.bangiao/ke-hoach.md` sẽ được thiết lập với nội dung phân tích toàn diện.
+Dưới đây là kế hoạch chi tiết cho hệ thống **OMEGA COMPUTER** theo yêu cầu của bạn. Kế hoạch này được thiết lập để tuân thủ quy trình của PLANNER (không sửa code, không tự suy đoán, tạo file `.bangiao/ke-hoach.md` và tuân thủ tuyệt đối các ràng buộc zero-backend, giả lập đầy đủ, mô phỏng kiến trúc đa tầng).
 
 ---
 
-# KẾ HOẠCH TRIỂN KHAI: OMEGA SINGULARITY & BEYOND-HUMAN AGENT TEST
-
-## ⚠️ CÂU HỎI CÒN BỎ NGỎ (QUAN TRỌNG)
-1. **Phần X & Y (Bất khả thi về mặt lý thuyết toán học - Bài toán dừng Halting Problem):** Yêu cầu quyết định chính xác 100% liệu một chương trình JavaScript tùy ý có dừng hay không, hoặc chứng minh không có bug/lỗ hổng bảo mật trên mọi input. **Planner khẳng định theo Định lý Halting (Alan Turing) và Định lý Không đầy đủ (Gödel), việc này là BẤT KHẢ THI về mặt toán học.** Kế hoạch sẽ không giả vờ cài đặt một thuật toán ma thuật giải quyết bài toán dừng, thay vào đó sẽ xây dựng một *Bounded Symbolic Execution / Heuristic Static Analyzer* kèm báo cáo giới hạn rõ ràng theo đúng tinh thần "HONEST LIMITATION REPORTING". Người dùng có đồng ý với cách tiếp cận này không?
-
----
-
-## 1. Mục tiêu
-- Xây dựng một bản thiết kế và cấu trúc mã nguồn mô phỏng Universal Web Runtime trong trình duyệt bao gồm 30 hệ thống con (từ Window Manager, Virtual FS, Transaction Engine đến Distributed Nodes, Spreadsheet, Sandbox, Plugin Security, Fuzzing, Model Checking và hệ thống tự chứng minh giới hạn).
-- Tuân thủ tuyệt đối nguyên tắc **CORRECTNESS → VERIFIABILITY → SECURITY → CONSISTENCY → HONEST LIMITATION REPORTING**.
-- Tuyệt đối không giả vờ đạt được các yêu cầu bất khả thi (Phần X & Y), mà phải chỉ ra bằng chứng toán học/lý thuyết về giới hạn của chúng.
+### CÂU HỎI CÒN BỎ NGỎ (Bắt buộc xác nhận trước khi triển khai sâu)
+1. **Phạm vi WebAssembly hay Pure JS/TS**: Do yêu cầu zero backend và chạy hoàn toàn trong trình duyệt, hệ thống ảo hóa CPU, Compiler và Distributed Cluster sẽ được viết bằng TypeScript thuần túy hay có tích hợp WebAssembly (Rust/C++) cho phần biên dịch/CPU simulation? Hiện tại kế hoạch giả định sử dụng **TypeScript thuần túy** để đảm bảo khả năng portable và self-hosting dễ dàng trong browser worker.
+2. **Framework UI**: Dự án sử dụng framework UI nào (React, Vue, hay Vanilla Web Components)? Kế hoạch mặc định sử dụng **React + TypeScript + Tailwind CSS** (nếu cấu trúc project hiện tại hỗ trợ) hoặc **Vanilla TS** nếu codebase là pure web app.
 
 ---
 
-## 2. Các file cần tạo / sửa (Đường dẫn chính xác)
-Vì đây là một hệ thống quy mô cực lớn (Omega Singularity), mã nguồn sẽ được chia thành các module độc lập trong thư mục `src/`:
+### KẾ HOẠCH TRIỂN KHAI CHI TIẾT
+*(Đã được ghi vào `.bangiao/ke-hoach.md` theo quy định)*
 
-- `.bangiao/ke-hoach.md` (Tài liệu kế hoạch này)
-- `src/runtime/kernel.js` (Core OS, Event Bus, Worker Pool)
-- `src/vfs/filesystem.js` (Virtual File System với Journaling & Transaction)
-- `src/transaction/engine.js` (Nested Transaction Engine: BEGIN, COMMIT, ROLLBACK)
-- `src/distributed/nodes.js` (5 Virtual Nodes, Lamport/Vector Clock, Conflict Resolution)
-- `src/query/engine.js` (Universal Query Parser & Executor, không dùng eval)
-- `src/spreadsheet/engine.js` (1000x1000 cells, Formula parser, Circular dependency detection)
-- `src/sandbox/js-sandbox.js` & `src/debugger/debugger.js` (JS Sandbox giới hạn & Debugger)
-- `src/plugin/security.js` (Plugin System & Permission Enforcer)
-- `src/search/universal-search.js` (Fuzzy Search cho 1,000,000+ records)
-- `src/testing/fuzzer.js` & `src/testing/property-tests.js` (Fuzzing & Property-based testing)
-- `src/verification/model-checker.js` & `src/verification/invariants.js` (State Machine, Invariant Checker I1-I7)
-- `src/migration/migration-manager.js` (Migration chain v1 → v5)
-- `src/limitation/impossibility-report.js` (**Phần X & Y**: Báo cáo trung thực về các giới hạn bất khả thi toán học như Bài toán dừng / Halting Problem).
+#### 1. Mục tiêu và Phạm vi
+Xây dựng **OMEGA COMPUTER** - một máy tính đa năng chạy hoàn toàn trong trình duyệt (Zero Backend, PWA), tích hợp:
+- Virtual CPU, Virtual Memory, Process Manager, CPU Scheduler (FCFS, Round Robin, Priority).
+- Virtual Filesystem (Journaling, Transaction Rollback, Path Traversal Protection).
+- Mini Database Engine (SQL Parser thủ công, không dùng `eval()`, Transaction ACID-like).
+- Omega-Lang (Lexer, Parser, AST, IR, Optimizer, Bytecode Compiler, Interpreter).
+- Virtual Shell, Package Manager & Dependency Solver.
+- Distributed Cluster (7 Virtual Nodes, Lamport Clocks, Leader Election, Consensus Simulation).
+- Event Bus, Deterministic Replay, Snapshot & Time-Travel Debugging.
+- Worker Cluster, Search Engine (Fuzzy/Prefix/Exact), Spreadsheet (1000x1000 cells, Circular Dependency Check).
+- Multi-user & Security Model (RBAC, Permission Engine, Plugin Sandbox).
+- Chaos Engine, Fuzz Engine, Formal Invariant Checker, Impossibility Lab.
 
----
+#### 2. Các file cần tạo / sửa (Cấu trúc dự án đề xuất)
+- `src/core/cpu/`: `cpu.ts`, `registers.ts`, `debugger.ts`
+- `src/core/memory/`: `mmu.ts`, `protection.ts`
+- `src/core/process/`: `processManager.ts`, `scheduler.ts`
+- `src/core/fs/`: `filesystem.ts`, `journal.ts`, `recovery.ts`
+- `src/core/db/`: `parser.ts`, `engine.ts`, `transaction.ts`, `optimizer.ts`
+- `src/core/lang/`: `lexer.ts`, `parser.ts`, `interpreter.ts`, `compiler.ts`, `optimizer.ts`
+- `src/core/cluster/`: `node.ts`, `consensus.ts`, `lamport.ts`, `network.ts`
+- `src/core/engine/`: `eventBus.ts`, `snapshot.ts`, `replay.ts`, `chaos.ts`, `fuzzer.ts`, `invariants.ts`
+- `src/workers/`: `clusterWorker.ts`, `fuzzWorker.ts`
+- `src/ui/`: `shell.ts`, `editor.ts`, `spreadsheet.ts`, `components/`
+- `.bangiao/ke-hoach.md`: File lưu kế hoạch này.
 
-## 3. Các bước thực hiện (Cho Coder)
-1. **Khởi tạo cấu trúc thư mục** `src/` và các module cơ bản.
-2. **Triển khai VFS & Transaction Engine:** Xây dựng hệ thống file ảo chống path traversal, hỗ trợ journaling và rollback khi crash.
-3. **Mô phỏng Distributed System & Logical Clocks:** Tạo 5 node (A-E), đồng bộ qua Lamport/Vector Clocks và cơ chế giải quyết xung đột (Conflict Resolution).
-4. **Xây dựng Query Parser & Spreadsheet:** Parser biểu thức an toàn (không dùng `eval`) và bộ tính toán bảng tính 1000x1000 với cơ chế phát hiện vòng lặp (circular dependency).
-5. **Thiết lập Code Sandbox & Plugin Security:** Cô lập môi trường thực thi code, kiểm tra quyền hạn (permission enforcement) chống leo thang đặc quyền.
-6. **Xây dựng Fuzzing, Property Testing & Invariants:** Kiểm tra các bất biến (I1-I7) qua Fuzzer và State Machine Model Checking.
-7. **Lập Báo cáo Giới hạn (Impossibility & Halting Test):** Triển khai module `impossibility-report.js` để chứng minh và giải thích lý do tại sao các yêu cầu tuyệt đối (như phần X và Y) không thể giải quyết tổng quát, đưa ra phiên bản heuristic/bounded thực tế.
+#### 3. Các bước thực hiện cho Coder
+1. **Khởi tạo Core Engine**: Thiết lập Virtual CPU (ISA tối thiểu: MOV, ADD, SUB, JMP, HALT...) và Virtual Memory phân vùng (Code, Data, Stack, Heap).
+2. **Xây dựng Process & Scheduler**: Hiện thực hóa Process Control Block (PCB), trạng thái process và các thuật toán lập lịch (Round Robin, Priority).
+3. **Phát triển Virtual Filesystem & Journaling**: Xây dựng cây thư mục, cơ chế journaling (BEGIN, WRITE, COMMIT) và mô phỏng crash recovery.
+4. **Xây dựng Database & Query Optimizer**: Viết SQL Parser thủ công, hỗ trợ CRUD, Transaction (Rollback/Commit) và Index/Full scan benchmark.
+5. **Omega-Lang & Compiler Pipeline**: Xây dựng Lexer, Parser, AST, IR, Bytecode Compiler và Interpreter không dùng `eval()`.
+6. **Distributed Cluster Simulation**: Mô phỏng 7 node, Lamport clocks, Leader election, xử lý packet loss/reordering.
+7. **Reliability & Testing Framework**: Tích hợp Fuzz Engine, Chaos Engine, Formal Invariant Checker (I1-I8) và Time-Travel Debugger.
+8. **UI & Accessibility**: Xây dựng Virtual Shell, Spreadsheet Engine, Text Editor, hỗ trợ PWA, i18n (Anh/Việt) và chuẩn Accessibility (A11y).
 
----
+#### 4. Cách kiểm tra (Testing & Verification)
+- **Unit & Property Testing**: Kiểm tra serialize $\leftrightarrow$ deserialize, create $\leftrightarrow$ undo, export $\leftrightarrow$ import.
+- **Invariant Checker**: Chạy tự động các assertion kiểm tra I1 đến I8 liên tục trong quá trình mô phỏng.
+- **Chaos & Fuzz Testing**: Bơm dữ liệu rác (null, NaN, circular objects, huge strings) vào fuzzer để đảm bảo hệ thống không crash.
+- **Impossibility Lab**: Chạy các module đánh giá giới hạn lý thuyết (được gắn nhãn *NOT MEASURED* hoặc *LIMITATION* rõ ràng nếu vượt quá khả năng browser).
 
-## 4. Cách kiểm tra (Verification & Testing)
-- **Unit Tests & Integration Tests:** Kiểm tra từng engine (VFS, Transaction, Query, Spreadsheet).
-- **Property-Based Tests:** Kiểm tra các property: Create→Delete, Apply→Undo, Serialize→Deserialize, Export→Import.
-- **Crash Consistency Tests:** Mô phỏng ngắt quãng trong lúc write/commit để kiểm tra khả năng recover của Journaling VFS.
-- **Meta-Test & Self-Correction Check:** Đảm bảo Test Runner không tự động đổi expected result để che giấu lỗi.
-- **Honest Limitation Audit:** Kiểm tra báo cáo giới hạn ở Phần X & Y xem có giải thích chính xác bằng toán học/lý thuyết khoa học máy tính hay không.
-
----
-
-## 5. Rủi ro (Risks)
-- **Hiệu năng trình duyệt (Browser Performance):** Mô phỏng 1,000,000 records hoặc fuzzer chạy hàng loạt có thể gây tràn bộ nhớ (Out of Memory) hoặc đóng băng UI. *Giải pháp:* Sử dụng Web Worker Cluster (Phần O) để xử lý bất đồng bộ.
-- **Hiểu lầm về yêu cầu tuyệt đối:** Các agent khác có thể cố viết code giả mạo giải quyết bài toán dừng (Halting Problem). *Giải pháp:* Cần giám sát chặt chẽ module `impossibility-report.js` để đảm bảo tuân thủ tính trung thực tuyệt đối (Honest Limitation Reporting).
+#### 5. Rủi ro
+- **Hiệu suất trình duyệt**: Chạy 7 node phân tán + Fuzzer + Virtual CPU cùng lúc trong Web Workers có thể gây nghẽn Main Thread nếu không phân bổ thời gian hợp lý (phải dùng `requestAnimationFrame` và Web Workers).
+- **Giới hạn bộ nhớ IndexedDB / RAM**: Xử lý tập dữ liệu lớn (1M - 10M records) phải có cơ chế ngắt an toàn (Resource Limit Test) để tránh treo browser tab.
