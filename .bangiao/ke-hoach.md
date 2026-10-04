@@ -1,57 +1,56 @@
-Chào bạn, với tư cách là **PLANNER**, trước tiên tôi cần thực hiện bước khảo sát codebase hiện tại (sử dụng các công cụ `Glob`, `Grep`, `Read` nếu có) để hiểu rõ cấu trúc dự án. Tuy nhiên, do đây là một yêu cầu khởi tạo hoặc tôi đang ở lượt phản hồi đầu tiên, tôi sẽ đưa ra bản kế hoạch tổng quan dựa trên yêu cầu: **"Tạo một web chuyên về nhạc có tất cả bài nhạc"**.
+Chào bạn, tôi là **PLANNER**. Dựa trên vai trò và hướng dẫn, tôi đã phân tích yêu cầu tạo một website giới thiệu về 4 agent AI. 
 
-*Lưu ý: Vì yêu cầu này khá rộng ("tất cả bài nhạc" là một tập dữ liệu vô hạn hoặc cần định nghĩa nguồn nhạc từ đâu), tôi sẽ đặt các câu hỏi bỏ ngỏ lên đầu theo đúng quy chuẩn.*
+Vì đây là một khởi tạo mới (hoặc dựa trên cấu trúc hiện tại), tôi sẽ lập kế hoạch chi tiết để chuyển giao cho agent CODER thực hiện.
 
----
-
-### CÂU HỎI CÒN BỎ NGỎ (Cần người dùng quyết định)
-1. **Nguồn dữ liệu nhạc:** "Tất cả bài nhạc" sẽ được lấy từ đâu? (Ví dụ: Tự upload file MP3 thủ công, tích hợp API bên thứ ba như Spotify/SoundCloud/YouTube, hay crawl từ một nguồn cụ thể?)
-2. **Cơ sở dữ liệu:** Dự án hiện tại đang dùng database nào (MongoDB, PostgreSQL, SQLite, hay chỉ lưu file JSON/Local Storage)?
-3. **Tính năng cốt lõi bắt buộc:** Web cần các tính năng gì ở giai đoạn đầu? (Ví dụ: Trình phát nhạc nổi/mini-player, tìm kiếm, tạo playlist, yêu thích, phân loại nghệ sĩ/album?)
+Dưới đây là kế hoạch triển khai chi tiết:
 
 ---
 
-### KẾ HOẠCH TRIỂN KHAI CHI TIẾT (`.bangiao/ke-hoach.md`)
-
-#### 1. Mục tiêu
-Xây dựng một website nghe nhạc trực tuyến (Web Music Player) có khả năng quản lý, hiển thị và phát các bài hát, đáp ứng trải nghiệm người dùng mượt mà, giao diện trực quan (Dark/Light mode, trình phát nhạc cố định dưới chân trang).
-
-#### 2. Các file cần tạo/sửa (Dự kiến cấu trúc Next.js/React hoặc Node.js tùy codebase thực tế)
-*   `src/models/Track.ts` (hoặc schema tương đương): Định nghĩa cấu trúc dữ liệu cho bài hát (title, artist, duration, coverUrl, audioUrl, genre).
-*   `src/app/api/tracks/route.ts`: API lấy danh sách bài hát và thêm bài hát mới.
-*   `src/components/Player.tsx`: Component trình phát nhạc chính (Play, Pause, Seekbar, Volume, Next/Prev).
-*   `src/components/TrackList.tsx`: Hiển thị danh sách toàn bộ bài nhạc.
-*   `src/components/Sidebar.tsx` hoặc `Navbar.tsx`: Điều hướng giữa các trang (Trang chủ, Khám phá, Thư viện).
-*   `src/app/page.tsx`: Trang chủ hiển thị tổng quan các bài nhạc.
-
-#### 3. Các bước thực hiện cho Coder
-1.  **Bước 1: Khảo sát và Chuẩn bị Schema**
-    *   Kiểm tra kết nối Database hiện tại của dự án.
-    *   Tạo/cập nhật Model dữ liệu cho `Track` (Bài hát) và `Playlist`.
-2.  **Bước 2: Xây dựng Backend APIs**
-    *   Viết API Endpoint `GET /api/tracks` để lấy toàn bộ danh sách bài nhạc.
-    *   Viết API hỗ trợ tìm kiếm bài hát theo tên hoặc nghệ sĩ (`GET /api/tracks/search?q=...`).
-3.  **Bước 3: Xây dựng Global Audio Player State**
-    *   Sử dụng React Context hoặc Zustand để quản lý trạng thái phát nhạc toàn cục (đảm bảo nhạc không bị ngắt khi chuyển trang).
-4.  **Bước 4: Phát triển UI Components**
-    *   Làm giao diện danh sách bài nhạc (`TrackList`).
-    *   Làm thanh điều khiển nhạc dưới cùng (`Player`) với các nút điều hướng cơ bản.
-5.  **Bước 5: Tích hợp và Tối ưu**
-    *   Kết nối UI với API.
-    *   Xử lý các trường hợp biên (file audio lỗi, mạng chậm, không tìm thấy bài hát).
-
-#### 4. Cách kiểm tra (Testing)
-*   **Unit Test:** Kiểm tra các hàm helper xử lý định dạng thời gian bài hát (MM:SS).
-*   **Integration Test:** Kiểm tra API `GET /api/tracks` trả về đúng định dạng JSON danh sách bài nhạc.
-*   **Manual Test:**
-    *   Mở trang web, danh sách bài nhạc hiển thị đầy đủ.
-    *   Bấm Play một bài hát $\rightarrow$ Thanh player dưới cùng hoạt động, âm thanh phát ra đúng.
-    *   Thử chuyển trang $\rightarrow$ Nhạc vẫn tiếp tục phát (nếu áp dụng persistent player).
-    *   Thử tìm kiếm bài hát theo tên.
-
-#### 5. Rủi ro
-*   **Bản quyền & Lưu trữ:** Lưu trữ lượng lớn file âm thanh (MP3) có thể làm quá tải băng thông và dung lượng server nếu không dùng dịch vụ lưu trữ đám mây chuyên dụng (AWS S3, Cloudinary).
-*   **Hiệu năng (Performance):** Nếu danh sách "tất cả bài nhạc" lên tới hàng chục nghìn bài mà không phân trang (Pagination) hoặc cuộn vô hạn (Infinite Scroll), DOM sẽ bị nặng và giật lag.
+### 1. Mục tiêu
+- Xây dựng một trang web (Single Page Application hoặc Multi-page đơn giản bằng HTML/CSS/JS hoặc Framework hiện có trong dự án) giới thiệu về 4 Agent AI.
+- Giao diện hiện đại, responsive, trực quan, thể hiện rõ vai trò của từng Agent (Ví dụ: Planner, Coder, Reviewer, Tester hoặc các agent theo yêu cầu cụ thể).
+- Cung cấp thông tin chi tiết, tính cách, kỹ năng và ví dụ sử dụng cho mỗi Agent.
 
 ---
-*Kế hoạch này sẽ được lưu chi tiết vào `.bangiao/ke-hoach.md` ngay sau khi bạn giải đáp các câu hỏi bỏ ngỏ ở trên để Coder có thể bắt tay vào code chính xác nhất.*
+
+### 2. File cần thay đổi / tạo mới
+*(Dựa trên giả định đây là một dự án web tĩnh hoặc khởi tạo mới)*
+- `index.html`: Trang chủ chính hiển thị tổng quan và danh sách 4 agent.
+- `styles.css` (hoặc thư mục `css/`): Chứa style giao diện, hiệu ứng animation, responsive layout.
+- `script.js` (hoặc thư mục `js/`): Xử lý tương tác (hiệu ứng chuyển tab, modal chi tiết, lọc agent...).
+- `assets/` (tùy chọn): Chứa hình ảnh, icon minh họa cho các agent.
+- `.bangiao/ke-hoach.md`: Lưu trữ file kế hoạch chi tiết cho coder.
+
+---
+
+### 3. Các bước thực hiện
+1. **Khởi tạo cấu trúc thư mục**: Tạo các file HTML, CSS, JS cơ bản nếu chưa có.
+2. **Xây dựng cấu trúc HTML (`index.html`)**:
+   - Header/Hero section: Tiêu đề ấn tượng về hệ thống 4 Agent AI.
+   - Section danh sách Agent: Chia thành 4 card tương ứng với 4 agent, bao gồm tên, avatar/icon, mô tả ngắn và nút "Xem chi tiết".
+   - Section chi tiết/Modal: Hiển thị sâu hơn về kỹ năng, công cụ sử dụng và luồng hoạt động của từng agent.
+   - Footer: Thông tin bản quyền / liên hệ.
+3. **Thiết kế giao diện (`styles.css`)**:
+   - Sử dụng CSS Flexbox/Grid để đảm bảo responsive trên mọi thiết bị (Mobile, Tablet, Desktop).
+   - Áp dụng màu sắc chủ đạo mang phong cách công nghệ / AI (Dark mode hoặc Modern Light mode).
+   - Thêm hiệu ứng hover, transition mượt mà cho các card agent.
+4. **Viết logic tương tác (`script.js`)**:
+   - Xử lý sự kiện click mở modal hoặc chuyển đổi tab xem chi tiết thông tin của từng agent.
+   - Hiệu ứng động (nếu có) khi cuộn trang (scroll animation).
+5. **Kiểm tra và hoàn thiện**: Đảm bảo không có lỗi hiển thị, tối ưu hóa tốc độ tải trang.
+
+---
+
+### 4. Cách kiểm tra
+- **Kiểm tra giao diện (UI/UX)**: Mở file `index.html` trực tiếp trên trình duyệt hoặc chạy qua local server (Live Server).
+- **Responsive**: Kiểm tra trên các kích thước màn hình khác nhau (Mobile: 375px, Tablet: 768px, Desktop: 1200px) bằng Developer Tools của trình duyệt.
+- **Tính năng**: Click vào các nút tương tác, đảm bảo thông tin của cả 4 agent hiển thị chính xác và không có lỗi console trên JavaScript.
+
+---
+
+### 5. Rủi ro
+- **Thiếu thông tin chi tiết về 4 agent**: Nếu yêu cầu chưa nêu rõ tên, vai trò cụ thể của 4 agent là gì, Coder có thể phải tự bịa đặt nội dung mẫu (dù có thể thay thế sau).
+- **Thiếu tài nguyên thiết kế**: Không có sẵn hình ảnh/icon độc quyền, cần sử dụng icon dạng SVG hoặc các thư viện phổ biến như FontAwesome.
+
+---
+*Lưu ý: Tôi không thực hiện sửa đổi code trực tiếp. Bạn có thể yêu cầu Coder đọc kế hoạch này và bắt tay vào triển khai.*

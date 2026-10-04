@@ -3,123 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giai Điệu Vô Tận - Web Nghe Nhạc Hàng Đầu</title>
+    <title>Hệ Thống 4 AI Agent - Tự Động Hóa Phát Triển Phần Mềm</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="src/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
+    <!-- Header & Hero Section -->
+    <header class="header">
+        <div class="container nav-container">
             <div class="logo">
-                <i class="fa-solid fa-music"></i>
-                <span>MuZic</span>
+                <i class="fa-solid fa-network-wired"></i>
+                <span>4Agent.AI</span>
             </div>
-            <ul class="nav-menu">
-                <li class="active" data-tab="home">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Khám Phá</span>
-                </li>
-                <li data-tab="library">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>Thư Viện</span>
-                </li>
-                <li data-tab="favorites">
-                    <i class="fa-solid fa-heart"></i>
-                    <span>Yêu Thích</span>
-                </li>
-            </ul>
-            <div class="playlist-section">
-                <h3>Playlist của bạn</h3>
-                <ul id="user-playlists">
-                    <li><span>Nhạc trẻ Hot 2024</span></li>
-                    <li><span>Lofi Chill Relax</span></li>
-                    <li><span>Remix Sôi Động</span></li>
-                </ul>
-            </div>
-        </aside>
+            <nav class="nav-links">
+                <a href="#agents">Agents</a>
+                <a href="#workflow">Quy Trình</a>
+                <a href="#features">Tính Năng</a>
+            </nav>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" id="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ...">
-                </div>
-                <div class="user-profile">
-                    <i class="fa-solid fa-bell"></i>
-                    <div class="avatar">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-badge">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Hệ Thống Đa Tác Nhân Thông Minh
+            </div>
+            <h1>Khám Phá Sức Mạnh Của <span class="gradient-text">4 AI Agent</span></h1>
+            <p class="hero-subtitle">
+                Sự kết hợp hoàn hảo giữa Planner, Coder, Reviewer và Tester giúp tự động hóa toàn bộ vòng đời phát triển phần mềm với độ chính xác cao và tốc độ vượt trội.
+            </p>
+            <div class="hero-buttons">
+                <a href="#agents" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Khám Phá Ngay</a>
+                <a href="#workflow" class="btn btn-secondary"><i class="fa-solid fa-diagram-project"></i> Xem Quy Trình</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agents Section -->
+    <section id="agents" class="agents-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Đội Ngũ <span class="gradient-text">4 AI Agent</span></h2>
+                <p>Mỗi agent đảm nhận một vai trò chuyên biệt, phối hợp nhịp nhàng như một đội ngũ kỹ sư thực thụ.</p>
+            </div>
+
+            <div class="agents-grid">
+                <!-- Agent 1: Planner -->
+                <div class="agent-card" data-agent="planner">
+                    <div class="agent-header">
+                        <div class="agent-icon planner-bg">
+                            <i class="fa-solid fa-compass-drafting"></i>
+                        </div>
+                        <div class="agent-badge">Chiến Lược</div>
                     </div>
+                    <h3>1. Planner</h3>
+                    <p class="agent-role">Kiến trúc sư & Lập kế hoạch</p>
+                    <p class="agent-desc">Phân tích yêu cầu gốc, lập kế hoạch chi tiết từng bước, chia nhỏ công việc và xác định các file cần thay đổi trước khi triển khai.</p>
+                    <div class="agent-skills">
+                        <span>Phân tích</span>
+                        <span>Lập kế hoạch</span>
+                        <span>Thiết kế hệ thống</span>
+                    </div>
+                    <button class="btn-details" onclick="openModal('planner')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
-            </header>
 
-            <!-- Banner -->
-            <section class="banner">
-                <div class="banner-content">
-                    <span class="tag">Đề Xuất</span>
-                    <h1>Thế Giới Âm Nhạc Trong Tầm Tay</h1>
-                    <p>Khám phá hàng triệu bài hát chất lượng cao từ mọi thể loại.</p>
-                    <button class="btn-play-all" id="btn-play-all">
-                        <i class="fa-solid fa-play"></i> Nghe Ngay
-                    </button>
+                <!-- Agent 2: Coder -->
+                <div class="agent-card" data-agent="coder">
+                    <div class="agent-header">
+                        <div class="agent-icon coder-bg">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div class="agent-badge">Thực Thi</div>
+                    </div>
+                    <h3>2. Coder</h3>
+                    <p class="agent-role">Lập trình viên & Phát triển</p>
+                    <p class="agent-desc">Đọc kỹ kế hoạch từ Planner, viết mã nguồn sạch, chính xác, tuân thủ quy ước codebase và bàn giao kết quả hoàn thiện.</p>
+                    <div class="agent-skills">
+                        <span>HTML/CSS/JS</span>
+                        <span>Clean Code</span>
+                        <span>Triển khai</span>
+                    </div>
+                    <button class="btn-details" onclick="openModal('coder')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
-            </section>
 
-            <!-- Track List Section -->
-            <section class="songs-section">
-                <h2>Tất Cả Bài Hạc</h2>
-                <div class="song-list-header">
-                    <span>#</span>
-                    <span>Tiêu đề</span>
-                    <span>Album</span>
-                    <span><i class="fa-solid fa-clock"></i></span>
+                <!-- Agent 3: Reviewer -->
+                <div class="agent-card" data-agent="reviewer">
+                    <div class="agent-header">
+                        <div class="agent-icon reviewer-bg">
+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        </div>
+                        <div class="agent-badge">Kiểm Định</div>
+                    </div>
+                    <h3>3. Reviewer</h3>
+                    <p class="agent-role">Chuyên gia Kiểm tra Mã nguồn</p>
+                    <p class="agent-desc">Đánh giá toàn diện mã nguồn do Coder thực hiện, đảm bảo tuân thủ tiêu chuẩn chất lượng, bảo mật và tính tối ưu.</p>
+                    <div class="agent-skills">
+                        <span>Code Review</span>
+                        <span>Bảo mật</span>
+                        <span>Tối ưu hóa</span>
+                    </div>
+                    <button class="btn-details" onclick="openModal('reviewer')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
-                <div class="song-list" id="song-list">
-                    <!-- Dynamic tracks will be loaded here -->
+
+                <!-- Agent 4: Tester -->
+                <div class="agent-card" data-agent="tester">
+                    <div class="agent-header">
+                        <div class="agent-icon tester-bg">
+                            <i class="fa-solid fa-vial-circle-check"></i>
+                        </div>
+                        <div class="agent-badge">Đảm Bảo Chất Lượng</div>
+                    </div>
+                    <h3>4. Tester</h3>
+                    <p class="agent-role">Kỹ sư Kiểm thử Phần mềm</p>
+                    <p class="agent-desc">Kiểm thử giao diện, tính năng, độ tương thích trên các thiết bị và xác nhận sản phẩm đạt chuẩn trước khi phát hành.</p>
+                    <div class="agent-skills">
+                        <span>UI/UX Testing</span>
+                        <span>Responsive</span>
+                        <span>Bug Detection</span>
+                    </div>
+                    <button class="btn-details" onclick="openModal('tester')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
                 </div>
-            </section>
-        </main>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow" class="workflow-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Quy Trình Hoạt Động <span class="gradient-text">Khép Kín</span></h2>
+                <p>Cách 4 agent phối hợp với nhau để biến ý tưởng thành sản phẩm hoàn chỉnh.</p>
+            </div>
+            <div class="workflow-steps">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h4>Planner Tiếp Nhận</h4>
+                    <p>Nhận yêu cầu từ người dùng, nghiên cứu và vạch ra bản kế hoạch chi tiết từng bước.</p>
+                </div>
+                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h4>Coder Triển Khai</h4>
+                    <p>Dựa vào kế hoạch để viết mã, xây dựng giao diện và lập trình tính năng.</p>
+                </div>
+                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h4>Reviewer Đánh Giá</h4>
+                    <p>Soát xét toàn bộ code, đưa ra nhận xét, phát hiện lỗ hổng hoặc điểm cần cải thiện.</p>
+                </div>
+                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="step-card">
+                    <div class="step-number">04</div>
+                    <h4>Tester Nghiệm Thu</h4>
+                    <p>Chạy thử nghiệm thực tế, kiểm tra độ ổn định và chốt kết quả bàn giao cuối cùng.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Chi Tiết -->
+    <div id="agentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalBody">
+                <!-- Nội dung động sẽ được điền bằng JavaScript -->
+            </div>
+        </div>
     </div>
 
-    <!-- Music Player Bar -->
-    <div class="music-player">
-        <div class="current-song">
-            <img id="player-cover" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100" alt="Cover">
-            <div class="song-info">
-                <h4 id="player-title">Chọn bài hát</h4>
-                <p id="player-artist">Nghệ sĩ</p>
-            </div>
-            <i class="fa-regular fa-heart" id="player-heart"></i>
-        </div>
-
-        <div class="player-center">
-            <div class="player-controls">
-                <button id="shuffle-btn" title="Xáo trộn"><i class="fa-solid fa-shuffle"></i></button>
-                <button id="prev-btn" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
-                <button id="play-pause-btn" class="play-pause" title="Phát/Tạm dừng"><i class="fa-solid fa-play" id="play-icon"></i></button>
-                <button id="next-btn" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
-                <button id="repeat-btn" title="Lặp lại"><i class="fa-solid fa-repeat"></i></button>
-            </div>
-            <div class="progress-container">
-                <span id="current-time">0:00</span>
-                <div class="progress-bar" id="progress-bar">
-                    <div class="progress" id="progress"></div>
-                </div>
-                <span id="duration">0:00</span>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2025 Hệ Thống 4 AI Agent. Được phát triển tự động bởi dây chuyền AI.</p>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-github"></i></a>
+                <a href="#"><i class="fa-brands fa-discord"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
             </div>
         </div>
+    </footer>
 
-        <div class="player-right">
-            <i class="fa-solid fa-volume-high" id="volume-icon"></i>
-            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
-        </div>
-    </div>
-
-    <!-- Audio Element -->
-    <audio id="audio-element"></audio>
-
-    <script src="src/js/app.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
