@@ -1,244 +1,223 @@
 <!DOCTYPE html>
-<html lang="vi" class="dark">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FF Sensitivity Hub - Độ Nhạy Free Fire Pro Player & Tùy Chỉnh</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        ffred: {
-                            500: '#ff3b30',
-                            600: '#e02d22',
-                            700: '#c52217',
-                        },
-                        ffdark: {
-                            800: '#1a1a1e',
-                            900: '#121215',
-                            950: '#0a0a0c',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <title>TechStore - Thế giới máy tính chính hãng, PC Gaming & Laptop</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="src/style.css">
 </head>
-<body class="bg-ffdark-950 text-gray-100 font-sans min-h-screen flex flex-col selection:bg-ffred-500 selection:text-white">
-
-    <!-- Header / Navbar -->
-    <header class="sticky top-0 z-50 bg-ffdark-900/90 backdrop-blur-md border-b border-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-ffred-600 to-amber-500 p-2 rounded-xl text-white shadow-lg shadow-ffred-600/30">
-                    <i class="fa-solid fa-crosshairs text-xl animate-pulse"></i>
-                </div>
-                <span class="text-xl font-black tracking-wider uppercase bg-gradient-to-r from-white via-gray-200 to-ffred-500 bg-clip-text text-transparent">
-                    FF<span class="text-ffred-500">SENSE</span>.VN
-                </span>
-            </div>
-            <nav class="hidden md:flex space-x-8 text-sm font-semibold">
-                <a href="#pro-players" class="hover:text-ffred-500 transition-colors">Pro Players</a>
-                <a href="#generator" class="hover:text-ffred-500 transition-colors">Tạo Độ Nhạy</a>
-                <a href="#custom-list" class="hover:text-ffred-500 transition-colors">Độ Nhạy Của Tôi</a>
-                <a href="#tips" class="hover:text-ffred-500 transition-colors">Mẹo Kéo Tâm</a>
+<body>
+    <!-- Header / Navigation -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="#" class="logo"><i class="fa-solid fa-microchip"></i> TechStore</a>
+            <nav class="nav-menu">
+                <ul>
+                    <li><a href="#home">Trang chủ</a></li>
+                    <li><a href="#products">Sản phẩm</a></li>
+                    <li><a href="#features">Ưu điểm</a></li>
+                    <li><a href="#contact">Liên hệ</a></li>
+                </ul>
             </nav>
-            <div>
-                <a href="#generator" class="bg-ffred-600 hover:bg-ffred-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition-all shadow-lg shadow-ffred-600/20 active:scale-95">
-                    <i class="fa-solid fa-plus mr-1"></i> Thêm Setting
-                </a>
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-primary-outline">Tư vấn ngay</a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative py-16 lg:py-24 overflow-hidden border-b border-gray-800/60 bg-gradient-to-b from-ffdark-900 to-ffdark-950">
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ff3b30_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-ffred-500/10 text-ffred-500 border border-ffred-500/20 mb-6">
-                <i class="fa-solid fa-fire text-amber-500"></i> Cập nhật bản vá Free Fire mới nhất
-            </span>
-            <h1 class="text-4xl sm:text-6xl font-black tracking-tight uppercase mb-6">
-                BÍ KÍ KÉO TÂM <span class="bg-gradient-to-r from-ffred-500 to-amber-500 bg-clip-text text-transparent">BÁCH PHÁT BÁCH TRÚNG</span>
-            </h1>
-            <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-10">
-                Khám phá độ nhạy chuẩn xác từ các Pro Player hàng đầu thế giới hoặc tự tối ưu hóa thông số DPI và Setting phù hợp với thiết bị của riêng bạn.
-            </p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#pro-players" class="bg-ffred-600 hover:bg-ffred-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-xl shadow-ffred-600/30 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-bolt">}</i> Xem Pro Players
-                </a>
-                <a href="#generator" class="bg-ffdark-800 hover:bg-gray-800 text-white font-bold px-8 py-3.5 rounded-xl border border-gray-700 transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-sliders"></i> Tự Tạo Setting
-                </a>
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Hiệu năng đỉnh cao <br><span>Thế giới trong tầm tay</span></h1>
+<p>Chuyên cung cấp các dòng PC Gaming cấu hình khủng, Laptop văn phòng mỏng nhẹ và máy trạm đồ họa chuyên nghiệp với giá tốt nhất thị trường.</p>
+                <div class="hero-buttons">
+                    <a href="#products" class="btn btn-primary">Khám phá ngay</a>
+                    <a href="#contact" class="btn btn-secondary">Nhận tư vấn</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" alt="PC Gaming Setup">
             </div>
         </div>
     </section>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        
-        <!-- Section: Pro Players -->
-        <section id="pro-players" class="space-y-6">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide flex items-center gap-3">
-                        <span class="w-3 h-8 bg-ffred-600 rounded-sm"></span> Độ Nhạy Pro Player
-                    </h2>
-                    <p class="text-gray-400 text-sm mt-1">Cấu hình chuẩn xác được tin dùng bởi các huyền thoại Free Fire.</p>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tại sao chọn TechStore?</h2>
+                <p>Cam kết mang lại trải nghiệm mua sắm tuyệt vời nhất cho bạn</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Bảo hành chính hãng</h3>
+                    <p>100% sản phẩm chính hãng, bảo hành từ 12 đến 36 tháng tận nơi.</p>
                 </div>
-                
-                <!-- Filter & Search Controls -->
-                <div class="flex flex-wrap gap-3">
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                            <i class="fa-solid fa-search"></i>
-                        </span>
-                        <input type="text" id="search-input" placeholder="Tìm kiếm pro player..." class="bg-ffdark-900 border border-gray-800 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-ffred-500 w-full sm:w-64">
-                    </div>
-                    <select id="dpi-filter" class="bg-ffdark-900 border border-gray-800 rounded-xl px-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        <option value="all">Tất cả DPI</option>
-                        <option value="low">DPI Dưới 500</option>
-                        <option value="mid">DPI 500 - 800</option>
-                        <option value="high">DPI Trên 800</option>
-                    </select>
+                <div class="feature-item">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <h3>Giao hàng siêu tốc</h3>
+                    <p>Miễn phí vận chuyển và lắp đặt trong nội thành, hỗ trợ toàn quốc.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-headset"></i>
+                    <h3>Hỗ trợ 24/7</h3>
+                    <p>Đội ngũ kỹ thuật viên giàu kinh nghiệm luôn sẵn sàng giải đáp mọi thắc mắc.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-tags"></i>
+                    <h3>Giá cả cạnh tranh</h3>
+                    <p>Cập nhật chương trình khuyến mãi và quà tặng hấp dẫn liên tục.</p>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Grid Pro Players -->
-            <div id="pro-players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- JS will inject cards here -->
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>Sản phẩm nổi bật</h2>
+                <p>Lựa chọn hoàn hảo cho công việc và giải trí của bạn</p>
             </div>
-        </section>
-
-        <!-- Section: Generator & Custom Tool -->
-        <section id="generator" class="bg-ffdark-900/80 border border-gray-800 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-ffred-600/5 rounded-full blur-3xl pointer-events-none"></div>
-            
-            <div class="max-w-2xl mx-auto">
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide">TẠO & LƯU ĐỘ NHẠY CÁ NHÂN</h2>
-                    <p class="text-gray-400 text-sm mt-1">Lưu lại cấu hình kéo tâm tốt nhất của bạn vào bộ nhớ trình duyệt.</p>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Tất cả</button>
+                <button class="filter-btn" data-filter="gaming">PC Gaming</button>
+                <button class="filter-btn" data-filter="office">Laptop Văn Phòng</button>
+                <button class="filter-btn" data-filter="graphic">Đồ họa / Workstation</button>
+            </div>
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card" data-category="gaming">
+                    <div class="product-badge">Gaming</div>
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80" alt="PC Gaming X-Power">
+                    </div>
+                    <div class="product-info">
+                        <h3>PC Gaming X-Power RTX 4060</h3>
+                        <p class="specs">Core i5-13400F | 16GB RAM | 500GB SSD | RTX 4060 8GB</p>
+                        <div class="price-box">
+                            <span class="price">18.990.000đ</span>
+                        </div>
+                        <button class="btn btn-sm btn-primary view-details" data-name="PC Gaming X-Power RTX 4060" data-specs="Intel Core i5-13400F, RAM 16GB DDR4, SSD 500GB NVMe, VGA RTX 4060 8GB, Nguồn 650W 80 Plus." data-price="18.990.000đ">Xem chi tiết</button>
+                    </div>
                 </div>
 
-                <form id="sensitivity-form" class="space-y-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tên / Biệt danh</label>
-                            <input type="text" id="creator-name" required placeholder="VD: Siêu Kéo Tâm" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Thiết bị sử dụng</label>
-                            <input type="text" id="creator-device" required placeholder="VD: iPhone 13 / Samsung" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
+                <!-- Product 2 -->
+                <div class="product-card" data-category="office">
+                    <div class="product-badge office">Văn phòng</div>
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Laptop UltraBook Pro">
                     </div>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">DPI</label>
-                            <input type="number" id="val-dpi" required value="500" min="200" max="1500" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
+                    <div class="product-info">
+                        <h3>Laptop UltraBook Pro 14</h3>
+                        <p class="specs">Core i5-1235U | 16GB RAM | 512GB SSD | Màn 14" 2.8K OLED</p>
+                        <div class="price-box">
+                            <span class="price">15.490.000đ</span>
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Nhìn Xung Quanh</label>
-                            <input type="number" id="val-general" required value="95" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Red Dot</label>
-                            <input type="number" id="val-reddot" required value="90" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm 2X</label>
-                            <input type="number" id="val-scope2x" required value="88" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm 4X</label>
-                            <input type="number" id="val-scope4x" required value="92" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm AWM</label>
-                            <input type="number" id="val-awm" required value="50" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-                        </div>
+                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop UltraBook Pro 14" data-specs="Intel Core i5-1235U, RAM 16GB LPDDR5, SSD 512GB NVMe, Màn hình 14 inch 2.8K OLED sắc nét, Pin 56Wh." data-price="15.490.000đ">Xem chi tiết</button>
                     </div>
+                </div>
 
-                    <button type="submit" class="w-full bg-gradient-to-r from-ffred-600 to-ffred-700 hover:from-ffred-700 hover:to-ffred-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-ffred-600/30 transition-all flex items-center justify-center gap-2 uppercase tracking-wider text-sm">
-                        <i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình Vào Máy
-                    </button>
+                <!-- Product 3 -->
+                <div class="product-card" data-category="graphic">
+                    <div class="product-badge graphic">Đồ họa</div>
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=400&q=80" alt="Workstation Creator Pro">
+                    </div>
+                    <div class="product-info">
+                        <h3>Workstation Creator Pro</h3>
+                        <p class="specs">Core i7-13700K | 32GB RAM | 1TB SSD | RTX 4070 12GB</p>
+                        <div class="price-box">
+                            <span class="price">32.990.000đ</span>
+                        </div>
+                        <button class="btn btn-sm btn-primary view-details" data-name="Workstation Creator Pro" data-specs="Intel Core i7-13700K, RAM 32GB DDR5, SSD 1TB NVMe Gen4, VGA RTX 4070 12GB, Tản nhiệt nước 240." data-price="32.990.000đ">Xem chi tiết</button>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card" data-category="gaming">
+                    <div class="product-badge">Gaming</div>
+                    <div class="product-img">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" alt="Laptop Gaming Beast">
+                    </div>
+                    <div class="product-info">
+                        <h3>Laptop Gaming Beast 15</h3>
+                        <p class="specs">Ryzen 7 6800H | 16GB RAM | 512GB SSD | RTX 3060</p>
+                        <div class="price-box">
+                            <span class="price">21.500.000đ</span>
+                        </div>
+                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop Gaming Beast 15" data-specs="AMD Ryzen 7 6800H, RAM 16GB, SSD 512GB, RTX 3060 6GB, Màn hình 15.6 inch FHD 144Hz." data-price="21.500.000đ">Xem chi tiết</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Liên hệ tư vấn</h2>
+                <p>Để lại thông tin, chúng tôi sẽ liên hệ với bạn trong vòng 15 phút</p>
+            </div>
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <h3>Thông tin liên hệ</h3>
+                    <p><i class="fa-solid fa-location-dot"></i> 123 Đường Công Nghệ, Quận 1, TP. Hồ Chí Minh</p>
+                    <p><i class="fa-solid fa-phone"></i> Hotline: 1900 1234 - 0988 765 432</p>
+                    <p><i class="fa-solid fa-envelope"></i> Email: support@techstore.vn</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Họ và tên</label>
+                        <input type="text" id="name" required placeholder="Nhập họ tên của bạn">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại</label>
+                        <input type="tel" id="phone" required placeholder="Nhập số điện thoại">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Yêu cầu tư vấn</label>
+                        <textarea id="message" rows="4" placeholder="Bạn cần tư vấn dòng máy nào?"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Gửi yêu cầu</button>
                 </form>
             </div>
-        </section>
-
-        <!-- Section: Custom User List -->
-        <section id="custom-list" class="space-y-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide flex items-center gap-3">
-                        <span class="w-3 h-8 bg-amber-500 rounded-sm"></span> Độ Nhạy Của Tôi
-                    </h2>
-                    <p class="text-gray-400 text-sm mt-1">Danh sách các cấu hình bạn đã tự tạo trên trình duyệt này.</p>
-                </div>
-            </div>
-
-            <div id="custom-players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- JS will inject user custom cards here -->
-            </div>
-        </section>
-
-        <!-- Section: Tips for Dragging Aim -->
-        <section id="tips" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
-                <div class="w-10 h-10 rounded-xl bg-ffred-500/10 text-ffred-500 flex items-center justify-center font-bold text-lg">
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
-                <h3 class="font-bold text-lg">Tốc Độ Kéo Tâm</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Không kéo quá mạnh hoặc quá nhanh. Hãy thực hiện động tác vuốt dứt khoát từ nửa dưới màn hình hướng thẳng lên đầu đối thủ.
-                </p>
-            </div>
-            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
-                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">
-                    <i class="fa-solid fa-mobile-screen"></i>
-                </div>
-                <h3 class="font-bold text-lg">Vệ Sinh Màn Hình</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Mồ hôi tay làm giảm độ trơn trượt đáng kể. Hãy lau sạch màn hình và sử dụng phấn rôm hoặc bao tay chơi game để tối ưu độ nhạy.
-                </p>
-            </div>
-            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
-                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-lg">
-                    <i class="fa-solid fa-crosshairs"></i>
-                </div>
-                <h3 class="font-bold text-lg">Tâm Mặc Định (Red Dot)</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">
-                    Đặt tâm súng ở ngang ngực trước khi nhắm bắn sẽ giúp lực kéo tâm nhẹ hơn và dễ dính headshot hơn rất nhiều.
-                </p>
-            </div>
-        </section>
-
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-ffdark-900 border-t border-gray-800 py-8 mt-16">
-        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
-            <p class="font-semibold text-gray-400 mb-2">FF Sensitivity Hub - Công cụ hỗ trợ Free Fire tối ưu hóa trải nghiệm game.</p>
-            <p>&copy; 2025 FF Sense. VN. Không liên kết chính thức với Garena.</p>
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 TechStore. Tất cả các quyền được bảo lưu.</p>
         </div>
     </footer>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-ffdark-800 border border-gray-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
-        <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
-            <i class="fa-solid fa-check text-xs"></i>
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Tên sản phẩm</h2>
+            <p class="modal-price" id="modalPrice">Giá: 0đ</p>
+            <div class="modal-specs">
+                <h4>Thông số kỹ thuật chi tiết:</h4>
+                <p id="modalSpecsText">Đang cập nhật...</p>
+            </div>
+            <div class="modal-action">
+                <a href="#contact" class="btn btn-primary modal-buy-btn">Đặt mua / Tư vấn ngay</a>
+            </div>
         </div>
-        <span id="toast-message" class="text-sm font-medium">Đã sao chép cấu hình vào bộ nhớ tạm!</span>
     </div>
 
-    <!-- Scripts -->
-    <script src="src/data/pro-players.js"></script>
-    <script src="src/js/app.js"></script>
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
 </html>
