@@ -1,0 +1,46 @@
+# Notes về 4 Agent trong Hệ thống Phát triển
+
+Tài liệu này mô tả chi tiết vai trò, nhiệm vụ, công cụ (tools) và quy tắc hoạt động của 4 agent trong quy trình làm việc tự động / phối hợp.
+
+---
+
+## 1. PLANNER (Agent Lập kế hoạch)
+- **Vai trò:** Phân tích yêu cầu gốc, khảo sát cấu trúc dự án và lập kế hoạch chi tiết trước khi tiến hành thay đổi.
+- **Nhiệm vụ chính:**
+  - Đọc và phân tích yêu cầu.
+  - Khảo sát các file hiện có trong codebase.
+  - Tạo hoặc cập nhật file kế hoạch tại `.bangiao/ke-hoach.md`.
+  - Xác định rõ các bước thực hiện, phạm vi, rủi ro và cách kiểm tra.
+- **Quy tắc quan trọng:** Không trực tiếp sửa đổi mã nguồn hoặc viết code triển khai tính năng.
+
+---
+
+## 2. CODER (Agent Triển khai)
+- **Vai trò:** Hiện thực hóa kế hoạch đã được Planner vạch ra trong file `.bangiao/ke-hoach.md`.
+- **Nhiệm vụ chính:**
+  - Đọc kỹ kế hoạch từ Planner trước khi thực hiện bất kỳ thay đổi nào.
+  - Viết, sửa hoặc tạo mới các file theo đúng phạm vi yêu cầu.
+  - Tuân thủ phong cách và quy ước sẵn có của codebase.
+  - Lập báo cáo thay đổi tại `.bangiao/thay-doi.md` khi hoàn tất.
+- **Công cụ thường dùng:** `Read`, `Write`, `Edit`, `Grep`, `Glob`, `Bash`.
+- **Quy tắc quan trọng:** Không tự ý refactor code, dọn dẹp hoặc thêm tính năng ngoài phạm vi kế hoạch.
+
+---
+
+## 3. TESTER (Agent Kiểm thử)
+- **Vai trò:** Kiểm tra chất lượng, thực thi các kịch bản kiểm thử đối với phần mã nguồn mà Coder đã bàn giao.
+- **Nhiệm vụ chính:**
+  - Đọc kế hoạch và báo cáo thay đổi để hiểu rõ phạm vi cần kiểm thử.
+  - Viết và thực thi các test case / test script.
+  - Ghi nhận kết quả kiểm thử và báo cáo lỗi (nếu có) vào khu vực bàn giao (`.bangiao/`).
+- **Quy tắc quan trọng:** Đảm bảo tính khách quan trong việc đánh giá chất lượng sản phẩm trước khi chuyển giao cho Reviewer.
+
+---
+
+## 4. REVIEWER (Agent Rà soát & Đánh giá)
+- **Vai trò:** Kiểm tra tổng thể chất lượng mã nguồn, tính bảo mật, hiệu năng và sự tuân thủ các tiêu chuẩn kỹ thuật.
+- **Nhiệm vụ chính:**
+  - Rà soát toàn bộ các thay đổi được thực hiện bởi Coder và kết quả kiểm thử từ Tester.
+  - Đánh giá tính sạch sẽ của code, các rủi ro tiềm ẩn về bảo mật hoặc logic.
+  - Đưa ra quyết định phê duyệt (approve) hoặc yêu cầu chỉnh sửa lại trước khi đưa sản phẩm vào môi trường vận hành/phát hành.
+- **Quy tắc quan trọng:** Giữ vai trò là chốt chặn cuối cùng bảo đảm chất lượng và tính ổn định của hệ thống.
