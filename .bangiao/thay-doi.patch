@@ -1,52 +1,2608 @@
-diff --git a/docs/notes-ve-4-agents.md b/docs/notes-ve-4-agents.md
+diff --git a/README.md b/README.md
+index 15a8abd..ee1b1cb 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,63 @@
+-# Hệ thống 4 Agent
++# TaskForge - Web App Quản Lý Công Việc Cao Cấp
+ 
+-Đây là dự án triển khai quy trình phát triển phần mềm tự động hóa sử dụng mô hình nhiều Agent (Planner, Coder, Tester, Reviewer).
++TaskForge là ứng dụng web quản lý công việc (Task Management Web App) cao cấp, chạy hoàn toàn phía client (Client-side), được thiết kế tối ưu cho cả thiết bị di động Android/iOS và màn hình Desktop.
++
++## 🚀 Tính năng nổi bật
++
++1. **Dashboard Thống kê Thời gian thực**: Tổng công việc, Đang làm, Hoàn thành, Quá hạn và thanh % tiến độ trực quan.
++2. **Bảng Kanban 4 Cột**: Backlog, To Do, In Progress, Done.
++3. **CRUD Công việc Đầy đủ**: Thêm, sửa, xóa với tiêu đề, mô tả, mức ưu tiên (Thấp, Trung bình, Cao, Khẩn cấp), deadline, và nhãn (tags).
++4. **Kéo-Thả (Drag & Drop)**: Hỗ trợ HTML5 Drag & Drop trên Desktop và cơ chế di chuyển cột linh hoạt qua Modal trên thiết bị di động.
++5. **Tìm kiếm & Bộ lọc nâng cao**: Tìm kiếm real-time theo từ khóa, bộ lọc đa điều kiện kết hợp (Trạng thái + Mức ưu tiên + Nhãn).
++6. **Sắp xếp linh hoạt**: Theo Deadline, Mức ưu tiên, Ngày tạo (tăng/giảm dần).
++7. **Hoàn tác / Làm lại (Undo / Redo)**: Hỗ trợ lịch sử thao tác với phím tắt `Ctrl+Z` và `Ctrl+Y` / `Ctrl+Shift+Z`.
++8. **Lưu trữ Bền vững**: Dữ liệu được lưu trữ an toàn trong `localStorage` kèm cơ chế migration an toàn.
++9. **Nhập / Xuất JSON**: Sao lưu và khôi phục dữ liệu qua file JSON có kiểm tra cấu trúc (schema validation).
++10. **Dark Mode / Light Mode**: Chuyển đổi giao diện sáng/tối và ghi nhớ lựa chọn của người dùng.
++11. **Giao diện Responsive & Mobile-First**: Tương thích xuất sắc trên mọi kích thước màn hình.
++12. **Trải nghiệm người dùng cao cấp**: Toast notifications, Modal validation, Empty states rõ ràng.
++13. **Phím tắt & Accessibility**: Hỗ trợ phím tắt (`N` để tạo task mới, `/` để tìm kiếm, `Esc` để đóng modal), điều hướng bàn phím chuẩn `aria-*`.
++
++---
++
++## 🛠️ Kiến trúc Thư mục
++
++text
++├── index.html          # Khung HTML chính & cấu trúc Modal/Toast
++├── css/
++│   └── styles.css      # Hệ thống biến CSS Variables, Dark/Light mode, Kanban grid
++└── js/
++    ├── app.js          # Khởi chạy ứng dụng (Entry point)
++    ├── storage.js      # Quản lý localStorage & dữ liệu mẫu
++    ├── state.js        # Quản lý trạng thái trung tâm & Stack Undo/Redo
++    ├── tasks.js        # Logic CRUD, Tìm kiếm, Lọc, Sắp xếp
++    ├── kanban.js       # Xử lý Kéo-thả (Desktop) & Hành động mobile
++    ├── import-export.js# Xuất/Nhập JSON & Schema Validation
++    ├── ui.js           # Giao diện, Dashboard stats, Toasts, Modals, Theme
++    └── shortcuts.js    # Phím tắt & Trợ năng (Accessibility)
++
++
++---
++
++## 💻 Cách chạy ứng dụng
++
++Vì ứng dụng hoàn toàn là **Vanilla HTML/CSS/JavaScript** và chạy phía client, bạn có thể chạy theo một trong các cách sau:
++
++1. **Mở trực tiếp**: Nhấp đúp chuột vào file `index.html` hoặc kéo thả file `index.html` vào trình duyệt web bất kỳ (Chrome, Firefox, Safari, Edge).
++2. **Chạy qua Local Server (Khuyên dùng)**:
++   - Nếu bạn dùng Python:
++     bash
++     python3 -m http.server 8000
++     
++     Sau đó mở trình duyệt truy cập: `http://localhost:8000`
++   - Hoặc sử dụng extension **Live Server** trong Visual Studio Code.
++
++---
++
++## ⌨️ Phím tắt hỗ trợ trên Desktop
++
++- `N`: Mở modal tạo Task mới.
++- `/`: Focus vào ô tìm kiếm.
++- `Esc`: Đóng tất cả modal / panel đang mở.
++- `Ctrl + Z`: Hoàn tác (Undo) thao tác gần nhất.
++- `Ctrl + Y` (hoặc `Ctrl + Shift + Z`): Làm lại (Redo) thao tác.
+\ No newline at end of file
+diff --git a/css/styles.css b/css/styles.css
 new file mode 100644
-index 0000000..27e4ef0
+index 0000000..e966312
 --- /dev/null
-+++ b/docs/notes-ve-4-agents.md
-@@ -0,0 +1,46 @@
-+# Notes về 4 Agent trong Hệ thống Phát triển
++++ b/css/styles.css
+@@ -0,0 +1,1061 @@
++/* ========================================================================== */
++/* TaskForge - High-End Task Management CSS                                    */
++/* ========================================================================== */
 +
-+Tài liệu này mô tả chi tiết vai trò, nhiệm vụ, công cụ (tools) và quy tắc hoạt động của 4 agent trong quy trình làm việc tự động / phối hợp.
++:root {
++    --bg-primary: #f8fafc;
++    --bg-secondary: #ffffff;
++    --bg-tertiary: #f1f5f9;
++    --bg-hover: #e2e8f0;
++    --text-primary: #0f172a;
++    --text-secondary: #475569;
++    --text-muted: #94a3b8;
++    --border-color: #e2e8f0;
++    --border-focus: #3b82f6;
++    
++    --primary: #3b82f6;
++    --primary-hover: #2563eb;
++    --primary-light: #eff6ff;
++    
++    --success: #10b981;
++    --success-light: #ecfdf5;
++    --warning: #f59e0b;
++    --warning-light: #fffbeb;
++    --danger: #ef4444;
++    --danger-light: #fef2f2;
++    
++    --backlog-color: #64748b;
++    --todo-color: #3b82f6;
++    --inprogress-color: #f59e0b;
++    --done-color: #10b981;
 +
-+---
++    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
++    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
++    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
++    
++    --radius-sm: 6px;
++    --radius-md: 10px;
++    --radius-lg: 14px;
++    --radius-full: 9999px;
++    
++    --transition: all 0.2s ease-in-out;
++}
 +
-+## 1. PLANNER (Agent Lập kế hoạch)
-+- **Vai trò:** Phân tích yêu cầu gốc, khảo sát cấu trúc dự án và lập kế hoạch chi tiết trước khi tiến hành thay đổi.
-+- **Nhiệm vụ chính:**
-+  - Đọc và phân tích yêu cầu.
-+  - Khảo sát các file hiện có trong codebase.
-+  - Tạo hoặc cập nhật file kế hoạch tại `.bangiao/ke-hoach.md`.
-+  - Xác định rõ các bước thực hiện, phạm vi, rủi ro và cách kiểm tra.
-+- **Quy tắc quan trọng:** Không trực tiếp sửa đổi mã nguồn hoặc viết code triển khai tính năng.
++[data-theme="dark"] {
++    --bg-primary: #0f172a;
++    --bg-secondary: #1e293b;
++    --bg-tertiary: #334155;
++    --bg-hover: #475569;
++    --text-primary: #f8fafc;
++    --text-secondary: #cbd5e1;
++    --text-muted: #64748b;
++    --border-color: #334155;
++    --border-focus: #60a5fa;
++    
++    --primary: #60a5fa;
++    --primary-hover: #3b82f6;
++    --primary-light: rgba(96, 165, 250, 0.15);
++    
++    --success: #34d399;
++    --success-light: rgba(52, 211, 153, 0.15);
++    --warning: #fbbf24;
++    --warning-light: rgba(251, 191, 36, 0.15);
++    --danger: #f87171;
++    --danger-light: rgba(248, 113, 113, 0.15);
 +
-+---
++    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
++    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
++    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
++}
 +
-+## 2. CODER (Agent Triển khai)
-+- **Vai trò:** Hiện thực hóa kế hoạch đã được Planner vạch ra trong file `.bangiao/ke-hoach.md`.
-+- **Nhiệm vụ chính:**
-+  - Đọc kỹ kế hoạch từ Planner trước khi thực hiện bất kỳ thay đổi nào.
-+  - Viết, sửa hoặc tạo mới các file theo đúng phạm vi yêu cầu.
-+  - Tuân thủ phong cách và quy ước sẵn có của codebase.
-+  - Lập báo cáo thay đổi tại `.bangiao/thay-doi.md` khi hoàn tất.
-+- **Công cụ thường dùng:** `Read`, `Write`, `Edit`, `Grep`, `Glob`, `Bash`.
-+- **Quy tắc quan trọng:** Không tự ý refactor code, dọn dẹp hoặc thêm tính năng ngoài phạm vi kế hoạch.
++/* Reset & Base Styles */
++* {
++    box-sizing: border-box;
++    margin: 0;
++    padding: 0;
++}
 +
-+---
++body {
++    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
++    background-color: var(--bg-primary);
++    color: var(--text-primary);
++    line-height: 1.5;
++    min-height: 100vh;
++    -webkit-font-smoothing: antialiased;
++}
 +
-+## 3. TESTER (Agent Kiểm thử)
-+- **Vai trò:** Kiểm tra chất lượng, thực thi các kịch bản kiểm thử đối với phần mã nguồn mà Coder đã bàn giao.
-+- **Nhiệm vụ chính:**
-+  - Đọc kế hoạch và báo cáo thay đổi để hiểu rõ phạm vi cần kiểm thử.
-+  - Viết và thực thi các test case / test script.
-+  - Ghi nhận kết quả kiểm thử và báo cáo lỗi (nếu có) vào khu vực bàn giao (`.bangiao/`).
-+- **Quy tắc quan trọng:** Đảm bảo tính khách quan trong việc đánh giá chất lượng sản phẩm trước khi chuyển giao cho Reviewer.
++button, input, select, textarea {
++    font-family: inherit;
++    font-size: inherit;
++    color: inherit;
++}
 +
-+---
++/* Utility Classes */
++.sr-only {
++    position: absolute;
++    width: 1px;
++    height: 1px;
++    padding: 0;
++    margin: -1px;
++    overflow: hidden;
++    clip: rect(0, 0, 0, 0);
++    white-space: nowrap;
++    border: 0;
++}
 +
-+## 4. REVIEWER (Agent Rà soát & Đánh giá)
-+- **Vai trò:** Kiểm tra tổng thể chất lượng mã nguồn, tính bảo mật, hiệu năng và sự tuân thủ các tiêu chuẩn kỹ thuật.
-+- **Nhiệm vụ chính:**
-+  - Rà soát toàn bộ các thay đổi được thực hiện bởi Coder và kết quả kiểm thử từ Tester.
-+  - Đánh giá tính sạch sẽ của code, các rủi ro tiềm ẩn về bảo mật hoặc logic.
-+  - Đưa ra quyết định phê duyệt (approve) hoặc yêu cầu chỉnh sửa lại trước khi đưa sản phẩm vào môi trường vận hành/phát hành.
-+- **Quy tắc quan trọng:** Giữ vai trò là chốt chặn cuối cùng bảo đảm chất lượng và tính ổn định của hệ thống.
++/* App Container */
++.app-container {
++    display: flex;
++    flex-direction: column;
++    min-height: 100vh;
++}
++
++/* Header */
++.app-header {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    padding: 1rem 1.5rem;
++    background-color: var(--bg-secondary);
++    border-bottom: 1px solid var(--border-color);
++    box-shadow: var(--shadow-sm);
++    position: sticky;
++    top: 0;
++    z-index: 100;
++    flex-wrap: wrap;
++    gap: 1rem;
++}
++
++.logo-area {
++    display: flex;
++    align-items: center;
++    gap: 0.75rem;
++}
++
++.logo-icon {
++    font-size: 1.5rem;
++    color: var(--primary);
++    background-color: var(--primary-light);
++    padding: 0.5rem;
++    border-radius: var(--radius-md);
++}
++
++.logo-area h1 {
++    font-size: 1.25rem;
++    font-weight: 700;
++    letter-spacing: -0.025em;
++}
++
++.badge-pro {
++    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
++    color: white;
++    font-size: 0.7rem;
++    font-weight: 700;
++    padding: 0.15rem 0.5rem;
++    border-radius: var(--radius-full);
++    text-transform: uppercase;
++}
++
++.header-actions {
++    display: flex;
++    align-items: center;
++    gap: 0.75rem;
++    flex-wrap: wrap;
++}
++
++.undo-redo-group {
++    display: flex;
++    background-color: var(--bg-tertiary);
++    border-radius: var(--radius-sm);
++    padding: 2px;
++}
++
++/* Buttons */
++.btn {
++    display: inline-flex;
++    align-items: center;
++    justify-content: center;
++    gap: 0.5rem;
++    padding: 0.5rem 1rem;
++    font-weight: 500;
++    border-radius: var(--radius-sm);
++    border: 1px solid transparent;
++    cursor: pointer;
++    transition: var(--transition);
++    white-space: nowrap;
++}
++
++.btn:disabled {
++    opacity: 0.5;
++    cursor: not-allowed;
++}
++
++.btn-primary {
++    background-color: var(--primary);
++    color: white;
++}
++
++.btn-primary:hover:not(:disabled) {
++    background-color: var(--primary-hover);
++}
++
++.btn-secondary {
++    background-color: var(--bg-secondary);
++    border-color: var(--border-color);
++    color: var(--text-primary);
++}
++
++.btn-secondary:hover:not(:disabled) {
++    background-color: var(--bg-tertiary);
++}
++
++.btn-icon {
++    padding: 0.5rem;
++    background: transparent;
++    border: none;
++    color: var(--text-secondary);
++    border-radius: var(--radius-sm);
++}
++
++.btn-icon:hover:not(:disabled) {
++    background-color: var(--bg-tertiary);
++    color: var(--text-primary);
++}
++
++.btn-text {
++    background: transparent;
++    border: none;
++    color: var(--primary);
++    padding: 0.25rem 0.5rem;
++}
++
++.btn-text:hover {
++    text-decoration: underline;
++}
++
++.btn-sm {
++    padding: 0.25rem 0.5rem;
++    font-size: 0.875rem;
++}
++
++.btn-full {
++    width: 100%;
++    justify-content: flex-start;
++    padding: 0.75rem 1rem;
++}
++
++.shortcut-hint {
++    font-size: 0.75rem;
++    opacity: 0.8;
++    background: rgba(255, 255, 255, 0.2);
++    padding: 0.1rem 0.3rem;
++    border-radius: 4px;
++    margin-left: 0.25rem;
++}
++
++/* Theme Icon Toggle */
++[data-theme="dark"] .theme-icon-dark,
++[data-theme="light"] .theme-icon-light {
++    display: none;
++}
++
++/* Dropdown */
++.dropdown {
++    position: relative;
++    display: inline-block;
++}
++
++.dropdown-menu {
++    position: absolute;
++    right: 0;
++    top: calc(100% + 5px);
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    box-shadow: var(--shadow-lg);
++    min-width: 160px;
++    z-index: 1000;
++    display: none;
++    padding: 0.25rem;
++}
++
++.dropdown-menu.show {
++    display: block;
++}
++
++.dropdown-item {
++    display: flex;
++    align-items: center;
++    gap: 0.75rem;
++    width: 100%;
++    padding: 0.5rem 0.75rem;
++    background: transparent;
++    border: none;
++    text-align: left;
++    border-radius: var(--radius-sm);
++    cursor: pointer;
++    color: var(--text-primary);
++}
++
++.dropdown-item:hover {
++    background-color: var(--bg-tertiary);
++}
++
++/* Main Layout */
++.app-main {
++    flex: 1;
++    padding: 1.5rem;
++    max-width: 1600px;
++    width: 100%;
++    margin: 0 auto;
++    display: flex;
++    flex-direction: column;
++    gap: 1.5rem;
++}
++
++/* Dashboard Stats */
++.dashboard-stats {
++    display: grid;
++    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
++    gap: 1rem;
++}
++
++.stat-card {
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    padding: 1.25rem;
++    display: flex;
++    align-items: center;
++    gap: 1rem;
++    box-shadow: var(--shadow-sm);
++}
++
++.stat-card[data-stat="total"] .stat-icon { background-color: var(--primary-light); color: var(--primary); }
++.stat-card[data-stat="inprogress"] .stat-icon { background-color: var(--warning-light); color: var(--warning); }
++.stat-card[data-stat="completed"] .stat-icon { background-color: var(--success-light); color: var(--success); }
++.stat-card[data-stat="overdue"] .stat-icon { background-color: var(--danger-light); color: var(--danger); }
++
++.stat-icon {
++    width: 48px;
++    height: 48px;
++    border-radius: var(--radius-md);
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    font-size: 1.25rem;
++    flex-shrink: 0;
++}
++
++.stat-info {
++    display: flex;
++    flex-direction: column;
++}
++
++.stat-info.full-width {
++    width: 100%;
++}
++
++.stat-label {
++    font-size: 0.875rem;
++    color: var(--text-secondary);
++}
++
++.stat-value {
++    font-size: 1.5rem;
++    font-weight: 700;
++    color: var(--text-primary);
++    letter-spacing: -0.025em;
++}
++
++.stat-progress-card {
++    grid-column: span 1;
++}
++
++.progress-header {
++    display: flex;
++    justify-content: space-between;
++    align-items: center;
++    margin-bottom: 0.5rem;
++}
++
++.progress-bar-container {
++    width: 100%;
++    height: 8px;
++    background-color: var(--bg-tertiary);
++    border-radius: var(--radius-full);
++    overflow: hidden;
++}
++
++.progress-bar-fill {
++    height: 100%;
++    background: linear-gradient(90deg, var(--primary), var(--success));
++    border-radius: var(--radius-full);
++    transition: width 0.4s ease;
++}
++
++/* Toolbar */
++.app-toolbar {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    gap: 1rem;
++    flex-wrap: wrap;
++    background-color: var(--bg-secondary);
++    padding: 1rem;
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    box-shadow: var(--shadow-sm);
++}
++
++.search-box {
++    position: relative;
++    flex: 1;
++    min-width: 260px;
++}
++
++.search-icon {
++    position: absolute;
++    left: 0.875rem;
++    top: 50%;
++    transform: translateY(-50%);
++    color: var(--text-muted);
++}
++
++.search-box input {
++    width: 100%;
++    padding: 0.625rem 2.5rem 0.625rem 2.5rem;
++    background-color: var(--bg-tertiary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-sm);
++    outline: none;
++    transition: var(--transition);
++}
++
++.search-box input:focus {
++    border-color: var(--border-focus);
++    background-color: var(--bg-secondary);
++    box-shadow: 0 0 0 3px var(--primary-light);
++}
++
++.btn-clear-input {
++    position: absolute;
++    right: 0.75rem;
++    top: 50%;
++    transform: translateY(-50%);
++    background: none;
++    border: none;
++    color: var(--text-muted);
++    cursor: pointer;
++    padding: 0.25rem;
++}
++
++.btn-clear-input:hover {
++    color: var(--text-primary);
++}
++
++.filter-sort-group {
++    display: flex;
++    align-items: center;
++    gap: 0.75rem;
++    flex-wrap: wrap;
++}
++
++.filter-dropdown-container {
++    position: relative;
++}
++
++.badge-count {
++    background-color: var(--primary);
++    color: white;
++    font-size: 0.7rem;
++    padding: 0.1rem 0.4rem;
++    border-radius: var(--radius-full);
++    margin-left: 0.25rem;
++}
++
++.filter-panel {
++    position: absolute;
++    right: 0;
++    top: calc(100% + 5px);
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    box-shadow: var(--shadow-lg);
++    width: 280px;
++    z-index: 1000;
++    padding: 1rem;
++    display: none;
++}
++
++.filter-panel.show {
++    display: block;
++}
++
++.filter-section {
++    margin-bottom: 1rem;
++}
++
++.filter-title {
++    font-size: 0.75rem;
++    font-weight: 700;
++    text-transform: uppercase;
++    color: var(--text-secondary);
++    margin-bottom: 0.5rem;
++    display: block;
++}
++
++.filter-options {
++    display: flex;
++    flex-direction: column;
++    gap: 0.5rem;
++    max-height: 150px;
++    overflow-y: auto;
++}
++
++.filter-options label {
++    display: flex;
++    align-items: center;
++    gap: 0.5rem;
++    font-size: 0.875rem;
++    cursor: pointer;
++}
++
++.filter-actions {
++    display: flex;
++    justify-content: flex-end;
++    border-top: 1px solid var(--border-color);
++    padding-top: 0.5rem;
++}
++
++.form-select {
++    padding: 0.625rem 2rem 0.625rem 0.875rem;
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-sm);
++    outline: none;
++    cursor: pointer;
++    appearance: none;
++    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
++    background-repeat: no-repeat;
++    background-position: right 0.5rem center;
++    background-size: 1rem;
++}
++
++.form-select:focus {
++    border-color: var(--border-focus);
++    box-shadow: 0 0 0 3px var(--primary-light);
++}
++
++/* Kanban Board */
++.kanban-board {
++    display: grid;
++    grid-template-columns: repeat(4, minmax(280px, 1fr));
++    gap: 1.25rem;
++    align-items: flex-start;
++    overflow-x: auto;
++    padding-bottom: 1rem;
++}
++
++@media (max-width: 1200px) {
++    .kanban-board {
++        grid-template-columns: repeat(2, minmax(280px, 1fr));
++    }
++}
++
++@media (max-width: 768px) {
++    .kanban-board {
++        grid-template-columns: minmax(280px, 1fr);
++    }
++}
++
++.kanban-column {
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    display: flex;
++    flex-direction: column;
++    max-height: calc(100vh - 300px);
++    min-height: 400px;
++    box-shadow: var(--shadow-sm);
++}
++
++.kanban-column:focus {
++    outline: 2px solid var(--border-focus);
++}
++
++.column-header {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    padding: 1rem;
++    border-bottom: 1px solid var(--border-color);
++    background-color: var(--bg-tertiary);
++    border-top-left-radius: var(--radius-md);
++    border-top-right-radius: var(--radius-md);
++}
++
++.column-title-group {
++    display: flex;
++    align-items: center;
++    gap: 0.625rem;
++}
++
++.column-dot {
++    width: 10px;
++    height: 10px;
++    border-radius: var(--radius-full);
++}
++
++.backlog-dot { background-color: var(--backlog-color); }
++.todo-dot { background-color: var(--todo-color); }
++.inprogress-dot { background-color: var(--inprogress-color); }
++.done-dot { background-color: var(--done-color); }
++
++.column-header h2 {
++    font-size: 1rem;
++    font-weight: 600;
++}
++
++.task-count {
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    font-size: 0.75rem;
++    font-weight: 600;
++    padding: 0.1rem 0.5rem;
++    border-radius: var(--radius-full);
++    color: var(--text-secondary);
++}
++
++.column-body {
++    flex: 1;
++    padding: 1rem;
++    overflow-y: auto;
++    display: flex;
++    flex-direction: column;
++    gap: 0.875rem;
++    min-height: 150px;
++}
++
++.column-body.drag-over {
++    background-color: var(--primary-light);
++    border: 2px dashed var(--primary);
++    border-radius: var(--radius-sm);
++}
++
++/* Task Card */
++.task-card {
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    padding: 1rem;
++    box-shadow: var(--shadow-sm);
++    cursor: grab;
++    transition: var(--transition);
++    position: relative;
++    display: flex;
++    flex-direction: column;
++    gap: 0.625rem;
++}
++
++.task-card:active {
++    cursor: grabbing;
++}
++
++.task-card:hover {
++    box-shadow: var(--shadow-md);
++    border-color: var(--text-muted);
++    transform: translateY(-2px);
++}
++
++.task-card.dragging {
++    opacity: 0.4;
++}
++
++.task-card-header {
++    display: flex;
++    align-items: flex-start;
++    justify-content: space-between;
++    gap: 0.5rem;
++}
++
++.task-title {
++    font-weight: 600;
++    font-size: 0.95rem;
++    color: var(--text-primary);
++    word-break: break-word;
++}
++
++.task-card-actions {
++    display: flex;
++    align-items: center;
++    gap: 0.25rem;
++    opacity: 0;
++    transition: opacity 0.2s;
++}
++
++.task-card:hover .task-card-actions,
++.task-card:focus-within .task-card-actions {
++    opacity: 1;
++}
++
++.task-desc {
++    font-size: 0.875rem;
++    color: var(--text-secondary);
++    display: -webkit-box;
++    -webkit-line-clamp: 2;
++    -webkit-box-orient: vertical;
++    overflow: hidden;
++    word-break: break-word;
++}
++
++.task-footer {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    gap: 0.5rem;
++    margin-top: 0.25rem;
++    font-size: 0.75rem;
++    flex-wrap: wrap;
++}
++
++.task-meta-group {
++    display: flex;
++    align-items: center;
++    gap: 0.5rem;
++    flex-wrap: wrap;
++}
++
++.task-badge {
++    padding: 0.15rem 0.5rem;
++    border-radius: var(--radius-sm);
++    font-weight: 600;
++    text-transform: uppercase;
++    font-size: 0.6875rem;
++}
++
++.badge-priority-low { background-color: var(--bg-tertiary); color: var(--text-secondary); }
++.badge-priority-medium { background-color: var(--primary-light); color: var(--primary); }
++.badge-priority-high { background-color: var(--warning-light); color: var(--warning); }
++.badge-priority-urgent { background-color: var(--danger-light); color: var(--danger); }
++
++.task-deadline {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.35rem;
++    color: var(--text-secondary);
++    background-color: var(--bg-tertiary);
++    padding: 0.15rem 0.5rem;
++    border-radius: var(--radius-sm);
++}
++
++.task-deadline.overdue {
++    background-color: var(--danger-light);
++    color: var(--danger);
++    font-weight: 600;
++}
++
++.task-tags {
++    display: flex;
++    gap: 0.35rem;
++    flex-wrap: wrap;
++}
++
++.task-tag {
++    background-color: var(--bg-tertiary);
++    color: var(--text-secondary);
++    padding: 0.1rem 0.35rem;
++    border-radius: 4px;
++    font-size: 0.6875rem;
++}
++
++.mobile-move-btn {
++    display: none;
++}
++
++@media (max-width: 768px) {
++    .mobile-move-btn {
++        display: inline-flex;
++    }
++    .task-card-actions {
++        opacity: 1;
++    }
++}
++
++/* Empty State */
++.empty-state {
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    justify-content: center;
++    padding: 2.5rem 1rem;
++    text-align: center;
++    color: var(--text-muted);
++    gap: 0.75rem;
++    border: 2px dashed var(--border-color);
++    border-radius: var(--radius-md);
++    margin: 0.5rem 0;
++}
++
++.empty-icon {
++    font-size: 2rem;
++    margin-bottom: 0.25rem;
++}
++
++.empty-state p {
++    font-size: 0.875rem;
++}
++
++/* Modals */
++.modal {
++    position: fixed;
++    top: 0;
++    left: 0;
++    width: 100%;
++    height: 100%;
++    z-index: 2000;
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    padding: 1rem;
++}
++
++.modal-backdrop {
++    position: absolute;
++    top: 0;
++    left: 0;
++    width: 100%;
++    height: 100%;
++    background-color: rgba(0, 0, 0, 0.5);
++    backdrop-filter: blur(2px);
++}
++
++.modal-content {
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-lg);
++    box-shadow: var(--shadow-lg);
++    width: 100%;
++    max-width: 550px;
++    z-index: 10;
++    overflow: hidden;
++    display: flex;
++    flex-direction: column;
++    animation: modalScaleUp 0.2s ease-in-out;
++}
++
++.modal-content.modal-sm {
++    max-width: 400px;
++}
++
++@keyframes modalScaleUp {
++    from {
++        transform: scale(0.95);
++        opacity: 0;
++    }
++    to {
++        transform: scale(1);
++        opacity: 1;
++    }
++}
++
++.modal-header {
++    display: flex;
++    align-items: center;
++    justify-content: space-between;
++    padding: 1.25rem;
++    border-bottom: 1px solid var(--border-color);
++}
++
++.modal-header h3 {
++    font-size: 1.125rem;
++    font-weight: 600;
++}
++
++#task-form {
++    padding: 1.25rem;
++    display: flex;
++    flex-direction: column;
++    gap: 1rem;
++    max-height: calc(80vh - 100px);
++    overflow-y: auto;
++}
++
++.modal-body {
++    padding: 1.25rem;
++}
++
++.form-group {
++    display: flex;
++    flex-direction: column;
++    gap: 0.375rem;
++}
++
++.form-group label {
++    font-size: 0.875rem;
++    font-weight: 500;
++    color: var(--text-primary);
++}
++
++.required {
++    color: var(--danger);
++}
++
++.form-control {
++    padding: 0.625rem 0.875rem;
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-sm);
++    outline: none;
++    transition: var(--transition);
++}
++
++.form-control:focus {
++    border-color: var(--border-focus);
++    box-shadow: 0 0 0 3px var(--primary-light);
++}
++
++.form-control.is-invalid {
++    border-color: var(--danger);
++}
++
++.form-control.is-invalid:focus {
++    box-shadow: 0 0 0 3px var(--danger-light);
++}
++
++.error-message {
++    font-size: 0.75rem;
++    color: var(--danger);
++    display: none;
++}
++
++.form-control.is-invalid ~ .error-message {
++    display: block;
++}
++
++.form-row {
++    display: grid;
++    grid-template-columns: 1fr 1fr;
++    gap: 1rem;
++}
++
++@media (max-width: 576px) {
++    .form-row {
++        grid-template-columns: 1fr;
++    }
++}
++
++.modal-footer {
++    display: flex;
++    align-items: center;
++    justify-content: flex-end;
++    gap: 0.75rem;
++    padding-top: 1rem;
++    border-top: 1px solid var(--border-color);
++    margin-top: 0.5rem;
++}
++
++.mobile-task-title-preview {
++    font-weight: 600;
++    margin-bottom: 1rem;
++    font-size: 0.95rem;
++    color: var(--text-primary);
++    padding: 0.5rem;
++    background-color: var(--bg-tertiary);
++    border-radius: var(--radius-sm);
++}
++
++.mobile-status-actions {
++    display: flex;
++    flex-direction: column;
++    gap: 0.5rem;
++}
++
++/* Toast Notifications */
++.toast-container {
++    position: fixed;
++    bottom: 1.5rem;
++    right: 1.5rem;
++    z-index: 3000;
++    display: flex;
++    flex-direction: column;
++    gap: 0.75rem;
++    max-width: 380px;
++    width: 100%;
++    pointer-events: none;
++}
++
++.toast {
++    background-color: var(--bg-secondary);
++    border: 1px solid var(--border-color);
++    border-radius: var(--radius-md);
++    padding: 1rem;
++    box-shadow: var(--shadow-lg);
++    display: flex;
++    align-items: flex-start;
++    gap: 0.75rem;
++    pointer-events: auto;
++    animation: toastSlideIn 0.3s ease, toastFadeOut 0.3s ease 2.7s forwards;
++}
++
++@keyframes toastSlideIn {
++    from {
++        transform: translateY(100%);
++        opacity: 0;
++    }
++    to {
++        transform: translateY(0);
++        opacity: 1;
++    }
++}
++
++@keyframes toastFadeOut {
++    to {
++        opacity: 0;
++        transform: translateY(10px);
++    }
++}
++
++.toast.success { border-left: 4px solid var(--success); }
++.toast.error { border-left: 4px solid var(--danger); }
++.toast.warning { border-left: 4px solid var(--warning); }
++.toast.info { border-left: 4px solid var(--primary); }
++
++.toast-icon {
++    font-size: 1.125rem;
++    flex-shrink: 0;
++}
++
++.toast.success .toast-icon { color: var(--success); }
++.toast.error .toast-icon { color: var(--danger); }
++.toast.warning .toast-icon { color: var(--warning); }
++.toast.info .toast-icon { color: var(--primary); }
++
++.toast-content {
++    flex: 1;
++    display: flex;
++    flex-direction: column;
++    gap: 0.125rem;
++}
++
++.toast-title {
++    font-weight: 600;
++    font-size: 0.875rem;
++}
++
++.toast-msg {
++    font-size: 0.8125rem;
++    color: var(--text-secondary);
++}
++
++.toast-close {
++    background: none;
++    border: none;
++    color: var(--text-muted);
++    cursor: pointer;
++    padding: 0.25rem;
++}
++
++.toast-close:hover {
++    color: var(--text-primary);
++}
+diff --git a/index.html b/index.html
+index d7e5321..41c2a82 100644
+--- a/index.html
++++ b/index.html
+@@ -1,62 +1,335 @@
+ <!DOCTYPE html>
+-<html lang="vi">
++<html lang="vi" data-theme="light">
+ <head>
+     <meta charset="UTF-8">
+-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+-    <title>Android To-Do List</title>
+-    <link rel="stylesheet" href="style.css">
+-    <!-- FontAwesome for modern icons -->
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>TaskForge - Quản lý công việc cao cấp</title>
++    <link rel="stylesheet" href="css/styles.css">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+ </head>
+ <body>
+-    <div class="app-container">
+-        <!-- Header -->
+-        <header class="app-header">
+-            <h1><i class="fa-solid fa-clipboard-list"></i> Việc Cần Làm</h1>
+-            <p id="date-display">Hôm nay</p>
+-        </header>
++    <div id="app" class="app-container">
++        <!-- Header & Navigation -->
++        <header class="app-header" role="banner">
++            <div class="logo-area">
++                <i class="fa-solid fa-bolt-lightning logo-icon" aria-hidden="true"></i>
++                <h1>TaskForge</h1>
++                <span class="badge-pro">Pro</span>
++            </div>
+ 
+-        <!-- Input Section -->
+-        <section class="input-section">
+-            <form id="todo-form">
+-                <input 
+-                    type="text" 
+-                    id="todo-input" 
+-                    placeholder="Thêm công việc mới..." 
+-                    autocomplete="off"
+-                    required
+-                >
+-                <button type="submit" id="add-btn" aria-label="Thêm công việc">
+-                    <i class="fa-solid fa-plus"></i>
++            <div class="header-actions">
++                <div class="undo-redo-group" role="toolbar" aria-label="Lịch sử thao tác">
++                    <button id="btn-undo" class="btn btn-icon" title="Hoàn tác (Ctrl+Z)" aria-label="Hoàn tác" disabled>
++                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
++                    </button>
++                    <button id="btn-redo" class="btn btn-icon" title="Làm lại (Ctrl+Y)" aria-label="Làm lại" disabled>
++                        <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
++                    </button>
++                </div>
++
++                <button id="btn-theme-toggle" class="btn btn-icon" title="Chuyển đổi giao diện Sáng/Tối" aria-label="Chuyển đổi giao diện">
++                    <i class="fa-solid fa-moon theme-icon-dark" aria-hidden="true"></i>
++                    <i class="fa-solid fa-sun theme-icon-light" aria-hidden="true"></i>
+                 </button>
+-            </form>
+-        </section>
+-
+-        <!-- Filter Tabs -->
+-        <section class="filter-section">
+-            <button class="filter-btn active" data-filter="all">Tất cả</button>
+-            <button class="filter-btn" data-filter="active">Đang làm</button>
+-            <button class="filter-btn" data-filter="completed">Đã xong</button>
+-        </section>
+-
+-        <!-- Tasks List Section -->
+-        <section class="list-section">
+-            <ul id="todo-list">
+-                <!-- Dynamic items will be injected here -->
+-            </ul>
+-            <div id="empty-state" class="empty-state hidden">
+-                <i class="fa-solid fa-face-smile"></i>
+-                <p>Không có công việc nào!</p>
++
++                <div class="dropdown">
++                    <button class="btn btn-secondary dropdown-toggle" id="btn-io-menu" aria-expanded="false" aria-haspopup="true">
++                        <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Dữ liệu
++                    </button>
++                    <div class="dropdown-menu" aria-labelledby="btn-io-menu">
++                        <button id="btn-export" class="dropdown-item">
++                            <i class="fa-solid fa-download" aria-hidden="true"></i> Xuất JSON
++                        </button>
++                        <button id="btn-import" class="dropdown-item">
++                            <i class="fa-solid fa-upload" aria-hidden="true"></i> Nhập JSON
++                        </button>
++                        <input type="file" id="import-file-input" accept=".json" style="display: none;">
++                    </div>
++                </div>
++
++                <button id="btn-new-task" class="btn btn-primary">
++                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Task Mới <span class="shortcut-hint">(N)</span>
++                </button>
++            </div>
++        </header>
++
++        <!-- Main Content Area -->
++        <main class="app-main" role="main">
++            <!-- Dashboard Stats -->
++            <section class="dashboard-stats" aria-label="Thống kê tổng quan">
++                <div class="stat-card" data-stat="total">
++                    <div class="stat-icon"><i class="fa-solid fa-list-check" aria-hidden="true"></i></div>
++                    <div class="stat-info">
++                        <span class="stat-label">Tổng công việc</span>
++                        <strong id="stat-total" class="stat-value">0</strong>
++                    </div>
++                </div>
++                <div class="stat-card" data-stat="inprogress">
++                    <div class="stat-icon"><i class="fa-solid fa-spinner" aria-hidden="true"></i></div>
++                    <div class="stat-info">
++                        <span class="stat-label">Đang làm</span>
++                        <strong id="stat-inprogress" class="stat-value">0</strong>
++                    </div>
++                </div>
++                <div class="stat-card" data-stat="completed">
++                    <div class="stat-icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
++                    <div class="stat-info">
++                        <span class="stat-label">Hoàn thành</span>
++                        <strong id="stat-completed" class="stat-value">0</strong>
++                    </div>
++                </div>
++                <div class="stat-card" data-stat="overdue">
++                    <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></div>
++                    <div class="stat-info">
++                        <span class="stat-label">Quá hạn</span>
++                        <strong id="stat-overdue" class="stat-value">0</strong>
++                    </div>
++                </div>
++                <div class="stat-card stat-progress-card">
++                    <div class="stat-info full-width">
++                        <div class="progress-header">
++                            <span class="stat-label">Tiến độ hoàn thành</span>
++                            <strong id="stat-progress-percent" class="stat-value">0%</strong>
++                        </div>
++                        <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
++                            <div id="stat-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
++                        </div>
++                    </div>
++                </div>
++            </section>
++
++            <!-- Toolbar: Search, Filter, Sort -->
++            <section class="app-toolbar" aria-label="Công cụ tìm kiếm và lọc">
++                <div class="search-box">
++                    <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
++                    <input type="text" id="search-input" placeholder="Tìm kiếm task theo tiêu đề, mô tả, nhãn... (Phím /)" aria-label="Tìm kiếm task">
++                    <button id="btn-clear-search" class="btn-clear-input" style="display: none;" aria-label="Xóa tìm kiếm">
++                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
++                    </button>
++                </div>
++
++                <div class="filter-sort-group">
++                    <div class="filter-dropdown-container">
++                        <button id="btn-filter-toggle" class="btn btn-secondary" aria-expanded="false">
++                            <i class="fa-solid fa-filter" aria-hidden="true"></i> Lọc <span id="filter-badge" class="badge-count" style="display: none;">0</span>
++                        </button>
++                        <div id="filter-panel" class="filter-panel" style="display: none;">
++                            <div class="filter-section">
++                                <label class="filter-title">Mức ưu tiên</label>
++                                <div class="filter-options" id="filter-priority-options">
++                                    <label><input type="checkbox" value="urgent"> Khẩn cấp</label>
++                                    <label><input type="checkbox" value="high"> Cao</label>
++                                    <label><input type="checkbox" value="medium"> Trung bình</label>
++                                    <label><input type="checkbox" value="low"> Thấp</label>
++                                </div>
++                            </div>
++                            <div class="filter-section">
++                                <label class="filter-title">Nhãn (Tags)</label>
++                                <div class="filter-options" id="filter-tags-container">
++                                    <!-- Dynamic tags -->
++                                    <span class="no-tags-hint">Chưa có nhãn nào</span>
++                                </div>
++                            </div>
++                            <div class="filter-actions">
++                                <button id="btn-reset-filters" class="btn btn-text btn-sm">Đặt lại</button>
++                            </div>
++                        </div>
++                    </div>
++
++                    <div class="sort-container">
++                        <label for="sort-select" class="sr-only">Sắp xếp theo</label>
++                        <select id="sort-select" class="form-select" aria-label="Sắp xếp task">
++                            <option value="createdAt-desc">Mới nhất trước</option>
++                            <option value="createdAt-asc">Cũ nhất trước</option>
++                            <option value="deadline-asc">Deadline: Sớm nhất</option>
++                            <option value="deadline-desc">Deadline: Muộn nhất</option>
++                            <option value="priority-desc">Ưu tiên: Cao xuống thấp</option>
++                            <option value="title-asc">Tiêu đề: A-Z</option>
++                        </select>
++                    </div>
++                </div>
++            </section>
++
++            <!-- Kanban Board -->
++            <section class="kanban-board" aria-label="Bảng Kanban quản lý công việc">
++                <!-- Backlog Column -->
++                <div class="kanban-column" data-column="backlog" tabindex="0" aria-label="Cột Backlog">
++                    <div class="column-header">
++                        <div class="column-title-group">
++                            <span class="column-dot backlog-dot"></span>
++                            <h2>Backlog</h2>
++                            <span class="task-count" id="count-backlog">0</span>
++                        </div>
++                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="backlog" title="Thêm task vào Backlog">
++                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
++                        </button>
++                    </div>
++                    <div class="column-body" id="col-backlog">
++                        <!-- Tasks injected here -->
++                    </div>
++                </div>
++
++                <!-- To Do Column -->
++                <div class="kanban-column" data-column="todo" tabindex="0" aria-label="Cột To Do">
++                    <div class="column-header">
++                        <div class="column-title-group">
++                            <span class="column-dot todo-dot"></span>
++                            <h2>To Do</h2>
++                            <span class="task-count" id="count-todo">0</span>
++                        </div>
++                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="todo" title="Thêm task vào To Do">
++                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
++                        </button>
++                    </div>
++                    <div class="column-body" id="col-todo">
++                        <!-- Tasks injected here -->
++                    </div>
++                </div>
++
++                <!-- In Progress Column -->
++                <div class="kanban-column" data-column="inprogress" tabindex="0" aria-label="Cột In Progress">
++                    <div class="column-header">
++                        <div class="column-title-group">
++                            <span class="column-dot inprogress-dot"></span>
++                            <h2>In Progress</h2>
++                            <span class="task-count" id="count-inprogress">0</span>
++                        </div>
++                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="inprogress" title="Thêm task vào In Progress">
++                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
++                        </button>
++                    </div>
++                    <div class="column-body" id="col-inprogress">
++                        <!-- Tasks injected here -->
++                    </div>
++                </div>
++
++                <!-- Done Column -->
++                <div class="kanban-column" data-column="done" tabindex="0" aria-label="Cột Done">
++                    <div class="column-header">
++                        <div class="column-title-group">
++                            <span class="column-dot done-dot"></span>
++                            <h2>Done</h2>
++                            <span class="task-count" id="count-done">0</span>
++                        </div>
++                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="done" title="Thêm task vào Done">
++                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
++                        </button>
++                    </div>
++                    <div class="column-body" id="col-done">
++                        <!-- Tasks injected here -->
++                    </div>
++                </div>
++            </section>
++        </main>
++
++        <!-- Task Modal (Create / Edit) -->
++        <div id="task-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;">
++            <div class="modal-backdrop"></div>
++            <div class="modal-content">
++                <div class="modal-header">
++                    <h3 id="modal-title">Thêm task mới</h3>
++                    <button type="button" class="btn btn-icon btn-close-modal" aria-label="Đóng modal">
++                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
++                    </button>
++                </div>
++                <form id="task-form" novalidate>
++                    <input type="hidden" id="task-id">
++                    
++                    <div class="form-group">
++                        <label for="task-title-input">Tiêu đề <span class="required">*</span></label>
++                        <input type="text" id="task-title-input" class="form-control" placeholder="Nhập tiêu đề công việc..." required>
++                        <div class="error-message" id="error-title">Vui lòng nhập tiêu đề công việc.</div>
++                    </div>
++
++                    <div class="form-group">
++                        <label for="task-desc-input">Mô tả</label>
++                        <textarea id="task-desc-input" class="form-control" rows="3" placeholder="Nhập chi tiết mô tả công việc..."></textarea>
++                    </div>
++
++                    <div class="form-row">
++                        <div class="form-group">
++                            <label for="task-status-input">Trạng thái</label>
++                            <select id="task-status-input" class="form-select">
++                                <option value="backlog">Backlog</option>
++                                <option value="todo">To Do</option>
++                                <option value="inprogress">In Progress</option>
++                                <option value="done">Done</option>
++                            </select>
++                        </div>
++
++                        <div class="form-group">
++                            <label for="task-priority-input">Mức ưu tiên</label>
++                            <select id="task-priority-input" class="form-select">
++                                <option value="low">Thấp</option>
++                                <option value="medium" selected>Trung bình</option>
++                                <option value="high">Cao</option>
++                                <option value="urgent">Khẩn cấp</option>
++                            </select>
++                        </div>
++                    </div>
++
++                    <div class="form-row">
++                        <div class="form-group">
++                            <label for="task-deadline-input">Deadline</label>
++                            <input type="datetime-local" id="task-deadline-input" class="form-control">
++                        </div>
++
++                        <div class="form-group">
++                            <label for="task-tags-input">Nhãn (cách nhau bằng dấu phẩy)</label>
++                            <input type="text" id="task-tags-input" class="form-control" placeholder="frontend, bug, release">
++                        </div>
++                    </div>
++
++                    <div class="modal-footer">
++                        <button type="button" class="btn btn-secondary btn-close-modal">Hủy</button>
++                        <button type="submit" class="btn btn-primary" id="btn-save-task">Lưu công việc</button>
++                    </div>
++                </form>
++            </div>
++        </div>
++
++        <!-- Mobile Status Action Modal (Alternative to Drag and Drop on Mobile) -->
++        <div id="mobile-action-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mobile-modal-title" style="display: none;">
++            <div class="modal-backdrop"></div>
++            <div class="modal-content modal-sm">
++                <div class="modal-header">
++                    <h3 id="mobile-modal-title">Di chuyển task</h3>
++                    <button type="button" class="btn btn-icon btn-close-modal" aria-label="Đóng modal">
++                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
++                    </button>
++                </div>
++                <div class="modal-body">
++                    <p class="mobile-task-title-preview" id="mobile-task-preview-name"></p>
++                    <div class="mobile-status-actions">
++                        <button class="btn btn-secondary btn-full btn-move-status" data-status="backlog">
++                            <span class="column-dot backlog-dot"></span> Chuyển sang Backlog
++                        </button>
++                        <button class="btn btn-secondary btn-full btn-move-status" data-status="todo">
++                            <span class="column-dot todo-dot"></span> Chuyển sang To Do
++                        </button>
++                        <button class="btn btn-secondary btn-full btn-move-status" data-status="inprogress">
++                            <span class="column-dot inprogress-dot"></span> Chuyển sang In Progress
++                        </button>
++                        <button class="btn btn-secondary btn-full btn-move-status" data-status="done">
++                            <span class="column-dot done-dot"></span> Chuyển sang Done
++                        </button>
++                    </div>
++                </div>
+             </div>
+-        </section>
++        </div>
+ 
+-        <!-- Footer Counter -->
+-        <footer class="app-footer">
+-            <span id="task-counter">0 công việc còn lại</span>
+-            <button id="clear-completed" class="clear-btn">Xóa đã xong</button>
+-        </footer>
++        <!-- Toast Notification Container -->
++        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+     </div>
+ 
+-    <script src="app.js"></script>
++    <!-- Scripts -->
++    <script src="js/storage.js"></script>
++    <script src="js/state.js"></script>
++    <script src="js/tasks.js"></script>
++    <script src="js/kanban.js"></script>
++    <script src="js/import-export.js"></script>
++    <script src="js/ui.js"></script>
++    <script src="js/shortcuts.js"></script>
++    <script src="js/app.js"></script>
+ </body>
+-</html>
++</html>
+\ No newline at end of file
+diff --git a/js/app.js b/js/app.js
+new file mode 100644
+index 0000000..9161e13
+--- /dev/null
++++ b/js/app.js
+@@ -0,0 +1,23 @@
++/* ========================================================================== */
++// App Entry Point - TaskForge Initialization
++/* ========================================================================== */
++
++document.addEventListener('DOMContentLoaded', () => {
++    console.log('TaskForge Pro Initializing...');
++
++    // 1. Initialize State and Subscribe UI updates
++    state.subscribe(currentState => {
++        UI.render(currentState);
++    });
++
++    // 2. Initialize UI components and event listeners
++    UI.init();
++
++    // 3. Initialize Kanban drag and drop
++    KanbanManager.init();
++
++    // 4. Initialize Keyboard shortcuts
++    ShortcutsManager.init();
++
++    console.log('TaskForge Pro successfully initialized!');
++});
+\ No newline at end of file
+diff --git a/js/import-export.js b/js/import-export.js
+new file mode 100644
+index 0000000..dbb50b7
+--- /dev/null
++++ b/js/import-export.js
+@@ -0,0 +1,64 @@
++/* ========================================================================== */
++// Import/Export Module - JSON Data Backup & Validation
++/* ========================================================================== */
++
++const ImportExportManager = {
++    exportJSON() {
++        try {
++            const data = {
++                version: 1,
++                exportedAt: new Date().toISOString(),
++                tasks: state.tasks,
++                settings: state.settings
++            };
++            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
++            const downloadAnchor = document.createElement('a');
++            downloadAnchor.setAttribute("href", dataStr);
++            downloadAnchor.setAttribute("download", `taskforge_backup_${new Date().toISOString().slice(0, 10)}.json`);
++            document.body.appendChild(downloadAnchor);
++            downloadAnchor.click();
++            downloadAnchor.remove();
++            UI.showToast('Thành công', 'Đã xuất dữ liệu ra file JSON', 'success');
++        } catch (e) {
++            console.error('Export error:', e);
++            UI.showToast('Lỗi', 'Không thể xuất dữ liệu', 'error');
++        }
++    },
++
++    importJSON(file) {
++        const reader = new FileReader();
++        reader.onload = (e) => {
++            try {
++                const parsed = JSON.parse(e.target.result);
++                
++                // Schema Validation
++                if (!parsed || typeof parsed !== 'object' || !Array.isArray(parsed.tasks)) {
++                    throw new Error('Cấu trúc file JSON không hợp lệ. Thiếu trường tasks.');
++                }
++
++                // Validate each task basic structure
++                for (const t of parsed.tasks) {
++                    if (!t.id || !t.title || !t.status) {
++                        throw new Error('Một số task thiếu thông tin bắt buộc (id, title, status).');
++                    }
++                }
++
++                state.recordState();
++                state.tasks = parsed.tasks;
++                if (parsed.settings && parsed.settings.theme) {
++                    state.settings = parsed.settings;
++                    document.documentElement.setAttribute('data-theme', state.settings.theme);
++                }
++                state.notify();
++                UI.showToast('Thành công', `Đã nhập thành công ${parsed.tasks.length} công việc`, 'success');
++            } catch (err) {
++                console.error('Import parse error:', err);
++                UI.showToast('Lỗi nhập file', err.message || 'File JSON không đúng định dạng', 'error');
++            }
++        };
++        reader.onerror = () => {
++            UI.showToast('Lỗi', 'Không thể đọc file', 'error');
++        };
++        reader.readAsText(file);
++    }
++};
+\ No newline at end of file
+diff --git a/js/kanban.js b/js/kanban.js
+new file mode 100644
+index 0000000..7a53e04
+--- /dev/null
++++ b/js/kanban.js
+@@ -0,0 +1,148 @@
++/* ========================================================================== */
++// Kanban Module - Drag and Drop (Desktop) & Mobile Action Handler
++/* ========================================================================== */
++
++const KanbanManager = {
++    init() {
++        const columns = document.querySelectorAll('.kanban-column');
++
++        columns.forEach(col => {
++            const columnBody = col.querySelector('.column-body');
++            const status = col.getAttribute('data-column');
++
++            // Drag over
++            columnBody.addEventListener('dragover', e => {
++                e.preventDefault();
++                columnBody.classList.add('drag-over');
++            });
++
++            // Drag leave
++            columnBody.addEventListener('dragleave', e => {
++                columnBody.classList.remove('drag-over');
++            });
++
++            // Drop
++            columnBody.addEventListener('drop', e => {
++                e.preventDefault();
++                columnBody.classList.remove('drag-over');
++                const taskId = e.dataTransfer.getData('text/plain');
++                if (taskId) {
++                    const success = TaskManager.updateTaskStatus(taskId, status);
++                    if (success) {
++                        UI.showToast('Thành công', 'Đã di chuyển công việc', 'success');
++                    }
++                }
++            });
++        });
++    },
++
++    createTaskCard(task) {
++        const card = document.createElement('div');
++        card.className = 'task-card';
++        card.setAttribute('draggable', 'true');
++        card.setAttribute('data-id', task.id);
++        card.setAttribute('tabindex', '0');
++        card.setAttribute('aria-label', `Công việc: ${task.title}`);
++
++        // Drag start
++        card.addEventListener('dragstart', e => {
++            e.dataTransfer.setData('text/plain', task.id);
++            card.classList.add('dragging');
++        });
++
++        card.addEventListener('dragend', () => {
++            card.classList.remove('dragging');
++        });
++
++        // Priority badge class & text
++        const priorityMap = {
++            low: { text: 'Thấp', class: 'badge-priority-low' },
++            medium: { text: 'Trung bình', class: 'badge-priority-medium' },
++            high: { text: 'Cao', class: 'badge-priority-high' },
++            urgent: { text: 'Khẩn cấp', class: 'badge-priority-urgent' }
++        };
++        const pInfo = priorityMap[task.priority] || priorityMap.medium;
++
++        // Deadline formatting & Overdue check
++        let deadlineHtml = '';
++        if (task.deadline) {
++            const deadlineDate = new Date(task.deadline);
++            const isOverdue = deadlineDate < new Date() && task.status !== 'done';
++            const formattedDate = deadlineDate.toLocaleString('vi-VN', { 
++                month: 'numeric', 
++                day: 'numeric', 
++                hour: '2-digit', 
++                minute: '2-digit' 
++            });
++            deadlineHtml = `
++                <span class="task-deadline ${isOverdue ? 'overdue' : ''}" title="Deadline">
++                    <i class="fa-regular fa-clock" aria-hidden="true"></i> ${formattedDate}
++                </span>
++            `;
++        }
++
++        // Tags html
++        let tagsHtml = '';
++        if (task.tags && task.tags.length > 0) {
++            tagsHtml = `<div class="task-tags">` + 
++                task.tags.map(tag => `<span class="task-tag">#${tag}</span>`).join('') + 
++                `</div>`;
++        }
++
++        card.innerHTML = `
++            <div class="task-card-header">
++                <span class="task-title">${this.escapeHtml(task.title)}</span>
++                <div class="task-card-actions">
++                    <button class="btn btn-icon btn-sm mobile-move-btn" data-action="move" data-id="${task.id}" title="Di chuyển cột">
++                        <i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i>
++                    </button>
++                    <button class="btn btn-icon btn-sm" data-action="edit" data-id="${task.id}" title="Sửa task">
++                        <i class="fa-solid fa-pen" aria-hidden="true"></i>
++                    </button>
++                    <button class="btn btn-icon btn-sm" data-action="delete" data-id="${task.id}" title="Xóa task">
++                        <i class="fa-solid fa-trash" aria-hidden="true"></i>
++                    </button>
++                </div>
++            </div>
++            ${task.description ? `<p class="task-desc">${this.escapeHtml(task.description)}</p>` : ''}
++            ${tagsHtml}
++            <div class="task-footer">
++                <div class="task-meta-group">
++                    <span class="task-badge ${pInfo.class}">${pInfo.text}</span>
++                    ${deadlineHtml}
++                </div>
++            </div>
++        `;
++
++        // Event listeners for card actions
++        card.addEventListener('click', e => {
++            const btn = e.target.closest('button');
++            if (!btn) return;
++            const action = btn.getAttribute('data-action');
++            const id = btn.getAttribute('data-id');
++
++            if (action === 'edit') {
++                UI.openTaskModal(id);
++            } else if (action === 'delete') {
++                if (confirm('Bạn có chắc chắn muốn xóa công việc này?')) {
++                    TaskManager.deleteTask(id);
++                    UI.showToast('Thành công', 'Đã xóa công việc', 'success');
++                }
++            } else if (action === 'move') {
++                UI.openMobileActionModal(id);
++            }
++        });
++
++        return card;
++    },
++
++    escapeHtml(str) {
++        if (!str) return '';
++        return str
++            .replace(/&/g, '&amp;')
++            .replace(/</g, '&lt;')
++            .replace(/>/g, '&gt;')
++            .replace(/"/g, '&quot;')
++            .replace(/'/g, '&#039;');
++    }
++};
+\ No newline at end of file
+diff --git a/js/shortcuts.js b/js/shortcuts.js
+new file mode 100644
+index 0000000..e405f32
+--- /dev/null
++++ b/js/shortcuts.js
+@@ -0,0 +1,56 @@
++/* ========================================================================== */
++// Shortcuts Module - Keyboard Shortcuts & Accessibility Navigation
++/* ========================================================================== */
++
++const ShortcutsManager = {
++    init() {
++        document.addEventListener('keydown', e => {
++            // Don't trigger if user is typing in input or textarea
++            const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
++            const isInputActive = activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select';
++
++            // New task shortcut: 'N' or 'n'
++            if (!isInputActive && (e.key === 'n' || e.key === 'N')) {
++                e.preventDefault();
++                UI.openTaskModal();
++                return;
++            }
++
++            // Search focus shortcut: '/'
++            if (!isInputActive && e.key === '/') {
++                e.preventDefault();
++                document.getElementById('search-input').focus();
++                return;
++            }
++
++            // Escape key closes modals or clears search
++            if (e.key === 'Escape') {
++                UI.closeAllModals();
++                document.getElementById('filter-panel').classList.remove('show');
++                return;
++            }
++
++            // Ctrl+Z for Undo
++            if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z') && !e.shiftKey) {
++                if (state.canUndo()) {
++                    e.preventDefault();
++                    if (state.undo()) {
++                        UI.showToast('Hoàn tác', 'Đã khôi phục thao tác trước', 'info');
++                    }
++                }
++                return;
++            }
++
++            // Ctrl+Y or Ctrl+Shift+Z for Redo
++            if ((e.ctrlKey || e.metaKey) && ((e.key === 'y' || e.key === 'Y') || (e.key === 'z' && e.shiftKey))) {
++                if (state.canRedo()) {
++                    e.preventDefault();
++                    if (state.redo()) {
++                        UI.showToast('Làm lại', 'Đã áp dụng lại thao tác', 'info');
++                    }
++                }
++                return;
++            }
++        });
++    }
++};
+\ No newline at end of file
+diff --git a/js/state.js b/js/state.js
+new file mode 100644
+index 0000000..45a9072
+--- /dev/null
++++ b/js/state.js
+@@ -0,0 +1,92 @@
++/* ========================================================================== */
++// State Module - Central State Management & Undo/Redo (Command Pattern)
++/* ========================================================================== */
++
++class AppState {
++    constructor() {
++        const initial = Storage.loadData();
++        this.tasks = initial.tasks;
++        this.settings = initial.settings;
++        
++        this.searchQuery = '';
++        this.filters = {
++            priorities: [],
++            tags: []
++        };
++        this.sortBy = 'createdAt-desc';
++
++        // Undo / Redo stacks (stores snapshots of tasks array)
++        this.undoStack = [];
++        this.redoStack = [];
++        this.maxHistory = 20;
++
++        this.listeners = [];
++    }
++
++    subscribe(listener) {
++        this.listeners.push(listener);
++    }
++
++    notify() {
++        Storage.saveData(this.tasks, this.settings);
++        this.listeners.forEach(listener => listener(this));
++    }
++
++    // Push current task state to history before making mutation
++    recordState() {
++        this.undoStack.push(JSON.parse(JSON.stringify(this.tasks)));
++        if (this.undoStack.length > this.maxHistory) {
++            this.undoStack.shift();
++        }
++        // Clear redo stack on new user action
++        this.redoStack = [];
++    }
++
++    undo() {
++        if (this.undoStack.length === 0) return false;
++        
++        // Push current to redo
++        this.redoStack.push(JSON.parse(JSON.stringify(this.tasks)));
++        this.tasks = this.undoStack.pop();
++        this.notify();
++        return true;
++    }
++
++    redo() {
++        if (this.redoStack.length === 0) return false;
++
++        // Push current to undo
++        this.undoStack.push(JSON.parse(JSON.stringify(this.tasks)));
++        this.tasks = this.redoStack.pop();
++        this.notify();
++        return true;
++    }
++
++    canUndo() {
++        return this.undoStack.length > 0;
++    }
++
++    canRedo() {
++        return this.redoStack.length > 0;
++    }
++
++    setTheme(theme) {
++        this.settings.theme = theme;
++        this.notify();
++    }
++
++    setSearchQuery(query) {
++        this.searchQuery = query.trim().toLowerCase();
++    }
++
++    setFilters(priorities, tags) {
++        this.filters.priorities = priorities;
++        this.filters.tags = tags;
++    }
++
++    setSortBy(sortBy) {
++        this.sortBy = sortBy;
++    }
++}
++
++const state = new AppState();
+\ No newline at end of file
+diff --git a/js/storage.js b/js/storage.js
+new file mode 100644
+index 0000000..bcf90d5
+--- /dev/null
++++ b/js/storage.js
+@@ -0,0 +1,111 @@
++/* ========================================================================== */
++// Storage Module - LocalStorage Persistence & Migration
++/* ========================================================================== */
++
++const STORAGE_KEY = 'taskforge_data_v1';
++
++const Storage = {
++    /**
++     * Load data from localStorage with schema validation & migration
++     * @returns {Object} { tasks: Array, settings: Object }
++     */
++    loadData() {
++        try {
++            const raw = localStorage.getItem(STORAGE_KEY);
++            if (!raw) {
++                return this.getDefaultData();
++            }
++            const parsed = JSON.parse(raw);
++            if (!parsed || !Array.isArray(parsed.tasks)) {
++                console.warn('Invalid storage format, falling back to default data.');
++                return this.getDefaultData();
++            }
++            return {
++                tasks: parsed.tasks,
++                settings: Object.assign({ theme: 'light' }, parsed.settings || {})
++            };
++        } catch (e) {
++            console.error('Error loading data from localStorage:', e);
++            return this.getDefaultData();
++        }
++    },
++
++    /**
++     * Save tasks and settings to localStorage
++     * @param {Array} tasks 
++     * @param {Object} settings 
++     */
++    saveData(tasks, settings) {
++        try {
++            const payload = {
++                version: 1,
++                updatedAt: new Date().toISOString(),
++                tasks,
++                settings
++            };
++            localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
++            return true;
++        } catch (e) {
++            console.error('Error saving data to localStorage:', e);
++            return false;
++        }
++    },
++
++    /**
++     * Get initial demo data if localStorage is empty
++     */
++    getDefaultData() {
++        const now = new Date();
++        const tomorrow = new Date(now.getTime() + 86400000);
++        const nextWeek = new Date(now.getTime() + 7 * 86400000);
++        const yesterday = new Date(now.getTime() - 86400000);
++
++        return {
++            tasks: [
++                {
++                    id: 'task-1',
++                    title: 'Khảo sát yêu cầu TaskForge Pro',
++                    description: 'Phân tích 20 yêu cầu bắt buộc và lập kế hoạch kiến trúc chi tiết cho web app client-side.',
++                    status: 'done',
++                    priority: 'high',
++                    deadline: yesterday.toISOString().slice(0, 16),
++                    tags: ['planning', 'arch'],
++                    createdAt: new Date(now.getTime() - 172800000).toISOString()
++                },
++                {
++                    id: 'task-2',
++                    title: 'Xây dựng giao diện Kanban & Dashboard',
++                    description: 'Thiết kế hệ thống cột Kanban 4 trạng thái, tích hợp thống kê real-time và Dark Mode.',
++                    status: 'inprogress',
++                    priority: 'urgent',
++                    deadline: tomorrow.toISOString().slice(0, 16),
++                    tags: ['frontend', 'ui'],
++                    createdAt: new Date(now.getTime() - 86400000).toISOString()
++                },
++                {
++                    id: 'task-3',
++                    title: 'Triển khai Drag-and-Drop và Mobile support',
++                    description: 'Hỗ trợ HTML5 Drag and Drop trên desktop và modal chọn trạng thái trên mobile.',
++                    status: 'todo',
++                    priority: 'medium',
++                    deadline: nextWeek.toISOString().slice(0, 16),
++                    tags: ['frontend', 'ux'],
++                    createdAt: now.toISOString()
++                },
++                {
++                    id: 'task-4',
++                    title: 'Viết tài liệu Hướng dẫn sử dụng README.md',
++                    description: 'Mô tả chi tiết cách cài đặt, chạy ứng dụng, kiến trúc module và danh sách tính năng.',
++                    status: 'backlog',
++                    priority: 'low',
++                    deadline: '',
++                    tags: ['docs'],
++                    createdAt: now.toISOString()
++                }
++            ],
++            settings: {
++                theme: 'light'
++            }
++        };
++    }
++};
+\ No newline at end of file
+diff --git a/js/tasks.js b/js/tasks.js
+new file mode 100644
+index 0000000..b21b2d7
+--- /dev/null
++++ b/js/tasks.js
+@@ -0,0 +1,140 @@
++/* ========================================================================== */
++// Tasks Module - CRUD Operations, Filter, Search, Sort
++/* ========================================================================== */
++
++const TaskManager = {
++    generateId() {
++        return 'task_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
++    },
++
++    addTask(taskData) {
++        state.recordState();
++        const newTask = {
++            id: this.generateId(),
++            title: taskData.title.trim(),
++            description: taskData.description ? taskData.description.trim() : '',
++            status: taskData.status || 'backlog',
++            priority: taskData.priority || 'medium',
++            deadline: taskData.deadline || '',
++            tags: taskData.tags ? taskData.tags.map(t => t.trim()).filter(Boolean) : [],
++            createdAt: new Date().toISOString()
++        };
++        state.tasks.unshift(newTask);
++        state.notify();
++        return newTask;
++    },
++
++    updateTask(id, taskData) {
++        state.recordState();
++        const index = state.tasks.findIndex(t => t.id === id);
++        if (index === -1) return null;
++
++        state.tasks[index] = {
++            ...state.tasks[index],
++            title: taskData.title.trim(),
++            description: taskData.description ? taskData.description.trim() : '',
++            status: taskData.status || state.tasks[index].status,
++            priority: taskData.priority || state.tasks[index].priority,
++            deadline: taskData.deadline !== undefined ? taskData.deadline : state.tasks[index].deadline,
++            tags: taskData.tags ? taskData.tags.map(t => t.trim()).filter(Boolean) : state.tasks[index].tags
++        };
++
++        state.notify();
++        return state.tasks[index];
++    },
++
++    updateTaskStatus(id, newStatus) {
++        state.recordState();
++        const task = state.tasks.find(t => t.id === id);
++        if (!task || task.status === newStatus) return false;
++
++        task.status = newStatus;
++        state.notify();
++        return true;
++    },
++
++    deleteTask(id) {
++        state.recordState();
++        const index = state.tasks.findIndex(t => t.id === id);
++        if (index === -1) return false;
++
++        state.tasks.splice(index, 1);
++        state.notify();
++        return true;
++    },
++
++    getTaskById(id) {
++        return state.tasks.find(t => t.id === id);
++    },
++
++    /**
++     * Get filtered and sorted tasks
++     */
++    getProcessedTasks() {
++        let result = [...state.tasks];
++
++        // 1. Search query filter
++        if (state.searchQuery) {
++            const q = state.searchQuery;
++            result = result.filter(t => 
++                t.title.toLowerCase().includes(q) ||
++                t.description.toLowerCase().includes(q) ||
++                (t.tags && t.tags.some(tag => tag.toLowerCase().includes(q)))
++            );
++        }
++
++        // 2. Priority filter
++        if (state.filters.priorities.length > 0) {
++            result = result.filter(t => state.filters.priorities.includes(t.priority));
++        }
++
++        // 3. Tag filter
++        if (state.filters.tags.length > 0) {
++            result = result.filter(t => 
++                t.tags && t.tags.some(tag => state.filters.tags.includes(tag))
++            );
++        }
++
++        // 4. Sorting
++        const [field, direction] = state.sortBy.split('-');
++        const priorityWeight = { urgent: 4, high: 3, medium: 2, low: 1 };
++
++        result.sort((a, b) => {
++            let valA, valB;
++
++            if (field === 'createdAt') {
++                valA = new Date(a.createdAt).getTime();
++                valB = new Date(b.createdAt).getTime();
++            } else if (field === 'deadline') {
++                // Tasks without deadline go last
++                if (!a.deadline && !b.deadline) return 0;
++                if (!a.deadline) return 1;
++                if (!b.deadline) return -1;
++                valA = new Date(a.deadline).getTime();
++                valB = new Date(b.deadline).getTime();
++            } else if (field === 'priority') {
++                valA = priorityWeight[a.priority] || 0;
++                valB = priorityWeight[b.priority] || 0;
++            } else if (field === 'title') {
++                valA = a.title.toLowerCase();
++                valB = b.title.toLowerCase();
++            }
++
++            if (valA < valB) return direction === 'asc' ? -1 : 1;
++            if (valA > valB) return direction === 'asc' ? 1 : -1;
++            return 0;
++        });
++
++        return result;
++    },
++
++    getAllUniqueTags() {
++        const tagsSet = new Set();
++        state.tasks.forEach(t => {
++            if (Array.isArray(t.tags)) {
++                t.tags.forEach(tag => tagsSet.add(tag));
++            }
++        });
++        return Array.from(tagsSet).sort();
++    }
++};
+\ No newline at end of file
+diff --git a/js/ui.js b/js/ui.js
+new file mode 100644
+index 0000000..61bc8ec
+--- /dev/null
++++ b/js/ui.js
+@@ -0,0 +1,390 @@
++/* ========================================================================== */
++// UI Module - Dashboard Stats, Render Board, Toasts, Modals, Theme
++/* ========================================================================== */
++
++const UI = {
++    init() {
++        this.bindEvents();
++        this.render(state);
++        this.initTheme();
++    },
++
++    initTheme() {
++        const theme = state.settings.theme || 'light';
++        document.documentElement.setAttribute('data-theme', theme);
++    },
++
++    toggleTheme() {
++        const currentTheme = document.documentElement.getAttribute('data-theme');
++        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
++        document.documentElement.setAttribute('data-theme', newTheme);
++        state.setTheme(newTheme);
++        this.showToast('Giao diện', `Đã chuyển sang chế độ ${newTheme === 'dark' ? 'Tối' : 'Sáng'}`, 'info');
++    },
++
++    bindEvents() {
++        // Theme toggle
++        document.getElementById('btn-theme-toggle').addEventListener('click', () => this.toggleTheme());
++
++        // New task buttons
++        document.getElementById('btn-new-task').addEventListener('click', () => this.openTaskModal());
++        document.querySelectorAll('.btn-add-in-column').forEach(btn => {
++            btn.addEventListener('click', e => {
++                const status = btn.getAttribute('data-status');
++                this.openTaskModal(null, status);
++            });
++        });
++
++        // Modal close buttons
++        document.querySelectorAll('.btn-close-modal, .modal-backdrop').forEach(el => {
++            el.addEventListener('click', () => {
++                this.closeAllModals();
++            });
++        });
++
++        // Task Form Submit
++        document.getElementById('task-form').addEventListener('submit', e => {
++            e.preventDefault();
++            this.handleTaskFormSubmit();
++        });
++
++        // Search Input
++        const searchInput = document.getElementById('search-input');
++        const clearSearchBtn = document.getElementById('btn-clear-search');
++        searchInput.addEventListener('input', e => {
++            state.setSearchQuery(e.target.value);
++            clearSearchBtn.style.display = e.target.value ? 'block' : 'none';
++            this.renderBoard();
++        });
++
++        clearSearchBtn.addEventListener('click', () => {
++            searchInput.value = '';
++            clearSearchBtn.style.display = 'none';
++            state.setSearchQuery('');
++            this.renderBoard();
++        });
++
++        // Filter Toggle & Panel
++        const filterToggleBtn = document.getElementById('btn-filter-toggle');
++        const filterPanel = document.getElementById('filter-panel');
++        filterToggleBtn.addEventListener('click', e => {
++            e.stopPropagation();
++            const isVisible = filterPanel.classList.toggle('show');
++            filterToggleBtn.setAttribute('aria-expanded', isVisible);
++        });
++
++        document.addEventListener('click', e => {
++            if (!filterPanel.contains(e.target) && !filterToggleBtn.contains(e.target)) {
++                filterPanel.classList.remove('show');
++                filterToggleBtn.setAttribute('aria-expanded', 'false');
++            }
++        });
++
++        // Filter Options change
++        document.getElementById('filter-priority-options').addEventListener('change', () => {
++            this.updateFiltersFromUI();
++        });
++        document.getElementById('filter-tags-container').addEventListener('change', () => {
++            this.updateFiltersFromUI();
++        });
++        document.getElementById('btn-reset-filters').addEventListener('click', () => {
++            this.resetFilters();
++        });
++
++        // Sort Select
++        document.getElementById('sort-select').addEventListener('change', e => {
++            state.setSortBy(e.target.value);
++            this.renderBoard();
++        });
++
++        // Undo / Redo buttons
++        document.getElementById('btn-undo').addEventListener('click', () => {
++            if (state.undo()) {
++                this.showToast('Hoàn tác', 'Đã khôi phục thao tác trước', 'info');
++            }
++        });
++        document.getElementById('btn-redo').addEventListener('click', () => {
++            if (state.redo()) {
++                this.showToast('Làm lại', 'Đã áp dụng lại thao tác', 'info');
++            }
++        });
++
++        // IO Dropdown
++        const ioMenuBtn = document.getElementById('btn-io-menu');
++        const ioDropdown = ioMenuBtn.nextElementSibling;
++        ioMenuBtn.addEventListener('click', e => {
++            e.stopPropagation();
++            ioDropdown.classList.toggle('show');
++        });
++        document.addEventListener('click', () => {
++            ioDropdown.classList.remove('show');
++        });
++
++        document.getElementById('btn-export').addEventListener('click', () => {
++            ImportExportManager.exportJSON();
++        });
++
++        document.getElementById('btn-import').addEventListener('click', () => {
++            document.getElementById('import-file-input').click();
++        });
++
++        document.getElementById('import-file-input').addEventListener('change', e => {
++            if (e.target.files.length > 0) {
++                ImportExportManager.importJSON(e.target.files[0]);
++                e.target.value = '';
++            }
++        });
++
++        // Mobile status action modal buttons
++        document.querySelectorAll('.btn-move-status').forEach(btn => {
++            btn.addEventListener('click', () => {
++                const targetStatus = btn.getAttribute('data-status');
++                const taskId = document.getElementById('mobile-action-modal').getAttribute('data-current-task-id');
++                if (taskId && targetStatus) {
++                    const success = TaskManager.updateTaskStatus(taskId, targetStatus);
++                    if (success) {
++                        this.showToast('Thành công', 'Đã di chuyển công việc', 'success');
++                    }
++                    this.closeAllModals();
++                }
++            });
++        });
++    },
++
++    render(currentState) {
++        this.renderStats(currentState.tasks);
++        this.renderBoard();
++        this.renderFilterTagsOptions();
++        this.updateUndoRedoButtons();
++    },
++
++    renderStats(tasks) {
++        const total = tasks.length;
++        const inProgress = tasks.filter(t => t.status === 'inprogress').length;
++        const completed = tasks.filter(t => t.status === 'done').length;
++        const now = new Date();
++        const overdue = tasks.filter(t => t.deadline && new Date(t.deadline) < now && t.status !== 'done').length;
++
++        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
++
++        document.getElementById('stat-total').textContent = total;
++        document.getElementById('stat-inprogress').textContent = inProgress;
++        document.getElementById('stat-completed').textContent = completed;
++        document.getElementById('stat-overdue').textContent = overdue;
++        document.getElementById('stat-progress-percent').textContent = `${percent}%`;
++        
++        const progressBar = document.getElementById('stat-progress-bar');
++        progressBar.style.width = `${percent}%`;
++        progressBar.closest('.progress-bar-container').setAttribute('aria-valuenow', percent);
++    },
++
++    renderBoard() {
++        const processedTasks = TaskManager.getProcessedTasks();
++
++        const columns = {
++            backlog: document.getElementById('col-backlog'),
++            todo: document.getElementById('col-todo'),
++            inprogress: document.getElementById('col-inprogress'),
++            done: document.getElementById('col-done')
++        };
++
++        const counts = {
++            backlog: 0,
++            todo: 0,
++            inprogress: 0,
++            done: 0
++        };
++
++        // Clear columns
++        Object.values(columns).forEach(col => col.innerHTML = '');
++
++        if (processedTasks.length === 0) {
++            Object.keys(columns).forEach(status => {
++                columns[status].innerHTML = `
++                    <div class="empty-state">
++                        <i class="fa-solid fa-folder-open empty-icon" aria-hidden="true"></i>
++                        <p>Không có công việc nào</p>
++                    </div>
++                `;
++            });
++        } else {
++            processedTasks.forEach(task => {
++                counts[task.status]++;
++                const card = KanbanManager.createTaskCard(task);
++                if (columns[task.status]) {
++                    columns[task.status].appendChild(card);
++                }
++            });
++
++            // Check empty columns
++            Object.keys(columns).forEach(status => {
++                if (counts[status] === 0) {
++                    columns[status].innerHTML = `
++                        <div class="empty-state">
++                            <p>Trống</p>
++                        </div>
++                    `;
++                }
++            });
++        }
++
++        // Update counts
++        document.getElementById('count-backlog').textContent = state.tasks.filter(t => t.status === 'backlog').length;
++        document.getElementById('count-todo').textContent = state.tasks.filter(t => t.status === 'todo').length;
++        document.getElementById('count-inprogress').textContent = state.tasks.filter(t => t.status === 'inprogress').length;
++        document.getElementById('count-done').textContent = state.tasks.filter(t => t.status === 'done').length;
++    },
++
++    renderFilterTagsOptions() {
++        const container = document.getElementById('filter-tags-container');
++        const tags = TaskManager.getAllUniqueTags();
++        
++        if (tags.length === 0) {
++            container.innerHTML = `<span class="no-tags-hint">Chưa có nhãn nào</span>`;
++            return;
++        }
++
++        container.innerHTML = tags.map(tag => `
++            <label><input type="checkbox" value="${tag}"> #${tag}</label>
++        `).join('');
++    },
++
++    updateFiltersFromUI() {
++        const priorities = Array.from(document.querySelectorAll('#filter-priority-options input:checked')).map(el => el.value);
++        const tags = Array.from(document.querySelectorAll('#filter-tags-container input:checked')).map(el => el.value);
++
++        state.setFilters(priorities, tags);
++        
++        const badgeCount = priorities.length + tags.length;
++        const filterBadge = document.getElementById('filter-badge');
++        if (badgeCount > 0) {
++            filterBadge.textContent = badgeCount;
++            filterBadge.style.display = 'inline-block';
++        } else {
++            filterBadge.style.display = 'none';
++        }
++
++        this.renderBoard();
++    },
++
++    resetFilters() {
++        document.querySelectorAll('#filter-priority-options input, #filter-tags-container input').forEach(el => el.checked = false);
++        state.setFilters([], []);
++        document.getElementById('filter-badge').style.display = 'none';
++        this.renderBoard();
++    },
++
++    updateUndoRedoButtons() {
++        document.getElementById('btn-undo').disabled = !state.canUndo();
++        document.getElementById('btn-redo').disabled = !state.canRedo();
++    },
++
++    openTaskModal(taskId = null, defaultStatus = 'backlog') {
++        const modal = document.getElementById('task-modal');
++        const titleEl = document.getElementById('modal-title');
++        const form = document.getElementById('task-form');
++        form.reset();
++        document.getElementById('task-id').value = '';
++        document.getElementById('task-title-input').classList.remove('is-invalid');
++
++        if (taskId) {
++            titleEl.textContent = 'Chỉnh sửa công việc';
++            const task = TaskManager.getTaskById(taskId);
++            if (task) {
++                document.getElementById('task-id').value = task.id;
++                document.getElementById('task-title-input').value = task.title;
++                document.getElementById('task-desc-input').value = task.description || '';
++                document.getElementById('task-status-input').value = task.status;
++                document.getElementById('task-priority-input').value = task.priority;
++                document.getElementById('task-deadline-input').value = task.deadline || '';
++                document.getElementById('task-tags-input').value = task.tags ? task.tags.join(', ') : '';
++            }
++        } else {
++            titleEl.textContent = 'Thêm task mới';
++            document.getElementById('task-status-input').value = defaultStatus;
++        }
++
++        modal.style.display = 'flex';
++        document.getElementById('task-title-input').focus();
++    },
++
++    openMobileActionModal(taskId) {
++        const modal = document.getElementById('mobile-action-modal');
++        const task = TaskManager.getTaskById(taskId);
++        if (!task) return;
++
++        modal.setAttribute('data-current-task-id', taskId);
++        document.getElementById('mobile-task-preview-name').textContent = task.title;
++        modal.style.display = 'flex';
++    },
++
++    closeAllModals() {
++        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
++    },
++
++    handleTaskFormSubmit() {
++        const id = document.getElementById('task-id').value;
++        const titleInput = document.getElementById('task-title-input');
++        const title = titleInput.value.trim();
++
++        if (!title) {
++            titleInput.classList.add('is-invalid');
++            titleInput.focus();
++            return;
++        }
++        titleInput.classList.remove('is-invalid');
++
++        const description = document.getElementById('task-desc-input').value;
++        const status = document.getElementById('task-status-input').value;
++        const priority = document.getElementById('task-priority-input').value;
++        const deadline = document.getElementById('task-deadline-input').value;
++        const tagsStr = document.getElementById('task-tags-input').value;
++        const tags = tagsStr ? tagsStr.split(',').map(t => t.trim()).filter(Boolean) : [];
++
++        if (id) {
++            TaskManager.updateTask(id, { title, description, status, priority, deadline, tags });
++            this.showToast('Thành công', 'Đã cập nhật công việc', 'success');
++        } else {
++            TaskManager.addTask({ title, description, status, priority, deadline, tags });
++            this.showToast('Thành công', 'Đã thêm công việc mới', 'success');
++        }
++
++        this.closeAllModals();
++    },
++
++    showToast(title, message, type = 'success') {
++        const container = document.getElementById('toast-container');
++        const toast = document.createElement('div');
++        toast.className = `toast ${type}`;
++
++        const iconMap = {
++            success: 'fa-circle-check',
++            error: 'fa-circle-exclamation',
++            warning: 'fa-triangle-exclamation',
++            info: 'fa-circle-info'
++        };
++
++        toast.innerHTML = `
++            <i class="fa-solid ${iconMap[type] || iconMap.success} toast-icon" aria-hidden="true"></i>
++            <div class="toast-content">
++                <span class="toast-title">${title}</span>
++                <span class="toast-msg">${message}</span>
++            </div>
++            <button type="button" class="toast-close" aria-label="Đóng thông báo">
++                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
++            </button>
++        `;
++
++        toast.querySelector('.toast-close').addEventListener('click', () => {
++            toast.remove();
++        });
++
++        container.appendChild(toast);
++
++        setTimeout(() => {
++            if (toast.parentElement) {
++                toast.remove();
++            }
++        }, 3000);
++    }
++};
+\ No newline at end of file

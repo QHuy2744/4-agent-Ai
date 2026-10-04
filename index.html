@@ -1,62 +1,335 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Android To-Do List</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome for modern icons -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskForge - Quản lý công việc cao cấp</title>
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <h1><i class="fa-solid fa-clipboard-list"></i> Việc Cần Làm</h1>
-            <p id="date-display">Hôm nay</p>
+    <div id="app" class="app-container">
+        <!-- Header & Navigation -->
+        <header class="app-header" role="banner">
+            <div class="logo-area">
+                <i class="fa-solid fa-bolt-lightning logo-icon" aria-hidden="true"></i>
+                <h1>TaskForge</h1>
+                <span class="badge-pro">Pro</span>
+            </div>
+
+            <div class="header-actions">
+                <div class="undo-redo-group" role="toolbar" aria-label="Lịch sử thao tác">
+                    <button id="btn-undo" class="btn btn-icon" title="Hoàn tác (Ctrl+Z)" aria-label="Hoàn tác" disabled>
+                        <i class="fa-solid fa-rotate-left" aria-hidden="true"></i>
+                    </button>
+                    <button id="btn-redo" class="btn btn-icon" title="Làm lại (Ctrl+Y)" aria-label="Làm lại" disabled>
+                        <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <button id="btn-theme-toggle" class="btn btn-icon" title="Chuyển đổi giao diện Sáng/Tối" aria-label="Chuyển đổi giao diện">
+                    <i class="fa-solid fa-moon theme-icon-dark" aria-hidden="true"></i>
+                    <i class="fa-solid fa-sun theme-icon-light" aria-hidden="true"></i>
+                </button>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" id="btn-io-menu" aria-expanded="false" aria-haspopup="true">
+                        <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Dữ liệu
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="btn-io-menu">
+                        <button id="btn-export" class="dropdown-item">
+                            <i class="fa-solid fa-download" aria-hidden="true"></i> Xuất JSON
+                        </button>
+                        <button id="btn-import" class="dropdown-item">
+                            <i class="fa-solid fa-upload" aria-hidden="true"></i> Nhập JSON
+                        </button>
+                        <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                    </div>
+                </div>
+
+                <button id="btn-new-task" class="btn btn-primary">
+                    <i class="fa-solid fa-plus" aria-hidden="true"></i> Task Mới <span class="shortcut-hint">(N)</span>
+                </button>
+            </div>
         </header>
 
-        <!-- Input Section -->
-        <section class="input-section">
-            <form id="todo-form">
-                <input 
-                    type="text" 
-                    id="todo-input" 
-                    placeholder="Thêm công việc mới..." 
-                    autocomplete="off"
-                    required
-                >
-                <button type="submit" id="add-btn" aria-label="Thêm công việc">
-                    <i class="fa-solid fa-plus"></i>
-                </button>
-            </form>
-        </section>
+        <!-- Main Content Area -->
+        <main class="app-main" role="main">
+            <!-- Dashboard Stats -->
+            <section class="dashboard-stats" aria-label="Thống kê tổng quan">
+                <div class="stat-card" data-stat="total">
+                    <div class="stat-icon"><i class="fa-solid fa-list-check" aria-hidden="true"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Tổng công việc</span>
+                        <strong id="stat-total" class="stat-value">0</strong>
+                    </div>
+                </div>
+                <div class="stat-card" data-stat="inprogress">
+                    <div class="stat-icon"><i class="fa-solid fa-spinner" aria-hidden="true"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Đang làm</span>
+                        <strong id="stat-inprogress" class="stat-value">0</strong>
+                    </div>
+                </div>
+                <div class="stat-card" data-stat="completed">
+                    <div class="stat-icon"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Hoàn thành</span>
+                        <strong id="stat-completed" class="stat-value">0</strong>
+                    </div>
+                </div>
+                <div class="stat-card" data-stat="overdue">
+                    <div class="stat-icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Quá hạn</span>
+                        <strong id="stat-overdue" class="stat-value">0</strong>
+                    </div>
+                </div>
+                <div class="stat-card stat-progress-card">
+                    <div class="stat-info full-width">
+                        <div class="progress-header">
+                            <span class="stat-label">Tiến độ hoàn thành</span>
+                            <strong id="stat-progress-percent" class="stat-value">0%</strong>
+                        </div>
+                        <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                            <div id="stat-progress-bar" class="progress-bar-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <!-- Filter Tabs -->
-        <section class="filter-section">
-            <button class="filter-btn active" data-filter="all">Tất cả</button>
-            <button class="filter-btn" data-filter="active">Đang làm</button>
-            <button class="filter-btn" data-filter="completed">Đã xong</button>
-        </section>
+            <!-- Toolbar: Search, Filter, Sort -->
+            <section class="app-toolbar" aria-label="Công cụ tìm kiếm và lọc">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                    <input type="text" id="search-input" placeholder="Tìm kiếm task theo tiêu đề, mô tả, nhãn... (Phím /)" aria-label="Tìm kiếm task">
+                    <button id="btn-clear-search" class="btn-clear-input" style="display: none;" aria-label="Xóa tìm kiếm">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </div>
 
-        <!-- Tasks List Section -->
-        <section class="list-section">
-            <ul id="todo-list">
-                <!-- Dynamic items will be injected here -->
-            </ul>
-            <div id="empty-state" class="empty-state hidden">
-                <i class="fa-solid fa-face-smile"></i>
-                <p>Không có công việc nào!</p>
+                <div class="filter-sort-group">
+                    <div class="filter-dropdown-container">
+                        <button id="btn-filter-toggle" class="btn btn-secondary" aria-expanded="false">
+                            <i class="fa-solid fa-filter" aria-hidden="true"></i> Lọc <span id="filter-badge" class="badge-count" style="display: none;">0</span>
+                        </button>
+                        <div id="filter-panel" class="filter-panel" style="display: none;">
+                            <div class="filter-section">
+                                <label class="filter-title">Mức ưu tiên</label>
+                                <div class="filter-options" id="filter-priority-options">
+                                    <label><input type="checkbox" value="urgent"> Khẩn cấp</label>
+                                    <label><input type="checkbox" value="high"> Cao</label>
+                                    <label><input type="checkbox" value="medium"> Trung bình</label>
+                                    <label><input type="checkbox" value="low"> Thấp</label>
+                                </div>
+                            </div>
+                            <div class="filter-section">
+                                <label class="filter-title">Nhãn (Tags)</label>
+                                <div class="filter-options" id="filter-tags-container">
+                                    <!-- Dynamic tags -->
+                                    <span class="no-tags-hint">Chưa có nhãn nào</span>
+                                </div>
+                            </div>
+                            <div class="filter-actions">
+                                <button id="btn-reset-filters" class="btn btn-text btn-sm">Đặt lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sort-container">
+                        <label for="sort-select" class="sr-only">Sắp xếp theo</label>
+                        <select id="sort-select" class="form-select" aria-label="Sắp xếp task">
+                            <option value="createdAt-desc">Mới nhất trước</option>
+                            <option value="createdAt-asc">Cũ nhất trước</option>
+                            <option value="deadline-asc">Deadline: Sớm nhất</option>
+                            <option value="deadline-desc">Deadline: Muộn nhất</option>
+                            <option value="priority-desc">Ưu tiên: Cao xuống thấp</option>
+                            <option value="title-asc">Tiêu đề: A-Z</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kanban Board -->
+            <section class="kanban-board" aria-label="Bảng Kanban quản lý công việc">
+                <!-- Backlog Column -->
+                <div class="kanban-column" data-column="backlog" tabindex="0" aria-label="Cột Backlog">
+                    <div class="column-header">
+                        <div class="column-title-group">
+                            <span class="column-dot backlog-dot"></span>
+                            <h2>Backlog</h2>
+                            <span class="task-count" id="count-backlog">0</span>
+                        </div>
+                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="backlog" title="Thêm task vào Backlog">
+                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="column-body" id="col-backlog">
+                        <!-- Tasks injected here -->
+                    </div>
+                </div>
+
+                <!-- To Do Column -->
+                <div class="kanban-column" data-column="todo" tabindex="0" aria-label="Cột To Do">
+                    <div class="column-header">
+                        <div class="column-title-group">
+                            <span class="column-dot todo-dot"></span>
+                            <h2>To Do</h2>
+                            <span class="task-count" id="count-todo">0</span>
+                        </div>
+                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="todo" title="Thêm task vào To Do">
+                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="column-body" id="col-todo">
+                        <!-- Tasks injected here -->
+                    </div>
+                </div>
+
+                <!-- In Progress Column -->
+                <div class="kanban-column" data-column="inprogress" tabindex="0" aria-label="Cột In Progress">
+                    <div class="column-header">
+                        <div class="column-title-group">
+                            <span class="column-dot inprogress-dot"></span>
+                            <h2>In Progress</h2>
+                            <span class="task-count" id="count-inprogress">0</span>
+                        </div>
+                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="inprogress" title="Thêm task vào In Progress">
+                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="column-body" id="col-inprogress">
+                        <!-- Tasks injected here -->
+                    </div>
+                </div>
+
+                <!-- Done Column -->
+                <div class="kanban-column" data-column="done" tabindex="0" aria-label="Cột Done">
+                    <div class="column-header">
+                        <div class="column-title-group">
+                            <span class="column-dot done-dot"></span>
+                            <h2>Done</h2>
+                            <span class="task-count" id="count-done">0</span>
+                        </div>
+                        <button class="btn btn-icon btn-sm btn-add-in-column" data-status="done" title="Thêm task vào Done">
+                            <i class="fa-solid fa-plus" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="column-body" id="col-done">
+                        <!-- Tasks injected here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Task Modal (Create / Edit) -->
+        <div id="task-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Thêm task mới</h3>
+                    <button type="button" class="btn btn-icon btn-close-modal" aria-label="Đóng modal">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <form id="task-form" novalidate>
+                    <input type="hidden" id="task-id">
+                    
+                    <div class="form-group">
+                        <label for="task-title-input">Tiêu đề <span class="required">*</span></label>
+                        <input type="text" id="task-title-input" class="form-control" placeholder="Nhập tiêu đề công việc..." required>
+                        <div class="error-message" id="error-title">Vui lòng nhập tiêu đề công việc.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="task-desc-input">Mô tả</label>
+                        <textarea id="task-desc-input" class="form-control" rows="3" placeholder="Nhập chi tiết mô tả công việc..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-status-input">Trạng thái</label>
+                            <select id="task-status-input" class="form-select">
+                                <option value="backlog">Backlog</option>
+                                <option value="todo">To Do</option>
+                                <option value="inprogress">In Progress</option>
+                                <option value="done">Done</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-priority-input">Mức ưu tiên</label>
+                            <select id="task-priority-input" class="form-select">
+                                <option value="low">Thấp</option>
+                                <option value="medium" selected>Trung bình</option>
+                                <option value="high">Cao</option>
+                                <option value="urgent">Khẩn cấp</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-deadline-input">Deadline</label>
+                            <input type="datetime-local" id="task-deadline-input" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="task-tags-input">Nhãn (cách nhau bằng dấu phẩy)</label>
+                            <input type="text" id="task-tags-input" class="form-control" placeholder="frontend, bug, release">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-close-modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary" id="btn-save-task">Lưu công việc</button>
+                    </div>
+                </form>
             </div>
-        </section>
+        </div>
 
-        <!-- Footer Counter -->
-        <footer class="app-footer">
-            <span id="task-counter">0 công việc còn lại</span>
-            <button id="clear-completed" class="clear-btn">Xóa đã xong</button>
-        </footer>
+        <!-- Mobile Status Action Modal (Alternative to Drag and Drop on Mobile) -->
+        <div id="mobile-action-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="mobile-modal-title" style="display: none;">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content modal-sm">
+                <div class="modal-header">
+                    <h3 id="mobile-modal-title">Di chuyển task</h3>
+                    <button type="button" class="btn btn-icon btn-close-modal" aria-label="Đóng modal">
+                        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="mobile-task-title-preview" id="mobile-task-preview-name"></p>
+                    <div class="mobile-status-actions">
+                        <button class="btn btn-secondary btn-full btn-move-status" data-status="backlog">
+                            <span class="column-dot backlog-dot"></span> Chuyển sang Backlog
+                        </button>
+                        <button class="btn btn-secondary btn-full btn-move-status" data-status="todo">
+                            <span class="column-dot todo-dot"></span> Chuyển sang To Do
+                        </button>
+                        <button class="btn btn-secondary btn-full btn-move-status" data-status="inprogress">
+                            <span class="column-dot inprogress-dot"></span> Chuyển sang In Progress
+                        </button>
+                        <button class="btn btn-secondary btn-full btn-move-status" data-status="done">
+                            <span class="column-dot done-dot"></span> Chuyển sang Done
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification Container -->
+        <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/kanban.js"></script>
+    <script src="js/import-export.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/shortcuts.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
