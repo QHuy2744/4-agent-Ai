@@ -1,57 +1,57 @@
-Chào bạn, tôi là **PLANNER**. Dựa trên yêu cầu **"tạo một web giới thiệu về máy tính"**, tôi đã khảo sát cấu trúc hiện tại của dự án (hiện tại workspace đang trống hoặc chưa có mã nguồn cụ thể cho trang web máy tính) và lập kế hoạch triển khai chi tiết dưới đây.
+Chào bạn, với tư cách là **PLANNER**, trước tiên tôi cần thực hiện bước khảo sát codebase hiện tại (sử dụng các công cụ `Glob`, `Grep`, `Read` nếu có) để hiểu rõ cấu trúc dự án. Tuy nhiên, do đây là một yêu cầu khởi tạo hoặc tôi đang ở lượt phản hồi đầu tiên, tôi sẽ đưa ra bản kế hoạch tổng quan dựa trên yêu cầu: **"Tạo một web chuyên về nhạc có tất cả bài nhạc"**.
 
-Vì đây là một dự án mới (hoặc cần xây dựng từ đầu), tôi đã tạo thư mục `.bangiao` và lưu kế hoạch chi tiết vào `.bangiao/ke-hoach.md`.
-
-Dưới đây là tóm tắt kế hoạch triển khai:
+*Lưu ý: Vì yêu cầu này khá rộng ("tất cả bài nhạc" là một tập dữ liệu vô hạn hoặc cần định nghĩa nguồn nhạc từ đâu), tôi sẽ đặt các câu hỏi bỏ ngỏ lên đầu theo đúng quy chuẩn.*
 
 ---
 
-### 1. Mục tiêu
-Xây dựng một trang web giới thiệu sản phẩm máy tính (PC/Laptop) hiện đại, trực quan, bao gồm các phần chính:
-*   **Trang chủ (Hero Section):** Giới thiệu thông điệp chính, banner sản phẩm nổi bật.
-*   **Danh mục sản phẩm:** Hiển thị các dòng máy tính (Gaming, Văn phòng, Đồ họa).
-*   **Chi tiết sản phẩm:** Thông số kỹ thuật (CPU, RAM, SSD, GPU, Giá bán).
-*   **Phần liên hệ / Đặt hàng:** Form thông tin khách hàng muốn tư vấn/mua hàng.
-*   **Giao diện Responsive:** Tối ưu hiển thị trên cả Desktop và Mobile.
+### CÂU HỎI CÒN BỎ NGỎ (Cần người dùng quyết định)
+1. **Nguồn dữ liệu nhạc:** "Tất cả bài nhạc" sẽ được lấy từ đâu? (Ví dụ: Tự upload file MP3 thủ công, tích hợp API bên thứ ba như Spotify/SoundCloud/YouTube, hay crawl từ một nguồn cụ thể?)
+2. **Cơ sở dữ liệu:** Dự án hiện tại đang dùng database nào (MongoDB, PostgreSQL, SQLite, hay chỉ lưu file JSON/Local Storage)?
+3. **Tính năng cốt lõi bắt buộc:** Web cần các tính năng gì ở giai đoạn đầu? (Ví dụ: Trình phát nhạc nổi/mini-player, tìm kiếm, tạo playlist, yêu thích, phân loại nghệ sĩ/album?)
 
 ---
 
-### 2. File cần thay đổi / tạo mới
-Dự kiến cấu trúc thư mục cho dự án (sử dụng HTML/CSS/JS thuần hoặc React tùy thuộc vào lựa chọn, ở đây đề xuất cấu trúc chuẩn cho Static Website hiện đại):
-*   `index.html`: Trang chính chứa toàn bộ cấu trúc HTML.
-*   `css/style.css`: File định dạng giao diện, bố cục (Flexbox/Grid), hiệu ứng và Responsive.
-*   `js/main.js`: Xử lý tương tác (hiển thị modal chi tiết, lọc sản phẩm, validate form liên hệ).
-*   `images/`: Thư mục chứa hình ảnh minh họa máy tính, banner.
-*   `.bangiao/ke-hoach.md`: File lưu kế hoạch chi tiết cho Coder.
+### KẾ HOẠCH TRIỂN KHAI CHI TIẾT (`.bangiao/ke-hoach.md`)
+
+#### 1. Mục tiêu
+Xây dựng một website nghe nhạc trực tuyến (Web Music Player) có khả năng quản lý, hiển thị và phát các bài hát, đáp ứng trải nghiệm người dùng mượt mà, giao diện trực quan (Dark/Light mode, trình phát nhạc cố định dưới chân trang).
+
+#### 2. Các file cần tạo/sửa (Dự kiến cấu trúc Next.js/React hoặc Node.js tùy codebase thực tế)
+*   `src/models/Track.ts` (hoặc schema tương đương): Định nghĩa cấu trúc dữ liệu cho bài hát (title, artist, duration, coverUrl, audioUrl, genre).
+*   `src/app/api/tracks/route.ts`: API lấy danh sách bài hát và thêm bài hát mới.
+*   `src/components/Player.tsx`: Component trình phát nhạc chính (Play, Pause, Seekbar, Volume, Next/Prev).
+*   `src/components/TrackList.tsx`: Hiển thị danh sách toàn bộ bài nhạc.
+*   `src/components/Sidebar.tsx` hoặc `Navbar.tsx`: Điều hướng giữa các trang (Trang chủ, Khám phá, Thư viện).
+*   `src/app/page.tsx`: Trang chủ hiển thị tổng quan các bài nhạc.
+
+#### 3. Các bước thực hiện cho Coder
+1.  **Bước 1: Khảo sát và Chuẩn bị Schema**
+    *   Kiểm tra kết nối Database hiện tại của dự án.
+    *   Tạo/cập nhật Model dữ liệu cho `Track` (Bài hát) và `Playlist`.
+2.  **Bước 2: Xây dựng Backend APIs**
+    *   Viết API Endpoint `GET /api/tracks` để lấy toàn bộ danh sách bài nhạc.
+    *   Viết API hỗ trợ tìm kiếm bài hát theo tên hoặc nghệ sĩ (`GET /api/tracks/search?q=...`).
+3.  **Bước 3: Xây dựng Global Audio Player State**
+    *   Sử dụng React Context hoặc Zustand để quản lý trạng thái phát nhạc toàn cục (đảm bảo nhạc không bị ngắt khi chuyển trang).
+4.  **Bước 4: Phát triển UI Components**
+    *   Làm giao diện danh sách bài nhạc (`TrackList`).
+    *   Làm thanh điều khiển nhạc dưới cùng (`Player`) với các nút điều hướng cơ bản.
+5.  **Bước 5: Tích hợp và Tối ưu**
+    *   Kết nối UI với API.
+    *   Xử lý các trường hợp biên (file audio lỗi, mạng chậm, không tìm thấy bài hát).
+
+#### 4. Cách kiểm tra (Testing)
+*   **Unit Test:** Kiểm tra các hàm helper xử lý định dạng thời gian bài hát (MM:SS).
+*   **Integration Test:** Kiểm tra API `GET /api/tracks` trả về đúng định dạng JSON danh sách bài nhạc.
+*   **Manual Test:**
+    *   Mở trang web, danh sách bài nhạc hiển thị đầy đủ.
+    *   Bấm Play một bài hát $\rightarrow$ Thanh player dưới cùng hoạt động, âm thanh phát ra đúng.
+    *   Thử chuyển trang $\rightarrow$ Nhạc vẫn tiếp tục phát (nếu áp dụng persistent player).
+    *   Thử tìm kiếm bài hát theo tên.
+
+#### 5. Rủi ro
+*   **Bản quyền & Lưu trữ:** Lưu trữ lượng lớn file âm thanh (MP3) có thể làm quá tải băng thông và dung lượng server nếu không dùng dịch vụ lưu trữ đám mây chuyên dụng (AWS S3, Cloudinary).
+*   **Hiệu năng (Performance):** Nếu danh sách "tất cả bài nhạc" lên tới hàng chục nghìn bài mà không phân trang (Pagination) hoặc cuộn vô hạn (Infinite Scroll), DOM sẽ bị nặng và giật lag.
 
 ---
-
-### 3. Các bước thực hiện
-1.  **Bước 1: Khởi tạo cấu trúc HTML (`index.html`)**
-    *   Xây dựng Semantic HTML gồm: `<header>` (Navigation), `<section class="hero">`, `<section class="products">`, `<section class="features">`, và `<footer>`.
-2.  **Bước 2: Thiết kế giao diện với CSS (`css/style.css`)**
-    *   Sử dụng CSS Variables để quản lý màu sắc (chủ đạo: màu công nghệ như xanh dương/đen/xám).
-    *   Thiết kế layout linh hoạt bằng CSS Grid và Flexbox.
-    *   Thêm Media Queries để đảm bảo responsive trên mobile.
-3.  **Bước 3: Lập trình tính năng tương tác (`js/main.js`)**
-    *   Thêm tính năng lọc sản phẩm theo danh mục (Gaming / Văn phòng).
-    *   Xử lý sự kiện click xem chi tiết sản phẩm.
-    *   Kiểm tra dữ liệu (Validation) cơ bản cho form liên hệ tư vấn.
-4.  **Bước 4: Hoàn thiện nội dung & Hình ảnh**
-    *   Thêm dữ liệu mẫu (mock data) cho các dòng máy tính với thông số kỹ thuật thực tế.
-
----
-
-### 4. Cách kiểm tra
-*   **Kiểm tra giao diện:** Mở file `index.html` trực tiếp trên trình duyệt (Chrome, Firefox, Safari).
-*   **Kiểm tra Responsive:** Sử dụng công cụ Developer Tools (F12) trên trình duyệt để test các kích thước màn hình (Mobile, Tablet, Desktop).
-*   **Kiểm tra tính năng:** Click thử các nút chuyển danh mục, form liên hệ và xem chi tiết sản phẩm xem có hoạt động mượt mà, không lỗi console.
-
----
-
-### 5. Rủi ro
-*   **Hình ảnh:** Thiếu hình ảnh sản phẩm máy tính chất lượng cao có thể làm giao diện kém thu hút (cần dùng placeholder hoặc ảnh stock minh họa).
-*   **Thiết kế trên mobile:** Các bảng thông số kỹ thuật (specs) của máy tính nếu quá nhiều chữ có thể bị tràn màn hình trên thiết bị di động nếu không xử lý CSS kỹ.
-
----
-*Kế hoạch chi tiết đã được ghi vào `.bangiao/ke-hoach.md` để Coder có thể bắt tay vào thực hiện.*
+*Kế hoạch này sẽ được lưu chi tiết vào `.bangiao/ke-hoach.md` ngay sau khi bạn giải đáp các câu hỏi bỏ ngỏ ở trên để Coder có thể bắt tay vào code chính xác nhất.*

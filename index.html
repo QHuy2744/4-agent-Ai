@@ -3,221 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Thế giới máy tính chính hãng, PC Gaming & Laptop</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Giai Điệu Vô Tận - Web Nghe Nhạc Hàng Đầu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="src/style.css">
 </head>
 <body>
-    <!-- Header / Navigation -->
-    <header class="header">
-        <div class="container nav-container">
-            <a href="#" class="logo"><i class="fa-solid fa-microchip"></i> TechStore</a>
-            <nav class="nav-menu">
-                <ul>
-                    <li><a href="#home">Trang chủ</a></li>
-                    <li><a href="#products">Sản phẩm</a></li>
-                    <li><a href="#features">Ưu điểm</a></li>
-                    <li><a href="#contact">Liên hệ</a></li>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-music"></i>
+                <span>MuZic</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="active" data-tab="home">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Khám Phá</span>
+                </li>
+                <li data-tab="library">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>Thư Viện</span>
+                </li>
+                <li data-tab="favorites">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Yêu Thích</span>
+                </li>
+            </ul>
+            <div class="playlist-section">
+                <h3>Playlist của bạn</h3>
+                <ul id="user-playlists">
+                    <li><span>Nhạc trẻ Hot 2024</span></li>
+                    <li><span>Lofi Chill Relax</span></li>
+                    <li><span>Remix Sôi Động</span></li>
                 </ul>
-            </nav>
-            <div class="nav-actions">
-                <a href="#contact" class="btn btn-primary-outline">Tư vấn ngay</a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ...">
+                </div>
+                <div class="user-profile">
+                    <i class="fa-solid fa-bell"></i>
+                    <div class="avatar">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Banner -->
+            <section class="banner">
+                <div class="banner-content">
+                    <span class="tag">Đề Xuất</span>
+                    <h1>Thế Giới Âm Nhạc Trong Tầm Tay</h1>
+                    <p>Khám phá hàng triệu bài hát chất lượng cao từ mọi thể loại.</p>
+                    <button class="btn-play-all" id="btn-play-all">
+                        <i class="fa-solid fa-play"></i> Nghe Ngay
+                    </button>
+                </div>
+            </section>
+
+            <!-- Track List Section -->
+            <section class="songs-section">
+                <h2>Tất Cả Bài Hạc</h2>
+                <div class="song-list-header">
+                    <span>#</span>
+                    <span>Tiêu đề</span>
+                    <span>Album</span>
+                    <span><i class="fa-solid fa-clock"></i></span>
+                </div>
+                <div class="song-list" id="song-list">
+                    <!-- Dynamic tracks will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Music Player Bar -->
+    <div class="music-player">
+        <div class="current-song">
+            <img id="player-cover" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100" alt="Cover">
+            <div class="song-info">
+                <h4 id="player-title">Chọn bài hát</h4>
+                <p id="player-artist">Nghệ sĩ</p>
+            </div>
+            <i class="fa-regular fa-heart" id="player-heart"></i>
+        </div>
+
+        <div class="player-center">
+            <div class="player-controls">
+                <button id="shuffle-btn" title="Xáo trộn"><i class="fa-solid fa-shuffle"></i></button>
+                <button id="prev-btn" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
+                <button id="play-pause-btn" class="play-pause" title="Phát/Tạm dừng"><i class="fa-solid fa-play" id="play-icon"></i></button>
+                <button id="next-btn" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
+                <button id="repeat-btn" title="Lặp lại"><i class="fa-solid fa-repeat"></i></button>
+            </div>
+            <div class="progress-container">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <span id="duration">0:00</span>
             </div>
         </div>
-    </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container hero-content">
-            <div class="hero-text">
-                <h1>Hiệu năng đỉnh cao <br><span>Thế giới trong tầm tay</span></h1>
-<p>Chuyên cung cấp các dòng PC Gaming cấu hình khủng, Laptop văn phòng mỏng nhẹ và máy trạm đồ họa chuyên nghiệp với giá tốt nhất thị trường.</p>
-                <div class="hero-buttons">
-                    <a href="#products" class="btn btn-primary">Khám phá ngay</a>
-                    <a href="#contact" class="btn btn-secondary">Nhận tư vấn</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" alt="PC Gaming Setup">
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Tại sao chọn TechStore?</h2>
-                <p>Cam kết mang lại trải nghiệm mua sắm tuyệt vời nhất cho bạn</p>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-item">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Bảo hành chính hãng</h3>
-                    <p>100% sản phẩm chính hãng, bảo hành từ 12 đến 36 tháng tận nơi.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <h3>Giao hàng siêu tốc</h3>
-                    <p>Miễn phí vận chuyển và lắp đặt trong nội thành, hỗ trợ toàn quốc.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-headset"></i>
-                    <h3>Hỗ trợ 24/7</h3>
-                    <p>Đội ngũ kỹ thuật viên giàu kinh nghiệm luôn sẵn sàng giải đáp mọi thắc mắc.</p>
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-tags"></i>
-                    <h3>Giá cả cạnh tranh</h3>
-                    <p>Cập nhật chương trình khuyến mãi và quà tặng hấp dẫn liên tục.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <div class="container">
-            <div class="section-title">
-                <h2>Sản phẩm nổi bật</h2>
-                <p>Lựa chọn hoàn hảo cho công việc và giải trí của bạn</p>
-            </div>
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Tất cả</button>
-                <button class="filter-btn" data-filter="gaming">PC Gaming</button>
-                <button class="filter-btn" data-filter="office">Laptop Văn Phòng</button>
-                <button class="filter-btn" data-filter="graphic">Đồ họa / Workstation</button>
-            </div>
-            <div class="product-grid">
-                <!-- Product 1 -->
-                <div class="product-card" data-category="gaming">
-                    <div class="product-badge">Gaming</div>
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80" alt="PC Gaming X-Power">
-                    </div>
-                    <div class="product-info">
-                        <h3>PC Gaming X-Power RTX 4060</h3>
-                        <p class="specs">Core i5-13400F | 16GB RAM | 500GB SSD | RTX 4060 8GB</p>
-                        <div class="price-box">
-                            <span class="price">18.990.000đ</span>
-                        </div>
-                        <button class="btn btn-sm btn-primary view-details" data-name="PC Gaming X-Power RTX 4060" data-specs="Intel Core i5-13400F, RAM 16GB DDR4, SSD 500GB NVMe, VGA RTX 4060 8GB, Nguồn 650W 80 Plus." data-price="18.990.000đ">Xem chi tiết</button>
-                    </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="product-card" data-category="office">
-                    <div class="product-badge office">Văn phòng</div>
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Laptop UltraBook Pro">
-                    </div>
-                    <div class="product-info">
-                        <h3>Laptop UltraBook Pro 14</h3>
-                        <p class="specs">Core i5-1235U | 16GB RAM | 512GB SSD | Màn 14" 2.8K OLED</p>
-                        <div class="price-box">
-                            <span class="price">15.490.000đ</span>
-                        </div>
-                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop UltraBook Pro 14" data-specs="Intel Core i5-1235U, RAM 16GB LPDDR5, SSD 512GB NVMe, Màn hình 14 inch 2.8K OLED sắc nét, Pin 56Wh." data-price="15.490.000đ">Xem chi tiết</button>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="product-card" data-category="graphic">
-                    <div class="product-badge graphic">Đồ họa</div>
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=400&q=80" alt="Workstation Creator Pro">
-                    </div>
-                    <div class="product-info">
-                        <h3>Workstation Creator Pro</h3>
-                        <p class="specs">Core i7-13700K | 32GB RAM | 1TB SSD | RTX 4070 12GB</p>
-                        <div class="price-box">
-                            <span class="price">32.990.000đ</span>
-                        </div>
-                        <button class="btn btn-sm btn-primary view-details" data-name="Workstation Creator Pro" data-specs="Intel Core i7-13700K, RAM 32GB DDR5, SSD 1TB NVMe Gen4, VGA RTX 4070 12GB, Tản nhiệt nước 240." data-price="32.990.000đ">Xem chi tiết</button>
-                    </div>
-                </div>
-
-                <!-- Product 4 -->
-                <div class="product-card" data-category="gaming">
-                    <div class="product-badge">Gaming</div>
-                    <div class="product-img">
-                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" alt="Laptop Gaming Beast">
-                    </div>
-                    <div class="product-info">
-                        <h3>Laptop Gaming Beast 15</h3>
-                        <p class="specs">Ryzen 7 6800H | 16GB RAM | 512GB SSD | RTX 3060</p>
-                        <div class="price-box">
-                            <span class="price">21.500.000đ</span>
-                        </div>
-                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop Gaming Beast 15" data-specs="AMD Ryzen 7 6800H, RAM 16GB, SSD 512GB, RTX 3060 6GB, Màn hình 15.6 inch FHD 144Hz." data-price="21.500.000đ">Xem chi tiết</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>Liên hệ tư vấn</h2>
-                <p>Để lại thông tin, chúng tôi sẽ liên hệ với bạn trong vòng 15 phút</p>
-            </div>
-            <div class="contact-wrapper">
-                <div class="contact-info">
-                    <h3>Thông tin liên hệ</h3>
-                    <p><i class="fa-solid fa-location-dot"></i> 123 Đường Công Nghệ, Quận 1, TP. Hồ Chí Minh</p>
-                    <p><i class="fa-solid fa-phone"></i> Hotline: 1900 1234 - 0988 765 432</p>
-                    <p><i class="fa-solid fa-envelope"></i> Email: support@techstore.vn</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-                    </div>
-                </div>
-                <form id="contactForm" class="contact-form">
-                    <div class="form-group">
-                        <label for="name">Họ và tên</label>
-                        <input type="text" id="name" required placeholder="Nhập họ tên của bạn">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Số điện thoại</label>
-                        <input type="tel" id="phone" required placeholder="Nhập số điện thoại">
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Yêu cầu tư vấn</label>
-                        <textarea id="message" rows="4" placeholder="Bạn cần tư vấn dòng máy nào?"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-full">Gửi yêu cầu</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 TechStore. Tất cả các quyền được bảo lưu.</p>
-        </div>
-    </footer>
-
-    <!-- Product Modal -->
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <h2 id="modalTitle">Tên sản phẩm</h2>
-            <p class="modal-price" id="modalPrice">Giá: 0đ</p>
-            <div class="modal-specs">
-                <h4>Thông số kỹ thuật chi tiết:</h4>
-                <p id="modalSpecsText">Đang cập nhật...</p>
-            </div>
-            <div class="modal-action">
-                <a href="#contact" class="btn btn-primary modal-buy-btn">Đặt mua / Tư vấn ngay</a>
-            </div>
+        <div class="player-right">
+            <i class="fa-solid fa-volume-high" id="volume-icon"></i>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
         </div>
     </div>
 
-    <!-- JavaScript -->
-    <script src="js/main.js"></script>
+    <!-- Audio Element -->
+    <audio id="audio-element"></audio>
+
+    <script src="src/js/app.js"></script>
 </body>
 </html>

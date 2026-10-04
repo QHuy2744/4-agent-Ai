@@ -1,1066 +1,1270 @@
-diff --git a/css/style.css b/css/style.css
-new file mode 100644
-index 0000000..75d20c2
---- /dev/null
-+++ b/css/style.css
-@@ -0,0 +1,548 @@
-+:root {
-+    --primary-color: #0284c7;
-+    --primary-hover: #0369a1;
-+    --secondary-color: #0f172a;
-+    --accent-color: #38bdf8;
-+    --text-color: #334155;
-+    --light-bg: #f8fafc;
-+    --white: #ffffff;
-+    --gray: #cbd5e1;
-+    --transition: all 0.3s ease;
+diff --git a/index.html b/index.html
+index 6a2bc1b..646453c 100644
+--- a/index.html
++++ b/index.html
+@@ -3,221 +3,123 @@
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <title>TechStore - Thế giới máy tính chính hãng, PC Gaming & Laptop</title>
+-    <link rel="stylesheet" href="css/style.css">
++    <title>Giai Điệu Vô Tận - Web Nghe Nhạc Hàng Đầu</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
++    <link rel="stylesheet" href="src/style.css">
+ </head>
+ <body>
+-    <!-- Header / Navigation -->
+-    <header class="header">
+-        <div class="container nav-container">
+-            <a href="#" class="logo"><i class="fa-solid fa-microchip"></i> TechStore</a>
+-            <nav class="nav-menu">
+-                <ul>
+-                    <li><a href="#home">Trang chủ</a></li>
+-                    <li><a href="#products">Sản phẩm</a></li>
+-                    <li><a href="#features">Ưu điểm</a></li>
+-                    <li><a href="#contact">Liên hệ</a></li>
+-                </ul>
+-            </nav>
+-            <div class="nav-actions">
+-                <a href="#contact" class="btn btn-primary-outline">Tư vấn ngay</a>
+-            </div>
+-        </div>
+-    </header>
+-
+-    <!-- Hero Section -->
+-    <section id="home" class="hero">
+-        <div class="container hero-content">
+-            <div class="hero-text">
+-                <h1>Hiệu năng đỉnh cao <br><span>Thế giới trong tầm tay</span></h1>
+-<p>Chuyên cung cấp các dòng PC Gaming cấu hình khủng, Laptop văn phòng mỏng nhẹ và máy trạm đồ họa chuyên nghiệp với giá tốt nhất thị trường.</p>
+-                <div class="hero-buttons">
+-                    <a href="#products" class="btn btn-primary">Khám phá ngay</a>
+-                    <a href="#contact" class="btn btn-secondary">Nhận tư vấn</a>
+-                </div>
++    <div class="app-container">
++        <!-- Sidebar -->
++        <aside class="sidebar">
++            <div class="logo">
++                <i class="fa-solid fa-music"></i>
++                <span>MuZic</span>
+             </div>
+-            <div class="hero-image">
+-                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" alt="PC Gaming Setup">
++            <ul class="nav-menu">
++                <li class="active" data-tab="home">
++                    <i class="fa-solid fa-house"></i>
++                    <span>Khám Phá</span>
++                </li>
++                <li data-tab="library">
++                    <i class="fa-solid fa-book-bookmark"></i>
++                    <span>Thư Viện</span>
++                </li>
++                <li data-tab="favorites">
++                    <i class="fa-solid fa-heart"></i>
++                    <span>Yêu Thích</span>
++                </li>
++            </ul>
++            <div class="playlist-section">
++                <h3>Playlist của bạn</h3>
++                <ul id="user-playlists">
++                    <li><span>Nhạc trẻ Hot 2024</span></li>
++                    <li><span>Lofi Chill Relax</span></li>
++                    <li><span>Remix Sôi Động</span></li>
++                </ul>
+             </div>
+-        </div>
+-    </section>
++        </aside>
+ 
+-    <!-- Features Section -->
+-    <section id="features" class="features">
+-        <div class="container">
+-            <div class="section-title">
+-                <h2>Tại sao chọn TechStore?</h2>
+-                <p>Cam kết mang lại trải nghiệm mua sắm tuyệt vời nhất cho bạn</p>
+-            </div>
+-            <div class="feature-grid">
+-                <div class="feature-item">
+-                    <i class="fa-solid fa-shield-halved"></i>
+-                    <h3>Bảo hành chính hãng</h3>
+-                    <p>100% sản phẩm chính hãng, bảo hành từ 12 đến 36 tháng tận nơi.</p>
+-                </div>
+-                <div class="feature-item">
+-                    <i class="fa-solid fa-truck-fast"></i>
+-                    <h3>Giao hàng siêu tốc</h3>
+-                    <p>Miễn phí vận chuyển và lắp đặt trong nội thành, hỗ trợ toàn quốc.</p>
++        <!-- Main Content -->
++        <main class="main-content">
++            <!-- Header -->
++            <header class="header">
++                <div class="search-box">
++                    <i class="fa-solid fa-magnifying-glass"></i>
++                    <input type="text" id="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ...">
+                 </div>
+-                <div class="feature-item">
+-                    <i class="fa-solid fa-headset"></i>
+-                    <h3>Hỗ trợ 24/7</h3>
+-                    <p>Đội ngũ kỹ thuật viên giàu kinh nghiệm luôn sẵn sàng giải đáp mọi thắc mắc.</p>
+-                </div>
+-                <div class="feature-item">
+-                    <i class="fa-solid fa-tags"></i>
+-                    <h3>Giá cả cạnh tranh</h3>
+-                    <p>Cập nhật chương trình khuyến mãi và quà tặng hấp dẫn liên tục.</p>
+-                </div>
+-            </div>
+-        </div>
+-    </section>
+-
+-    <!-- Products Section -->
+-    <section id="products" class="products">
+-        <div class="container">
+-            <div class="section-title">
+-                <h2>Sản phẩm nổi bật</h2>
+-                <p>Lựa chọn hoàn hảo cho công việc và giải trí của bạn</p>
+-            </div>
+-            <div class="filter-buttons">
+-                <button class="filter-btn active" data-filter="all">Tất cả</button>
+-                <button class="filter-btn" data-filter="gaming">PC Gaming</button>
+-                <button class="filter-btn" data-filter="office">Laptop Văn Phòng</button>
+-                <button class="filter-btn" data-filter="graphic">Đồ họa / Workstation</button>
+-            </div>
+-            <div class="product-grid">
+-                <!-- Product 1 -->
+-                <div class="product-card" data-category="gaming">
+-                    <div class="product-badge">Gaming</div>
+-                    <div class="product-img">
+-                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80" alt="PC Gaming X-Power">
+-                    </div>
+-                    <div class="product-info">
+-                        <h3>PC Gaming X-Power RTX 4060</h3>
+-                        <p class="specs">Core i5-13400F | 16GB RAM | 500GB SSD | RTX 4060 8GB</p>
+-                        <div class="price-box">
+-                            <span class="price">18.990.000đ</span>
+-                        </div>
+-                        <button class="btn btn-sm btn-primary view-details" data-name="PC Gaming X-Power RTX 4060" data-specs="Intel Core i5-13400F, RAM 16GB DDR4, SSD 500GB NVMe, VGA RTX 4060 8GB, Nguồn 650W 80 Plus." data-price="18.990.000đ">Xem chi tiết</button>
++                <div class="user-profile">
++                    <i class="fa-solid fa-bell"></i>
++                    <div class="avatar">
++                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
+                     </div>
+                 </div>
++            </header>
+ 
+-                <!-- Product 2 -->
+-                <div class="product-card" data-category="office">
+-                    <div class="product-badge office">Văn phòng</div>
+-                    <div class="product-img">
+-                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Laptop UltraBook Pro">
+-                    </div>
+-                    <div class="product-info">
+-                        <h3>Laptop UltraBook Pro 14</h3>
+-                        <p class="specs">Core i5-1235U | 16GB RAM | 512GB SSD | Màn 14" 2.8K OLED</p>
+-                        <div class="price-box">
+-                            <span class="price">15.490.000đ</span>
+-                        </div>
+-                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop UltraBook Pro 14" data-specs="Intel Core i5-1235U, RAM 16GB LPDDR5, SSD 512GB NVMe, Màn hình 14 inch 2.8K OLED sắc nét, Pin 56Wh." data-price="15.490.000đ">Xem chi tiết</button>
+-                    </div>
++            <!-- Banner -->
++            <section class="banner">
++                <div class="banner-content">
++                    <span class="tag">Đề Xuất</span>
++                    <h1>Thế Giới Âm Nhạc Trong Tầm Tay</h1>
++                    <p>Khám phá hàng triệu bài hát chất lượng cao từ mọi thể loại.</p>
++                    <button class="btn-play-all" id="btn-play-all">
++                        <i class="fa-solid fa-play"></i> Nghe Ngay
++                    </button>
+                 </div>
++            </section>
+ 
+-                <!-- Product 3 -->
+-                <div class="product-card" data-category="graphic">
+-                    <div class="product-badge graphic">Đồ họa</div>
+-                    <div class="product-img">
+-                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=400&q=80" alt="Workstation Creator Pro">
+-                    </div>
+-                    <div class="product-info">
+-                        <h3>Workstation Creator Pro</h3>
+-                        <p class="specs">Core i7-13700K | 32GB RAM | 1TB SSD | RTX 4070 12GB</p>
+-                        <div class="price-box">
+-                            <span class="price">32.990.000đ</span>
+-                        </div>
+-                        <button class="btn btn-sm btn-primary view-details" data-name="Workstation Creator Pro" data-specs="Intel Core i7-13700K, RAM 32GB DDR5, SSD 1TB NVMe Gen4, VGA RTX 4070 12GB, Tản nhiệt nước 240." data-price="32.990.000đ">Xem chi tiết</button>
+-                    </div>
++            <!-- Track List Section -->
++            <section class="songs-section">
++                <h2>Tất Cả Bài Hạc</h2>
++                <div class="song-list-header">
++                    <span>#</span>
++                    <span>Tiêu đề</span>
++                    <span>Album</span>
++                    <span><i class="fa-solid fa-clock"></i></span>
+                 </div>
+-
+-                <!-- Product 4 -->
+-                <div class="product-card" data-category="gaming">
+-                    <div class="product-badge">Gaming</div>
+-                    <div class="product-img">
+-                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" alt="Laptop Gaming Beast">
+-                    </div>
+-                    <div class="product-info">
+-                        <h3>Laptop Gaming Beast 15</h3>
+-                        <p class="specs">Ryzen 7 6800H | 16GB RAM | 512GB SSD | RTX 3060</p>
+-                        <div class="price-box">
+-                            <span class="price">21.500.000đ</span>
+-                        </div>
+-                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop Gaming Beast 15" data-specs="AMD Ryzen 7 6800H, RAM 16GB, SSD 512GB, RTX 3060 6GB, Màn hình 15.6 inch FHD 144Hz." data-price="21.500.000đ">Xem chi tiết</button>
+-                    </div>
++                <div class="song-list" id="song-list">
++                    <!-- Dynamic tracks will be loaded here -->
+                 </div>
++            </section>
++        </main>
++    </div>
++
++    <!-- Music Player Bar -->
++    <div class="music-player">
++        <div class="current-song">
++            <img id="player-cover" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100" alt="Cover">
++            <div class="song-info">
++                <h4 id="player-title">Chọn bài hát</h4>
++                <p id="player-artist">Nghệ sĩ</p>
+             </div>
++            <i class="fa-regular fa-heart" id="player-heart"></i>
+         </div>
+-    </section>
+ 
+-    <!-- Contact Section -->
+-    <section id="contact" class="contact">
+-        <div class="container">
+-            <div class="section-title">
+-                <h2>Liên hệ tư vấn</h2>
+-                <p>Để lại thông tin, chúng tôi sẽ liên hệ với bạn trong vòng 15 phút</p>
++        <div class="player-center">
++            <div class="player-controls">
++                <button id="shuffle-btn" title="Xáo trộn"><i class="fa-solid fa-shuffle"></i></button>
++                <button id="prev-btn" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
++                <button id="play-pause-btn" class="play-pause" title="Phát/Tạm dừng"><i class="fa-solid fa-play" id="play-icon"></i></button>
++                <button id="next-btn" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
++                <button id="repeat-btn" title="Lặp lại"><i class="fa-solid fa-repeat"></i></button>
+             </div>
+-            <div class="contact-wrapper">
+-                <div class="contact-info">
+-                    <h3>Thông tin liên hệ</h3>
+-                    <p><i class="fa-solid fa-location-dot"></i> 123 Đường Công Nghệ, Quận 1, TP. Hồ Chí Minh</p>
+-                    <p><i class="fa-solid fa-phone"></i> Hotline: 1900 1234 - 0988 765 432</p>
+-                    <p><i class="fa-solid fa-envelope"></i> Email: support@techstore.vn</p>
+-                    <div class="social-icons">
+-                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+-                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+-                    </div>
++            <div class="progress-container">
++                <span id="current-time">0:00</span>
++                <div class="progress-bar" id="progress-bar">
++                    <div class="progress" id="progress"></div>
+                 </div>
+-                <form id="contactForm" class="contact-form">
+-                    <div class="form-group">
+-                        <label for="name">Họ và tên</label>
+-                        <input type="text" id="name" required placeholder="Nhập họ tên của bạn">
+-                    </div>
+-                    <div class="form-group">
+-                        <label for="phone">Số điện thoại</label>
+-                        <input type="tel" id="phone" required placeholder="Nhập số điện thoại">
+-                    </div>
+-                    <div class="form-group">
+-                        <label for="message">Yêu cầu tư vấn</label>
+-                        <textarea id="message" rows="4" placeholder="Bạn cần tư vấn dòng máy nào?"></textarea>
+-                    </div>
+-                    <button type="submit" class="btn btn-primary btn-full">Gửi yêu cầu</button>
+-                </form>
++                <span id="duration">0:00</span>
+             </div>
+         </div>
+-    </section>
+-
+-    <!-- Footer -->
+-    <footer class="footer">
+-        <div class="container">
+-            <p>&copy; 2024 TechStore. Tất cả các quyền được bảo lưu.</p>
+-        </div>
+-    </footer>
+ 
+-    <!-- Product Modal -->
+-    <div id="productModal" class="modal">
+-        <div class="modal-content">
+-            <span class="close-btn">&times;</span>
+-            <h2 id="modalTitle">Tên sản phẩm</h2>
+-            <p class="modal-price" id="modalPrice">Giá: 0đ</p>
+-            <div class="modal-specs">
+-                <h4>Thông số kỹ thuật chi tiết:</h4>
+-                <p id="modalSpecsText">Đang cập nhật...</p>
+-            </div>
+-            <div class="modal-action">
+-                <a href="#contact" class="btn btn-primary modal-buy-btn">Đặt mua / Tư vấn ngay</a>
+-            </div>
++        <div class="player-right">
++            <i class="fa-solid fa-volume-high" id="volume-icon"></i>
++            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+         </div>
+     </div>
+ 
+-    <!-- JavaScript -->
+-    <script src="js/main.js"></script>
++    <!-- Audio Element -->
++    <audio id="audio-element"></audio>
++
++    <script src="src/js/app.js"></script>
+ </body>
+ </html>
+diff --git a/src/js/app.js b/src/js/app.js
+index b2a20f9..831bd6b 100644
+--- a/src/js/app.js
++++ b/src/js/app.js
+@@ -1,202 +1,293 @@
+-document.addEventListener('DOMContentLoaded', () => {
+-    const proGrid = document.getElementById('pro-players-grid');
+-    const customGrid = document.getElementById('custom-players-grid');
+-    const searchInput = document.getElementById('search-input');
+-    const dpiFilter = document.getElementById('dpi-filter');
+-    const sensitivityForm = document.getElementById('sensitivity-form');
+-    const toast = document.getElementById('toast');
+-    const toastMessage = document.getElementById('toast-message');
+-
+-    let customPlayers = JSON.parse(localStorage.getItem('ff_custom_players')) || [];
+-
+-    // Render Pro Players
+-    function renderProPlayers(filterText = '', filterDpi = 'all') {
+-        proGrid.innerHTML = '';
+-        
+-        const filtered = PRO_PLAYERS.filter(player => {
+-            const matchName = player.name.toLowerCase().includes(filterText.toLowerCase()) || 
+-                              player.device.toLowerCase().includes(filterText.toLowerCase());
+-            
+-            let matchDpi = true;
+-            if (filterDpi === 'low') matchDpi = player.dpi < 500;
+-            else if (filterDpi === 'mid') matchDpi = player.dpi >= 500 && player.dpi <= 800;
+-            else if (filterDpi === 'high') matchDpi = player.dpi > 800;
+-
+-            return matchName && matchDpi;
+-        });
++const tracks = [
++    {
++        id: 1,
++        title: "Nevada",
++        artist: "Vicetone ft. Cozi Zuehlsdorff",
++        album: "Monstercat Best",
++        duration: "3:25",
++        cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100",
++        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
++    },
++    {
++        id: 2,
++        title: "Spectre",
++        artist: "Alan Walker",
++        album: "NCS Release",
++        duration: "3:48",
++        cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100",
++        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
++    },
++    {
++        id: 3,
++        title: "Faded",
++        artist: "Alan Walker",
++        album: "Different World",
++        duration: "3:32",
++        cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100",
++        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
++    },
++    {
++        id: 4,
++        title: "Unity",
++        artist: "TheFatRat",
++        album: "TheFatRat Essentials",
++        duration: "4:08",
++        cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=100",
++        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
++    },
++    {
++        id: 5,
++        title: "Energy",
++        artist: "Bensound",
++        album: "Acoustic Indie",
++        duration: "2:59",
++        cover: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=100",
++        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
++    },
++    {
++        id: 6,
++        title: "Sunny",
++        artist: "Bensound",
++        album: "Vlog Music",
++        duration: "4:21",
++        cover: "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?w=100",
++        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
++    }
++];
+ 
+-        if (filtered.length === 0) {
+-            proGrid.innerHTML = `
+-                <div class="col-span-full py-12 text-center text-gray-500">
+-                    <i class="fa-solid fa-ghost text-4xl mb-3"></i>
+-                    <p>Không tìm thấy cấu hình phù hợp.</p>
+-                </div>
+-            `;
+-            return;
+-        }
++let currentTrackIndex = 0;
++let isPlaying = false;
++let isShuffle = false;
++let isRepeat = false;
++let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+ 
+-        filtered.forEach(player => {
+-            proGrid.appendChild(createPlayerCard(player, false));
+-        });
++// DOM Elements
++const audioElement = document.getElementById('audio-element');
++const playPauseBtn = document.getElementById('play-pause-btn');
++const playIcon = document.getElementById('play-icon');
++const prevBtn = document.getElementById('prev-btn');
++const nextBtn = document.getElementById('next-btn');
++const shuffleBtn = document.getElementById('shuffle-btn');
++const repeatBtn = document.getElementById('repeat-btn');
++const progressBar = document.getElementById('progress-bar');
++const progress = document.getElementById('progress');
++const currentTimeEl = document.getElementById('current-time');
++const durationEl = document.getElementById('duration');
++const volumeSlider = document.getElementById('volume-slider');
++const songListEl = document.getElementById('song-list');
++const searchInput = document.getElementById('search-input');
++const btnPlayAll = document.getElementById('btn-play-all');
++
++const playerCover = document.getElementById('player-cover');
++const playerTitle = document.getElementById('player-title');
++const playerArtist = document.getElementById('player-artist');
++const playerHeart = document.getElementById('player-heart');
++
++// Initialize App
++function init() {
++    renderSongs(tracks);
++    loadTrack(currentTrackIndex);
++
++    playPauseBtn.addEventListener('click', togglePlay);
++    prevBtn.addEventListener('click', prevTrack);
++    nextBtn.addEventListener('click', nextTrack);
++    shuffleBtn.addEventListener('click', toggleShuffle);
++    repeatBtn.addEventListener('click', toggleRepeat);
++    audioElement.addEventListener('timeupdate', updateProgress);
++    audioElement.addEventListener('ended', handleTrackEnd);
++    progressBar.addEventListener('click', setProgress);
++    volumeSlider.addEventListener('input', setVolume);
++    searchInput.addEventListener('input', handleSearch);
++    btnPlayAll.addEventListener('click', () => {
++        currentTrackIndex = 0;
++        loadTrack(currentTrackIndex);
++        playTrack();
++    });
++    playerHeart.addEventListener('click', toggleFavorite);
 +}
++
++// Render Songs List
++function renderSongs(songsToRender) {
++    songListEl.innerHTML = '';
++    if (songsToRender.length === 0) {
++        songListEl.innerHTML = '<p style="padding: 20px; color: #b3b3b3; text-align: center;">Không tìm thấy bài hát nào.</p>';
++        return;
+     }
+ 
+-    // Render Custom Players
+-    function renderCustomPlayers() {
+-        customGrid.innerHTML = '';
+-        
+-        if (customPlayers.length === 0) {
+-            customGrid.innerHTML = `
+-                <div class="col-span-full py-10 text-center text-gray-500 bg-ffdark-900/50 border border-dashed border-gray-800 rounded-2xl">
+-                    <i class="fa-solid fa-folder-open text-3xl mb-2 text-gray-600"></i>
+-                    <p class="text-sm">Bạn chưa lưu độ nhạy nào. Hãy tạo ở form phía trên!</p>
++    songsToRender.forEach((song, index) => {
++        const isFav = favorites.includes(song.id);
++        const isCurrent = tracks[currentTrackIndex].id === song.id;
++        const songItem = document.createElement('div');
++        songItem.className = `song-item ${isCurrent ? 'active' : ''}`;
++        songItem.innerHTML = `
++            <span class="song-index">${index + 1}</span>
++            <div class="song-details">
++                <img src="${song.cover}" alt="${song.title}">
++                <div class="title-artist">
++                    <h5>${song.title}</h5>
++                    <p>${song.artist}</p>
+                 </div>
+-            `;
+-            return;
+-        }
+-
+-        customPlayers.forEach((player, index) => {
+-            customGrid.appendChild(createPlayerCard(player, true, index));
++            </div>
++            <span class="album-name">${song.album}</span>
++            <span class="song-duration">${song.duration}</span>
++        `;
++        songItem.addEventListener('click', () => {
++            const actualIndex = tracks.findIndex(t => t.id === song.id);
++            currentTrackIndex = actualIndex;
++            loadTrack(currentTrackIndex);
++            playTrack();
++            renderSongs(tracks);
+         });
++        songListEl.appendChild(songItem);
++    });
++}
++
++// Load Track
++function loadTrack(index) {
++    const song = tracks[index];
++    audioElement.src = song.audioUrl;
++    playerCover.src = song.cover;
++    playerTitle.textContent = song.title;
++    playerArtist.textContent = song.artist;
++    
++    if (favorites.includes(song.id)) {
++        playerHeart.className = "fa-solid fa-heart active";
++    } else {
++        playerHeart.className = "fa-regular fa-heart";
+     }
++}
+ 
+-    // Create Card HTML element
+-    function createPlayerCard(player, isCustom = false, index = null) {
+-        const card = document.createElement('div');
+-        card.className = "bg-ffdark-900 border border-gray-800 rounded-2xl p-6 flex flex-col justify-between hover:border-ffred-500/50 transition-all shadow-xl group";
+-        
+-        card.innerHTML = `
+-            <div>
+-                <div class="flex items-start justify-between mb-4">
+-                    <div>
+-                        <div class="flex items-center gap-2">
+-                            <h3 class="font-black text-lg text-white group-hover:text-ffred-500 transition-colors">${player.name}</h3>
+-                            ${player.tag ? `<span class="text-[10px] font-bold bg-ffred-500/10 text-ffred-500 px-2 py-0.5 rounded-full border border-ffred-500/20">${player.tag}</span>` : ''}
+-                            ${isCustom ? `<span class="text-[10px] font-bold bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded-full border border-amber-500/20">Cá Nhân</span>` : ''}
+-                        </div>
+-                        <p class="text-xs text-gray-400 mt-0.5"><i class="fa-solid fa-mobile-screen mr-1 text-gray-500"></i> ${player.device}</p>
+-                    </div>
+-                    <div class="text-right">
+-                        <span class="text-xs font-semibold text-gray-400">DPI</span>
+-                        <div class="text-sm font-mono font-bold text-amber-400">${player.dpi}</div>
+-                    </div>
+-                </div>
++// Play / Pause
++function togglePlay() {
++    if (isPlaying) {
++        pauseTrack();
++    } else {
++        playTrack();
++    }
++}
+ 
+-                <div class="grid grid-cols-2 gap-2 text-xs mb-6">
+-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
+-                        <span class="text-gray-400">Nhìn Xung Quanh</span>
+-                        <span class="font-bold font-mono text-white">${player.general}</span>
+-                    </div>
+-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
+-                        <span class="text-gray-400">Red Dot</span>
+-                        <span class="font-bold font-mono text-white">${player.redDot}</span>
+-                    </div>
+-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
+-                        <span class="text-gray-400">Ống Ngắm 2X</span>
+-                        <span class="font-bold font-mono text-white">${player.scope2x}</span>
+-                    </div>
+-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
+-                        <span class="text-gray-400">Ống Ngắm 4X</span>
+-                        <span class="font-bold font-mono text-white">${player.scope4x}</span>
+-                    </div>
+-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80 col-span-2">
+-                        <span class="text-gray-400">Ống Ngắm AWM</span>
+-                        <span class="font-bold font-mono text-white">${player.awm}</span>
+-                    </div>
+-                </div>
+-            </div>
++function playTrack() {
++    isPlaying = true;
++    audioElement.play();
++    playIcon.className = "fa-solid fa-pause";
++}
+ 
+-            <div class="flex items-center gap-2">
+-                <button class="copy-btn flex-1 bg-ffdark-950 hover:bg-ffred-600 hover:text-white border border-gray-800 text-gray-300 py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2">
+-                    <i class="fa-regular fa-copy"></i> Sao Chép Cấu Hình
+-                </button>
+-                ${isCustom ? `
+-                    <button class="delete-btn bg-ffdark-950 hover:bg-red-600 hover:text-white border border-gray-800 text-red-400 py-2.5 px-3 rounded-xl font-bold text-xs transition-all" title="Xóa">
+-                        <i class="fa-solid fa-trash"></i>
+-                    </button>
+-                ` : ''}
+-            </div>
+-        `;
++function pauseTrack() {
++    isPlaying = false;
++    audioElement.pause();
++    playIcon.className = "fa-solid fa-play";
++}
+ 
+-        // Copy button event
+-        const copyBtn = card.querySelector('.copy-btn');
+-        copyBtn.addEventListener('click', () => {
+-            const textToCopy = `🎮 Độ Nhạy Free Fire - ${player.name} (${player.device})\n- DPI: ${player.dpi}\n- Nhìn xung quanh: ${player.general}\n- Red Dot: ${player.redDot}\n- 2X: ${player.scope2x}\n- 4X: ${player.scope4x}\n- AWM: ${player.awm}`;
+-            
+-            navigator.clipboard.writeText(textToCopy).then(() => {
+-                showToast(`Đã sao chép cấu hình của ${player.name}!`);
+-            }).catch(() => {
+-                // Fallback
+-                const textarea = document.createElement('textarea');
+-                textarea.value = textToCopy;
+-                document.body.appendChild(textarea);
+-                textarea.select();
+-                document.execCommand('copy');
+-                document.body.removeChild(textarea);
+-                showToast(`Đã sao chép cấu hình của ${player.name}!`);
+-            });
+-        });
++// Next / Prev
++function nextTrack() {
++    if (isShuffle) {
++        currentTrackIndex = Math.floor(Math.random() * tracks.length);
++    } else {
++        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
++    }
++    loadTrack(currentTrackIndex);
++    playTrack();
++    renderSongs(tracks);
++}
+ 
+-        // Delete button event
+-        if (isCustom) {
+-            const deleteBtn = card.querySelector('.delete-btn');
+-            deleteBtn.addEventListener('click', () => {
+-                if (confirm(`Bạn có chắc muốn xóa cấu hình của ${player.name}?`)) {
+-                    customPlayers.splice(index, 1);
+-                    localStorage.setItem('ff_custom_players', JSON.stringify(customPlayers));
+-                    renderCustomPlayers();
+-                    showToast('Đã xóa cấu hình thành công!');
+-                }
+-            });
+-        }
++function prevTrack() {
++    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
++    loadTrack(currentTrackIndex);
++    playTrack();
++    renderSongs(tracks);
++}
++
++// Progress Bar
++function updateProgress() {
++    const { duration, currentTime } = audioElement;
++    if (isNaN(duration)) return;
++    const progressPercent = (currentTime / duration) * 100;
++    progress.style.width = `${progressPercent}%`;
++
++    const currentMinutes = Math.floor(currentTime / 60);
++    const currentSeconds = Math.floor(currentTime % 60);
++    currentTimeEl.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+ 
+-        return card;
++    const durationMinutes = Math.floor(duration / 60);
++    const durationSeconds = Math.floor(duration % 60);
++    if (!isNaN(duration)) {
++        durationEl.textContent = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+     }
++}
+ 
+-    // Show Toast Notification helper
+-    function showToast(message) {
+-        toastMessage.textContent = message;
+-        toast.classList.remove('translate-y-24', 'opacity-0');
+-        setTimeout(() => {
+-            toast.classList.add('translate-y-24', 'opacity-0');
+-        }, 3000);
++function setProgress(e) {
++    const width = this.clientWidth;
++    const clickX = e.offsetX;
++    const duration = audioElement.duration;
++    audioElement.currentTime = (clickX / width) * duration;
++}
++
++// Volume
++function setVolume() {
++    audioElement.volume = volumeSlider.value;
++}
++
++// Shuffle & Repeat
++function toggleShuffle() {
++    isShuffle = !isShuffle;
++    shuffleBtn.classList.toggle('active', isShuffle);
++}
++
++function toggleRepeat() {
++    isRepeat = !isRepeat;
++    repeatBtn.classList.toggle('active', isRepeat);
++}
++
++function handleTrackEnd() {
++    if (isRepeat) {
++        audioElement.currentTime = 0;
++        playTrack();
++    } else {
++        nextTrack();
+     }
++}
+ 
+-    // Event Listeners for Filters
+-    searchInput.addEventListener('input', (e) => {
+-        renderProPlayers(e.target.value, dpiFilter.value);
+-    });
++// Search
++function handleSearch(e) {
++    const keyword = e.target.value.toLowerCase();
++    const filtered = tracks.filter(song => 
++        song.title.toLowerCase().includes(keyword) || 
++        song.artist.toLowerCase().includes(keyword) ||
++        song.album.toLowerCase().includes(keyword)
++    );
++    renderSongs(filtered);
++}
+ 
+-    dpiFilter.addEventListener('change', (e) => {
+-        renderProPlayers(searchInput.value, e.target.value);
+-    });
++// Favorites
++function toggleFavorite() {
++    const currentSong = tracks[currentTrackIndex];
++    const index = favorites.indexOf(currentSong.id);
++    if (index > -1) {
++        favorites.splice(index, 1);
++        playerHeart.className = "fa-regular fa-heart";
++    } else {
++        favorites.push(currentSong.id);
++        playerHeart.className = "fa-solid fa-heart active";
++    }
++    localStorage.setItem('favorites', JSON.stringify(favorites));
++    renderSongs(tracks);
++}
+ 
+-    // Form Submission
+-    sensitivityForm.addEventListener('submit', (e) => {
+-        e.preventDefault();
+-        
+-        const newPlayer = {
+-            name: document.getElementById('creator-name').value,
+-            device: document.getElementById('creator-device').value,
+-            dpi: parseInt(document.getElementById('val-dpi').value),
+-            general: parseInt(document.getElementById('val-general').value),
+-            redDot: parseInt(document.getElementById('val-reddot').value),
+-            scope2x: parseInt(document.getElementById('val-scope2x').value),
+-            scope4x: parseInt(document.getElementById('val-scope4x').value),
+-            awm: parseInt(document.getElementById('val-awm').value)
+-        };
+-
+-        customPlayers.unshift(newPlayer);
+-        localStorage.setItem('ff_custom_players', JSON.stringify(customPlayers));
+-        
+-        renderCustomPlayers();
+-        sensitivityForm.reset();
+-        
+-        // Scroll to custom list
+-        document.getElementById('custom-list').scrollIntoView({ behavior: 'smooth' });
+-        showToast('Lưu cấu hình thành công!');
++// Navigation tabs
++const navItems = document.querySelectorAll('.nav-menu li');
++navItems.forEach(item => {
++    item.addEventListener('click', () => {
++        navItems.forEach(nav => nav.classList.remove('active'));
++        item.classList.add('active');
++        const tab = item.getAttribute('data-tab');
++        if (tab === 'favorites') {
++            const favSongs = tracks.filter(s => favorites.includes(s.id));
++            renderSongs(favSongs);
++        } else {
++            renderSongs(tracks);
++        }
+     });
++});
+ 
+-    // Initial render
+-    renderProPlayers();
+-    renderCustomPlayers();
+-});
+\ No newline at end of file
++// Run init on load
++window.addEventListener('DOMContentLoaded', init);
+diff --git a/src/style.css b/src/style.css
+index af3b849..6e339dc 100644
+--- a/src/style.css
++++ b/src/style.css
+@@ -1,21 +1,453 @@
+-/* Custom styles for FF Sensitivity Website */
+-html {
+-    scroll-behavior: smooth;
++@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 +
 +* {
 +    margin: 0;
 +    padding: 0;
 +    box-sizing: border-box;
++    font-family: 'Poppins', sans-serif;
 +}
 +
-+html {
-+    scroll-behavior: smooth;
++:root {
++    --bg-color: #121212;
++    --sidebar-color: #000000;
++    --card-bg: #181818;
++    --card-hover: #282828;
++    --text-color: #ffffff;
++    --text-muted: #b3b3b3;
++    --primary-color: #1db954;
++    --primary-hover: #1ed760;
++    --border-color: #282828;
 +}
 +
 +body {
-+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
++    background-color: var(--bg-color);
 +    color: var(--text-color);
-+    background-color: var(--white);
-+    line-height: 1.6;
++    height: 100vh;
++    overflow: hidden;
 +}
 +
-+.container {
-+    max-width: 1200px;
-+    margin: 0 auto;
-+    padding: 0 20px;
-+}
-+
-+/* Buttons */
-+.btn {
-+    display: inline-block;
-+    padding: 12px 24px;
-+    border-radius: 6px;
-+    font-weight: 600;
-+    text-decoration: none;
-+    cursor: pointer;
-+    transition: var(--transition);
-+    border: none;
-+    font-size: 1rem;
-+}
-+
-+.btn-primary {
-+    background-color: var(--primary-color);
-+    color: var(--white);
-+}
-+
-+.btn-primary:hover {
-+    background-color: var(--primary-hover);
-+}
-+
-+.btn-secondary {
-+    background-color: transparent;
-+    color: var(--secondary-color);
-+    border: 2px solid var(--secondary-color);
-+}
-+
-+.btn-secondary:hover {
-+    background-color: var(--secondary-color);
-+    color: var(--white);
-+}
-+
-+.btn-primary-outline {
-+    background-color: transparent;
-+    color: var(--primary-color);
-+    border: 1px solid var(--primary-color);
-+    padding: 8px 16px;
-+}
-+
-+.btn-primary-outline:hover {
-+    background-color: var(--primary-color);
-+    color: var(--white);
-+}
-+
-+.btn-sm {
-+    padding: 8px 16px;
-+    font-size: 0.9rem;
-+}
-+
-+.btn-full {
-+    width: 100%;
-+}
-+
-+/* Header */
-+.header {
-+    background-color: var(--white);
-+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-+    position: sticky;
-+    top: 0;
-+    z-index: 1000;
-+}
-+
-+.nav-container {
++.app-container {
 +    display: flex;
-+    justify-content: space-between;
-+    align-items: center;
-+    height: 70px;
++    height: calc(100vh - 90px);
++}
++
++/* Sidebar */
++.sidebar {
++    width: 240px;
++    background-color: var(--sidebar-color);
++    padding: 20px;
++    display: flex;
++    flex-direction: column;
++    gap: 30px;
 +}
 +
 +.logo {
-+    font-size: 1.5rem;
-+    font-weight: 700;
-+    color: var(--secondary-color);
-+    text-decoration: none;
 +    display: flex;
 +    align-items: center;
-+    gap: 8px;
-+}
-+
-+.logo i {
-+    color: var(--primary-color);
-+}
-+
-+.nav-menu ul {
-+    display: flex;
-+    list-style: none;
-+    gap: 30px;
-+}
-+
-+.nav-menu a {
-+    text-decoration: none;
-+    color: var(--text-color);
-+    font-weight: 500;
-+    transition: var(--transition);
-+}
-+
-+.nav-menu a:hover {
-+    color: var(--primary-color);
-+}
-+
-+/* Hero Section */
-+.hero {
-+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-+    padding: 80px 0;
-+}
-+
-+.hero-content {
-+    display: grid;
-+    grid-template-columns: 1fr 1fr;
-+    align-items: center;
-+    gap: 40px;
-+}
-+
-+.hero-text h1 {
-+    font-size: 3rem;
-+    color: var(--secondary-color);
-+    line-height: 1.2;
-+    margin-bottom: 20px;
-+}
-+
-+.hero-text h1 span {
-+    color: var(--primary-color);
-+}
-+
-+.hero-text p {
-+    font-size: 1.1rem;
-+    margin-bottom: 30px;
-+    color: #64748b;
-+}
-+
-+.hero-buttons {
-+    display: flex;
-+    gap: 15px;
-+}
-+
-+.hero-image img {
-+    width: 100%;
-+    border-radius: 12px;
-+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-+}
-+
-+/* Section Titles */
-+.section-title {
-+    text-align: center;
-+    margin-bottom: 50px;
-+}
-+
-+.section-title h2 {
-+    font-size: 2.2rem;
-+    color: var(--secondary-color);
-+    margin-bottom: 10px;
-+}
-+
-+.section-title p {
-+    color: #64748b;
-+}
-+
-+/* Features Section */
-+.features {
-+    padding: 80px 0;
-+    background-color: var(--white);
-+}
-+
-+.feature-grid {
-+    display: grid;
-+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-+    gap: 30px;
-+}
-+
-+.feature-item {
-+    text-align: center;
-+    padding: 30px;
-+    background-color: var(--light-bg);
-+    border-radius: 8px;
-+    transition: var(--transition);
-+}
-+
-+.feature-item:hover {
-+    transform: translateY(-5px);
-+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-+}
-+
-+.feature-item i {
-+    font-size: 2.5rem;
-+    color: var(--primary-color);
-+    margin-bottom: 20px;
-+}
-+
-+.feature-item h3 {
-+    font-size: 1.2rem;
-+    color: var(--secondary-color);
-+    margin-bottom: 10px;
-+}
-+
-+.feature-item p {
-+    font-size: 0.95rem;
-+    color: #64748b;
-+}
-+
-+/* Products Section */
-+.products {
-+    padding: 80px 0;
-+    background-color: var(--light-bg);
-+}
-+
-+.filter-buttons {
-+    display: flex;
-+    justify-content: center;
 +    gap: 10px;
-+    margin-bottom: 40px;
-+    flex-wrap: wrap;
-+}
-+
-+.filter-btn {
-+    padding: 8px 20px;
-+    background-color: var(--white);
-+    border: 1px solid var(--gray);
-+    border-radius: 30px;
-+    cursor: pointer;
-+    font-weight: 500;
-+    transition: var(--transition);
-+}
-+
-+.filter-btn.active,
-+.filter-btn:hover {
-+    background-color: var(--primary-color);
-+    color: var(--white);
-+    border-color: var(--primary-color);
-+}
-+
-+.product-grid {
-+    display: grid;
-+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-+    gap: 30px;
-+}
-+
-+.product-card {
-+    background-color: var(--white);
-+    border-radius: 8px;
-+    overflow: hidden;
-+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-+    transition: var(--transition);
-+    position: relative;
-+}
-+
-+.product-card:hover {
-+    transform: translateY(-5px);
-+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-+}
-+
-+.product-badge {
-+    position: absolute;
-+    top: 15px;
-+    left: 15px;
-+    background-color: #ef4444;
-+    color: var(--white);
-+    padding: 4px 10px;
-+    font-size: 0.8rem;
-+    font-weight: 600;
-+    border-radius: 4px;
-+    z-index: 10;
-+}
-+
-+.product-badge.office {
-+    background-color: #10b981;
-+}
-+
-+.product-badge.graphic {
-+    background-color: #8b5cf6;
-+}
-+
-+.product-img {
-+    height: 200px;
-+    overflow: hidden;
-+}
-+
-+.product-img img {
-+    width: 100%;
-+    height: 100%;
-+    object-fit: cover;
-+    transition: var(--transition);
-+}
-+
-+.product-card:hover .product-img img {
-+    transform: scale(1.05);
-+}
-+
-+.product-info {
-+    padding: 20px;
-+}
-+
-+.product-info h3 {
-+    font-size: 1.1rem;
-+    color: var(--secondary-color);
-+    margin-bottom: 8px;
-+}
-+
-+.product-info .specs {
-+    font-size: 0.85rem;
-+    color: #64748b;
-+    margin-bottom: 15px;
-+    height: 40px;
-+    overflow: hidden;
-+}
-+
-+.price-box {
-+    margin-bottom: 15px;
-+}
-+
-+.price {
-+    font-size: 1.2rem;
++    font-size: 24px;
 +    font-weight: 700;
-+    color: #ef4444;
-+}
-+
-+/* Contact Section */
-+.contact {
-+    padding: 80px 0;
-+    background-color: var(--white);
-+}
-+
-+.contact-wrapper {
-+    display: grid;
-+    grid-template-columns: 1fr 1fr;
-+    gap: 50px;
-+    background-color: var(--light-bg);
-+    padding: 50px;
-+    border-radius: 12px;
-+}
-+
-+.contact-info h3 {
-+    font-size: 1.5rem;
-+    color: var(--secondary-color);
-+    margin-bottom: 20px;
-+}
-+
-+.contact-info p {
-+    margin-bottom: 15px;
-+    display: flex;
-+    align-items: center;
-+    gap: 12px;
-+    color: #64748b;
-+}
-+
-+.contact-info i {
 +    color: var(--primary-color);
-+    font-size: 1.2rem;
 +}
 +
-+.social-icons {
++.nav-menu {
++    list-style: none;
 +    display: flex;
++    flex-direction: column;
 +    gap: 15px;
-+    margin-top: 30px;
 +}
 +
-+.social-icons a {
++.nav-menu li {
 +    display: flex;
 +    align-items: center;
-+    justify-content: center;
++    gap: 15px;
++    color: var(--text-muted);
++    font-weight: 500;
++    cursor: pointer;
++    padding: 10px;
++    border-radius: 6px;
++    transition: 0.2s;
++}
++
++.nav-menu li:hover,
++.nav-menu li.active {
++    color: var(--text-color);
++    background-color: var(--card-hover);
++}
++
++.playlist-section h3 {
++    font-size: 14px;
++    color: var(--text-muted);
++    margin-bottom: 10px;
++    text-transform: uppercase;
++    letter-spacing: 1px;
++}
++
++.playlist-section ul {
++    list-style: none;
++    display: flex;
++    flex-direction: column;
++    gap: 10px;
++    max-height: 250px;
++    overflow-y: auto;
++}
++
++.playlist-section li {
++    color: var(--text-muted);
++    font-size: 14px;
++    cursor: pointer;
++    transition: 0.2s;
++}
++
++.playlist-section li:hover {
++    color: var(--text-color);
++}
++
++/* Main Content */
++.main-content {
++    flex: 1;
++    background: linear-gradient(180deg, #2d2d2d 0%, var(--bg-color) 100%);
++    overflow-y: auto;
++    padding: 20px 30px;
++}
++
++.header {
++    display: flex;
++    justify-content: space-between;
++    align-items: center;
++    margin-bottom: 30px;
++}
++
++.search-box {
++    display: flex;
++    align-items: center;
++    background-color: var(--card-bg);
++    padding: 10px 15px;
++    border-radius: 30px;
++    width: 350px;
++    gap: 10px;
++}
++
++.search-box i {
++    color: var(--text-muted);
++}
++
++.search-box input {
++    background: none;
++    border: none;
++    outline: none;
++    color: var(--text-color);
++    width: 100%;
++    font-size: 14px;
++}
++
++.user-profile {
++    display: flex;
++    align-items: center;
++    gap: 20px;
++}
++
++.user-profile i {
++    font-size: 18px;
++    color: var(--text-muted);
++    cursor: pointer;
++}
++
++.avatar img {
 +    width: 40px;
 +    height: 40px;
-+    background-color: var(--white);
-+    color: var(--primary-color);
 +    border-radius: 50%;
-+    text-decoration: none;
-+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-+    transition: var(--transition);
++    object-fit: cover;
++    cursor: pointer;
 +}
 +
-+.social-icons a:hover {
-+    background-color: var(--primary-color);
-+    color: var(--white);
++/* Banner */
++.banner {
++    background: linear-gradient(135deg, #1db954 0%, #191414 100%);
++    border-radius: 12px;
++    padding: 40px;
++    margin-bottom: 40px;
 +}
 +
-+.contact-form .form-group {
++.banner-content .tag {
++    background-color: rgba(0, 0, 0, 0.3);
++    padding: 4px 10px;
++    font-size: 12px;
++    font-weight: 600;
++    border-radius: 4px;
++    text-transform: uppercase;
++}
++
++.banner-content h1 {
++    font-size: 36px;
++    margin: 15px 0 10px;
++}
++
++.banner-content p {
++    color: var(--text-muted);
 +    margin-bottom: 20px;
 +}
 +
-+.contact-form label {
-+    display: block;
-+    margin-bottom: 8px;
++.btn-play-all {
++    background-color: var(--text-color);
++    color: var(--bg-color);
++    border: none;
++    padding: 12px 25px;
++    border-radius: 30px;
++    font-weight: 600;
++    cursor: pointer;
++    display: flex;
++    align-items: center;
++    gap: 10px;
++    transition: 0.2s;
++}
++
++.btn-play-all:hover {
++    background-color: var(--primary-color);
++    color: var(--text-color);
++}
++
++/* Songs Section */
++.songs-section h2 {
++    font-size: 22px;
++    margin-bottom: 15px;
++}
++
++.song-list-header {
++    display: grid;
++    grid-template-columns: 50px 1fr 1fr 80px;
++    padding: 10px 15px;
++    color: var(--text-muted);
++    border-bottom: 1px solid var(--border-color);
++    font-size: 14px;
 +    font-weight: 500;
-+    color: var(--secondary-color);
 +}
 +
-+.contact-form input,
-+.contact-form textarea {
-+    width: 100%;
-+    padding: 12px;
-+    border: 1px solid var(--gray);
++.song-list {
++    display: flex;
++    flex-direction: column;
++    gap: 5px;
++    margin-top: 10px;
++}
++
++.song-item {
++    display: grid;
++    grid-template-columns: 50px 1fr 1fr 80px;
++    align-items: center;
++    padding: 10px 15px;
 +    border-radius: 6px;
-+    font-family: inherit;
-+    outline: none;
-+    transition: var(--transition);
++    cursor: pointer;
++    transition: 0.2s;
 +}
 +
-+.contact-form input:focus,
-+.contact-form textarea:focus {
-+    border-color: var(--primary-color);
-+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
++.song-item:hover {
++    background-color: var(--card-hover);
 +}
 +
-+/* Footer */
-+.footer {
-+    background-color: var(--secondary-color);
-+    color: var(--white);
-+    text-align: center;
-+    padding: 30px 0;
++.song-item.active {
++    background-color: var(--card-hover);
++    color: var(--primary-color);
 +}
 +
-+/* Modal */
-+.modal {
-+    display: none;
++.song-item .song-index {
++    color: var(--text-muted);
++}
++
++.song-item .song-details {
++    display: flex;
++    align-items: center;
++    gap: 15px;
++}
++
++.song-item img {
++    width: 45px;
++    height: 45px;
++    border-radius: 4px;
++    object-fit: cover;
++}
++
++.song-item .title-artist h5 {
++    font-size: 14px;
++    font-weight: 500;
++}
++
++.song-item .title-artist p {
++    font-size: 12px;
++    color: var(--text-muted);
++}
++
++.song-item .album-name {
++    color: var(--text-muted);
++    font-size: 14px;
++}
++
++.song-item .song-duration {
++    color: var(--text-muted);
++    font-size: 14px;
+ }
+ 
+-::-webkit-scrollbar {
+-    width: 8px;
++/* Music Player Bar */
++.music-player {
 +    position: fixed;
-+    z-index: 2000;
++    bottom: 0;
 +    left: 0;
-+    top: 0;
 +    width: 100%;
-+    height: 100%;
-+    background-color: rgba(0, 0, 0, 0.5);
++    height: 90px;
++    background-color: var(--sidebar-color);
++    border-top: 1px solid var(--border-color);
++    display: flex;
++    justify-content: space-between;
++    align-items: center;
++    padding: 0 20px;
++    z-index: 1000;
+ }
+ 
+-::-webkit-scrollbar-track {
+-    background: #0a0a0c;
++.current-song {
++    display: flex;
++    align-items: center;
++    gap: 15px;
++    width: 300px;
+ }
+ 
+-::-webkit-scrollbar-thumb {
+-    background: #27272a;
++.current-song img {
++    width: 55px;
++    height: 55px;
+     border-radius: 4px;
++    object-fit: cover;
++}
++
++.song-info h4 {
++    font-size: 14px;
++    font-weight: 500;
++}
++
++.song-info p {
++    font-size: 12px;
++    color: var(--text-muted);
++}
++
++.current-song i {
++    font-size: 18px;
++    color: var(--text-muted);
++    cursor: pointer;
++    margin-left: 10px;
++}
++
++.current-song i:hover,
++.current-song i.active {
++    color: var(--primary-color);
+ }
+ 
+-::-webkit-scrollbar-thumb:hover {
+-    background: #ff3b30;
+-}
+\ No newline at end of file
++.player-center {
++    display: flex;
++    flex-direction: column;
++    align-items: center;
++    gap: 8px;
++    width: 45%;
++}
++
++.player-controls {
++    display: flex;
++    align-items: center;
++    gap: 25px;
++}
++
++.player-controls button {
++    background: none;
++    border: none;
++    color: var(--text-muted);
++    font-size: 16px;
++    cursor: pointer;
++    transition: 0.2s;
++}
++
++.player-controls button:hover {
++    color: var(--text-color);
++}
++
++.player-controls button.active {
++    color: var(--primary-color);
++}
++
++.player-controls .play-pause {
++    background-color: var(--text-color);
++    color: var(--bg-color);
++    width: 38px;
++    height: 38px;
++    border-radius: 50%;
++    display: flex;
 +    align-items: center;
 +    justify-content: center;
++    font-size: 14px;
++    transition: 0.2s;
 +}
 +
-+.modal-content {
-+    background-color: var(--white);
-+    padding: 30px;
-+    border-radius: 8px;
-+    width: 90%;
-+    max-width: 500px;
-+    position: relative;
-+    animation: modalSlide 0.3s ease;
++.player-controls .play-pause:hover {
++    transform: scale(1.05);
++    background-color: var(--primary-color);
++    color: var(--text-color);
 +}
 +
-+@keyframes modalSlide {
-+    from {
-+        transform: translateY(-50px);
-+        opacity: 0;
-+    }
-+    to {
-+        transform: translateY(0);
-+        opacity: 1;
-+    }
++.progress-container {
++    display: flex;
++    align-items: center;
++    gap: 10px;
++    width: 100%;
++    font-size: 12px;
++    color: var(--text-muted);
 +}
 +
-+.close-btn {
-+    position: absolute;
-+    top: 15px;
-+    right: 20px;
-+    font-size: 1.5rem;
++.progress-bar {
++    flex: 1;
++    height: 5px;
++    background-color: var(--card-hover);
++    border-radius: 5px;
 +    cursor: pointer;
-+    color: #64748b;
++    position: relative;
 +}
 +
-+.close-btn:hover {
-+    color: var(--secondary-color);
++.progress {
++    width: 0%;
++    height: 100%;
++    background-color: var(--text-color);
++    border-radius: 5px;
++    position: relative;
 +}
 +
-+#modalTitle {
-+    font-size: 1.4rem;
-+    color: var(--secondary-color);
-+    margin-bottom: 10px;
++.progress-bar:hover .progress {
++    background-color: var(--primary-color);
 +}
 +
-+.modal-price {
-+    font-size: 1.2rem;
-+    font-weight: 700;
-+    color: #ef4444;
-+    margin-bottom: 20px;
++.player-right {
++    display: flex;
++    align-items: center;
++    gap: 10px;
++    width: 200px;
++    justify-content: flex-end;
 +}
 +
-+.modal-specs {
-+    margin-bottom: 25px;
-+    background-color: var(--light-bg);
-+    padding: 15px;
-+    border-radius: 6px;
++.player-right i {
++    color: var(--text-muted);
++    font-size: 16px;
 +}
 +
-+.modal-specs h4 {
-+    margin-bottom: 8px;
-+    color: var(--secondary-color);
++.player-right input[type="range"] {
++    width: 100px;
++    accent-color: var(--text-color);
++    cursor: pointer;
 +}
 +
-+.modal-specs p {
-+    color: #64748b;
-+    font-size: 0.95rem;
-+}
-+
-+/* Responsive Design */
++/* Responsive */
 +@media (max-width: 768px) {
-+    .hero-content {
-+        grid-template-columns: 1fr;
-+        text-align: center;
++    .sidebar {
++        display: none;
 +    }
-+
-+    .hero-buttons {
-+        justify-content: center;
++    .song-list-header,
++    .song-item {
++        grid-template-columns: 40px 1fr 60px;
 +    }
-+
-+    .hero-text h1 {
-+        font-size: 2.2rem;
-+    }
-+
-+    .contact-wrapper {
-+        grid-template-columns: 1fr;
-+        padding: 30px 20px;
-+    }
-+
-+    .nav-menu {
++    .song-list-header span:nth-child(3),
++    .song-item .album-name {
 +        display: none;
 +    }
 +}
-diff --git a/index.html b/index.html
-index 464bb24..6a2bc1b 100644
---- a/index.html
-+++ b/index.html
-@@ -1,244 +1,223 @@
- <!DOCTYPE html>
--<html lang="vi" class="dark">
-+<html lang="vi">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
--    <title>FF Sensitivity Hub - Độ Nhạy Free Fire Pro Player & Tùy Chỉnh</title>
--    <script src="https://cdn.tailwindcss.com"></script>
--    <script>
--        tailwind.config = {
--            darkMode: 'class',
--            theme: {
--                extend: {
--                    colors: {
--                        ffred: {
--                            500: '#ff3b30',
--                            600: '#e02d22',
--                            700: '#c52217',
--                        },
--                        ffdark: {
--                            800: '#1a1a1e',
--                            900: '#121215',
--                            950: '#0a0a0c',
--                        }
--                    }
--                }
--            }
--        }
--    </script>
-+    <title>TechStore - Thế giới máy tính chính hãng, PC Gaming & Laptop</title>
-+    <link rel="stylesheet" href="css/style.css">
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
--    <link rel="stylesheet" href="src/style.css">
- </head>
--<body class="bg-ffdark-950 text-gray-100 font-sans min-h-screen flex flex-col selection:bg-ffred-500 selection:text-white">
--
--    <!-- Header / Navbar -->
--    <header class="sticky top-0 z-50 bg-ffdark-900/90 backdrop-blur-md border-b border-gray-800">
--        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
--            <div class="flex items-center space-x-3">
--                <div class="bg-gradient-to-tr from-ffred-600 to-amber-500 p-2 rounded-xl text-white shadow-lg shadow-ffred-600/30">
--                    <i class="fa-solid fa-crosshairs text-xl animate-pulse"></i>
--                </div>
--                <span class="text-xl font-black tracking-wider uppercase bg-gradient-to-r from-white via-gray-200 to-ffred-500 bg-clip-text text-transparent">
--                    FF<span class="text-ffred-500">SENSE</span>.VN
--                </span>
--            </div>
--            <nav class="hidden md:flex space-x-8 text-sm font-semibold">
--                <a href="#pro-players" class="hover:text-ffred-500 transition-colors">Pro Players</a>
--                <a href="#generator" class="hover:text-ffred-500 transition-colors">Tạo Độ Nhạy</a>
--                <a href="#custom-list" class="hover:text-ffred-500 transition-colors">Độ Nhạy Của Tôi</a>
--                <a href="#tips" class="hover:text-ffred-500 transition-colors">Mẹo Kéo Tâm</a>
-+<body>
-+    <!-- Header / Navigation -->
-+    <header class="header">
-+        <div class="container nav-container">
-+            <a href="#" class="logo"><i class="fa-solid fa-microchip"></i> TechStore</a>
-+            <nav class="nav-menu">
-+                <ul>
-+                    <li><a href="#home">Trang chủ</a></li>
-+                    <li><a href="#products">Sản phẩm</a></li>
-+                    <li><a href="#features">Ưu điểm</a></li>
-+                    <li><a href="#contact">Liên hệ</a></li>
-+                </ul>
-             </nav>
--            <div>
--                <a href="#generator" class="bg-ffred-600 hover:bg-ffred-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition-all shadow-lg shadow-ffred-600/20 active:scale-95">
--                    <i class="fa-solid fa-plus mr-1"></i> Thêm Setting
--                </a>
-+            <div class="nav-actions">
-+                <a href="#contact" class="btn btn-primary-outline">Tư vấn ngay</a>
-             </div>
-         </div>
-     </header>
- 
-     <!-- Hero Section -->
--    <section class="relative py-16 lg:py-24 overflow-hidden border-b border-gray-800/60 bg-gradient-to-b from-ffdark-900 to-ffdark-950">
--        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ff3b30_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
--        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
--            <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-semibold bg-ffred-500/10 text-ffred-500 border border-ffred-500/20 mb-6">
--                <i class="fa-solid fa-fire text-amber-500"></i> Cập nhật bản vá Free Fire mới nhất
--            </span>
--            <h1 class="text-4xl sm:text-6xl font-black tracking-tight uppercase mb-6">
--                BÍ KÍ KÉO TÂM <span class="bg-gradient-to-r from-ffred-500 to-amber-500 bg-clip-text text-transparent">BÁCH PHÁT BÁCH TRÚNG</span>
--            </h1>
--            <p class="max-w-2xl mx-auto text-gray-400 text-base sm:text-lg mb-10">
--                Khám phá độ nhạy chuẩn xác từ các Pro Player hàng đầu thế giới hoặc tự tối ưu hóa thông số DPI và Setting phù hợp với thiết bị của riêng bạn.
--            </p>
--            <div class="flex flex-wrap justify-center gap-4">
--                <a href="#pro-players" class="bg-ffred-600 hover:bg-ffred-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-xl shadow-ffred-600/30 transition-all flex items-center gap-2">
--                    <i class="fa-solid fa-bolt">}</i> Xem Pro Players
--                </a>
--                <a href="#generator" class="bg-ffdark-800 hover:bg-gray-800 text-white font-bold px-8 py-3.5 rounded-xl border border-gray-700 transition-all flex items-center gap-2">
--                    <i class="fa-solid fa-sliders"></i> Tự Tạo Setting
--                </a>
-+    <section id="home" class="hero">
-+        <div class="container hero-content">
-+            <div class="hero-text">
-+                <h1>Hiệu năng đỉnh cao <br><span>Thế giới trong tầm tay</span></h1>
-+<p>Chuyên cung cấp các dòng PC Gaming cấu hình khủng, Laptop văn phòng mỏng nhẹ và máy trạm đồ họa chuyên nghiệp với giá tốt nhất thị trường.</p>
-+                <div class="hero-buttons">
-+                    <a href="#products" class="btn btn-primary">Khám phá ngay</a>
-+                    <a href="#contact" class="btn btn-secondary">Nhận tư vấn</a>
-+                </div>
-+            </div>
-+            <div class="hero-image">
-+                <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=600&q=80" alt="PC Gaming Setup">
-             </div>
-         </div>
-     </section>
- 
--    <!-- Main Content Area -->
--    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
--        
--        <!-- Section: Pro Players -->
--        <section id="pro-players" class="space-y-6">
--            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
--                <div>
--                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide flex items-center gap-3">
--                        <span class="w-3 h-8 bg-ffred-600 rounded-sm"></span> Độ Nhạy Pro Player
--                    </h2>
--                    <p class="text-gray-400 text-sm mt-1">Cấu hình chuẩn xác được tin dùng bởi các huyền thoại Free Fire.</p>
-+    <!-- Features Section -->
-+    <section id="features" class="features">
-+        <div class="container">
-+            <div class="section-title">
-+                <h2>Tại sao chọn TechStore?</h2>
-+                <p>Cam kết mang lại trải nghiệm mua sắm tuyệt vời nhất cho bạn</p>
-+            </div>
-+            <div class="feature-grid">
-+                <div class="feature-item">
-+                    <i class="fa-solid fa-shield-halved"></i>
-+                    <h3>Bảo hành chính hãng</h3>
-+                    <p>100% sản phẩm chính hãng, bảo hành từ 12 đến 36 tháng tận nơi.</p>
-                 </div>
--                
--                <!-- Filter & Search Controls -->
--                <div class="flex flex-wrap gap-3">
--                    <div class="relative">
--                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
--                            <i class="fa-solid fa-search"></i>
--                        </span>
--                        <input type="text" id="search-input" placeholder="Tìm kiếm pro player..." class="bg-ffdark-900 border border-gray-800 rounded-xl pl-10 pr-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-ffred-500 w-full sm:w-64">
--                    </div>
--                    <select id="dpi-filter" class="bg-ffdark-900 border border-gray-800 rounded-xl px-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        <option value="all">Tất cả DPI</option>
--                        <option value="low">DPI Dưới 500</option>
--                        <option value="mid">DPI 500 - 800</option>
--                        <option value="high">DPI Trên 800</option>
--                    </select>
-+                <div class="feature-item">
-+                    <i class="fa-solid fa-truck-fast"></i>
-+                    <h3>Giao hàng siêu tốc</h3>
-+                    <p>Miễn phí vận chuyển và lắp đặt trong nội thành, hỗ trợ toàn quốc.</p>
-+                </div>
-+                <div class="feature-item">
-+                    <i class="fa-solid fa-headset"></i>
-+                    <h3>Hỗ trợ 24/7</h3>
-+                    <p>Đội ngũ kỹ thuật viên giàu kinh nghiệm luôn sẵn sàng giải đáp mọi thắc mắc.</p>
-+                </div>
-+                <div class="feature-item">
-+                    <i class="fa-solid fa-tags"></i>
-+                    <h3>Giá cả cạnh tranh</h3>
-+                    <p>Cập nhật chương trình khuyến mãi và quà tặng hấp dẫn liên tục.</p>
-                 </div>
-             </div>
-+        </div>
-+    </section>
- 
--            <!-- Grid Pro Players -->
--            <div id="pro-players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
--                <!-- JS will inject cards here -->
-+    <!-- Products Section -->
-+    <section id="products" class="products">
-+        <div class="container">
-+            <div class="section-title">
-+                <h2>Sản phẩm nổi bật</h2>
-+                <p>Lựa chọn hoàn hảo cho công việc và giải trí của bạn</p>
-             </div>
--        </section>
--
--        <!-- Section: Generator & Custom Tool -->
--        <section id="generator" class="bg-ffdark-900/80 border border-gray-800 rounded-2xl p-6 sm:p-8 relative overflow-hidden">
--            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-ffred-600/5 rounded-full blur-3xl pointer-events-none"></div>
--            
--            <div class="max-w-2xl mx-auto">
--                <div class="text-center mb-8">
--                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide">TẠO & LƯU ĐỘ NHẠY CÁ NHÂN</h2>
--                    <p class="text-gray-400 text-sm mt-1">Lưu lại cấu hình kéo tâm tốt nhất của bạn vào bộ nhớ trình duyệt.</p>
-+            <div class="filter-buttons">
-+                <button class="filter-btn active" data-filter="all">Tất cả</button>
-+                <button class="filter-btn" data-filter="gaming">PC Gaming</button>
-+                <button class="filter-btn" data-filter="office">Laptop Văn Phòng</button>
-+                <button class="filter-btn" data-filter="graphic">Đồ họa / Workstation</button>
-+            </div>
-+            <div class="product-grid">
-+                <!-- Product 1 -->
-+                <div class="product-card" data-category="gaming">
-+                    <div class="product-badge">Gaming</div>
-+                    <div class="product-img">
-+                        <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80" alt="PC Gaming X-Power">
-+                    </div>
-+                    <div class="product-info">
-+                        <h3>PC Gaming X-Power RTX 4060</h3>
-+                        <p class="specs">Core i5-13400F | 16GB RAM | 500GB SSD | RTX 4060 8GB</p>
-+                        <div class="price-box">
-+                            <span class="price">18.990.000đ</span>
-+                        </div>
-+                        <button class="btn btn-sm btn-primary view-details" data-name="PC Gaming X-Power RTX 4060" data-specs="Intel Core i5-13400F, RAM 16GB DDR4, SSD 500GB NVMe, VGA RTX 4060 8GB, Nguồn 650W 80 Plus." data-price="18.990.000đ">Xem chi tiết</button>
-+                    </div>
-                 </div>
- 
--                <form id="sensitivity-form" class="space-y-6">
--                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Tên / Biệt danh</label>
--                            <input type="text" id="creator-name" required placeholder="VD: Siêu Kéo Tâm" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        </div>
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Thiết bị sử dụng</label>
--                            <input type="text" id="creator-device" required placeholder="VD: iPhone 13 / Samsung" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-+                <!-- Product 2 -->
-+                <div class="product-card" data-category="office">
-+                    <div class="product-badge office">Văn phòng</div>
-+                    <div class="product-img">
-+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Laptop UltraBook Pro">
-+                    </div>
-+                    <div class="product-info">
-+                        <h3>Laptop UltraBook Pro 14</h3>
-+                        <p class="specs">Core i5-1235U | 16GB RAM | 512GB SSD | Màn 14" 2.8K OLED</p>
-+                        <div class="price-box">
-+                            <span class="price">15.490.000đ</span>
-                         </div>
-+                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop UltraBook Pro 14" data-specs="Intel Core i5-1235U, RAM 16GB LPDDR5, SSD 512GB NVMe, Màn hình 14 inch 2.8K OLED sắc nét, Pin 56Wh." data-price="15.490.000đ">Xem chi tiết</button>
-                     </div>
-+                </div>
- 
--                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">DPI</label>
--                            <input type="number" id="val-dpi" required value="500" min="200" max="1500" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        </div>
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Nhìn Xung Quanh</label>
--                            <input type="number" id="val-general" required value="95" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        </div>
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Red Dot</label>
--                            <input type="number" id="val-reddot" required value="90" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        </div>
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm 2X</label>
--                            <input type="number" id="val-scope2x" required value="88" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        </div>
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm 4X</label>
--                            <input type="number" id="val-scope4x" required value="92" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
--                        </div>
--                        <div>
--                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Ống Ngắm AWM</label>
--                            <input type="number" id="val-awm" required value="50" min="0" max="100" class="w-full bg-ffdark-950 border border-gray-800 rounded-xl px-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-ffred-500">
-+                <!-- Product 3 -->
-+                <div class="product-card" data-category="graphic">
-+                    <div class="product-badge graphic">Đồ họa</div>
-+                    <div class="product-img">
-+                        <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=400&q=80" alt="Workstation Creator Pro">
-+                    </div>
-+                    <div class="product-info">
-+                        <h3>Workstation Creator Pro</h3>
-+                        <p class="specs">Core i7-13700K | 32GB RAM | 1TB SSD | RTX 4070 12GB</p>
-+                        <div class="price-box">
-+                            <span class="price">32.990.000đ</span>
-                         </div>
-+                        <button class="btn btn-sm btn-primary view-details" data-name="Workstation Creator Pro" data-specs="Intel Core i7-13700K, RAM 32GB DDR5, SSD 1TB NVMe Gen4, VGA RTX 4070 12GB, Tản nhiệt nước 240." data-price="32.990.000đ">Xem chi tiết</button>
-                     </div>
--
--                    <button type="submit" class="w-full bg-gradient-to-r from-ffred-600 to-ffred-700 hover:from-ffred-700 hover:to-ffred-800 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-ffred-600/30 transition-all flex items-center justify-center gap-2 uppercase tracking-wider text-sm">
--                        <i class="fa-solid fa-floppy-disk"></i> Lưu Cấu Hình Vào Máy
--                    </button>
--                </form>
--            </div>
--        </section>
--
--        <!-- Section: Custom User List -->
--        <section id="custom-list" class="space-y-6">
--            <div class="flex items-center justify-between">
--                <div>
--                    <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide flex items-center gap-3">
--                        <span class="w-3 h-8 bg-amber-500 rounded-sm"></span> Độ Nhạy Của Tôi
--                    </h2>
--                    <p class="text-gray-400 text-sm mt-1">Danh sách các cấu hình bạn đã tự tạo trên trình duyệt này.</p>
-                 </div>
--            </div>
--
--            <div id="custom-players-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
--                <!-- JS will inject user custom cards here -->
--            </div>
--        </section>
- 
--        <!-- Section: Tips for Dragging Aim -->
--        <section id="tips" class="grid grid-cols-1 md:grid-cols-3 gap-6">
--            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
--                <div class="w-10 h-10 rounded-xl bg-ffred-500/10 text-ffred-500 flex items-center justify-center font-bold text-lg">
--                    <i class="fa-solid fa-bolt"></i>
-+                <!-- Product 4 -->
-+                <div class="product-card" data-category="gaming">
-+                    <div class="product-badge">Gaming</div>
-+                    <div class="product-img">
-+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" alt="Laptop Gaming Beast">
-+                    </div>
-+                    <div class="product-info">
-+                        <h3>Laptop Gaming Beast 15</h3>
-+                        <p class="specs">Ryzen 7 6800H | 16GB RAM | 512GB SSD | RTX 3060</p>
-+                        <div class="price-box">
-+                            <span class="price">21.500.000đ</span>
-+                        </div>
-+                        <button class="btn btn-sm btn-primary view-details" data-name="Laptop Gaming Beast 15" data-specs="AMD Ryzen 7 6800H, RAM 16GB, SSD 512GB, RTX 3060 6GB, Màn hình 15.6 inch FHD 144Hz." data-price="21.500.000đ">Xem chi tiết</button>
-+                    </div>
-                 </div>
--                <h3 class="font-bold text-lg">Tốc Độ Kéo Tâm</h3>
--                <p class="text-gray-400 text-sm leading-relaxed">
--                    Không kéo quá mạnh hoặc quá nhanh. Hãy thực hiện động tác vuốt dứt khoát từ nửa dưới màn hình hướng thẳng lên đầu đối thủ.
--                </p>
-             </div>
--            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
--                <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center font-bold text-lg">
--                    <i class="fa-solid fa-mobile-screen"></i>
--                </div>
--                <h3 class="font-bold text-lg">Vệ Sinh Màn Hình</h3>
--                <p class="text-gray-400 text-sm leading-relaxed">
--                    Mồ hôi tay làm giảm độ trơn trượt đáng kể. Hãy lau sạch màn hình và sử dụng phấn rôm hoặc bao tay chơi game để tối ưu độ nhạy.
--                </p>
-+        </div>
-+    </section>
-+
-+    <!-- Contact Section -->
-+    <section id="contact" class="contact">
-+        <div class="container">
-+            <div class="section-title">
-+                <h2>Liên hệ tư vấn</h2>
-+                <p>Để lại thông tin, chúng tôi sẽ liên hệ với bạn trong vòng 15 phút</p>
-             </div>
--            <div class="bg-ffdark-900 border border-gray-800 rounded-2xl p-6 space-y-3">
--                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center font-bold text-lg">
--                    <i class="fa-solid fa-crosshairs"></i>
-+            <div class="contact-wrapper">
-+                <div class="contact-info">
-+                    <h3>Thông tin liên hệ</h3>
-+                    <p><i class="fa-solid fa-location-dot"></i> 123 Đường Công Nghệ, Quận 1, TP. Hồ Chí Minh</p>
-+                    <p><i class="fa-solid fa-phone"></i> Hotline: 1900 1234 - 0988 765 432</p>
-+                    <p><i class="fa-solid fa-envelope"></i> Email: support@techstore.vn</p>
-+                    <div class="social-icons">
-+                        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-+                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
-+                        <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-+                    </div>
-                 </div>
--                <h3 class="font-bold text-lg">Tâm Mặc Định (Red Dot)</h3>
--                <p class="text-gray-400 text-sm leading-relaxed">
--                    Đặt tâm súng ở ngang ngực trước khi nhắm bắn sẽ giúp lực kéo tâm nhẹ hơn và dễ dính headshot hơn rất nhiều.
--                </p>
-+                <form id="contactForm" class="contact-form">
-+                    <div class="form-group">
-+                        <label for="name">Họ và tên</label>
-+                        <input type="text" id="name" required placeholder="Nhập họ tên của bạn">
-+                    </div>
-+                    <div class="form-group">
-+                        <label for="phone">Số điện thoại</label>
-+                        <input type="tel" id="phone" required placeholder="Nhập số điện thoại">
-+                    </div>
-+                    <div class="form-group">
-+                        <label for="message">Yêu cầu tư vấn</label>
-+                        <textarea id="message" rows="4" placeholder="Bạn cần tư vấn dòng máy nào?"></textarea>
-+                    </div>
-+                    <button type="submit" class="btn btn-primary btn-full">Gửi yêu cầu</button>
-+                </form>
-             </div>
--        </section>
--
--    </main>
-+        </div>
-+    </section>
- 
-     <!-- Footer -->
--    <footer class="bg-ffdark-900 border-t border-gray-800 py-8 mt-16">
--        <div class="max-w-7xl mx-auto px-4 text-center text-sm text-gray-500">
--            <p class="font-semibold text-gray-400 mb-2">FF Sensitivity Hub - Công cụ hỗ trợ Free Fire tối ưu hóa trải nghiệm game.</p>
--            <p>&copy; 2025 FF Sense. VN. Không liên kết chính thức với Garena.</p>
-+    <footer class="footer">
-+        <div class="container">
-+            <p>&copy; 2024 TechStore. Tất cả các quyền được bảo lưu.</p>
-         </div>
-     </footer>
- 
--    <!-- Toast Notification -->
--    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-ffdark-800 border border-gray-700 text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3">
--        <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center">
--            <i class="fa-solid fa-check text-xs"></i>
-+    <!-- Product Modal -->
-+    <div id="productModal" class="modal">
-+        <div class="modal-content">
-+            <span class="close-btn">&times;</span>
-+            <h2 id="modalTitle">Tên sản phẩm</h2>
-+            <p class="modal-price" id="modalPrice">Giá: 0đ</p>
-+            <div class="modal-specs">
-+                <h4>Thông số kỹ thuật chi tiết:</h4>
-+                <p id="modalSpecsText">Đang cập nhật...</p>
-+            </div>
-+            <div class="modal-action">
-+                <a href="#contact" class="btn btn-primary modal-buy-btn">Đặt mua / Tư vấn ngay</a>
-+            </div>
-         </div>
--        <span id="toast-message" class="text-sm font-medium">Đã sao chép cấu hình vào bộ nhớ tạm!</span>
-     </div>
- 
--    <!-- Scripts -->
--    <script src="src/data/pro-players.js"></script>
--    <script src="src/js/app.js"></script>
-+    <!-- JavaScript -->
-+    <script src="js/main.js"></script>
- </body>
--</html>
-\ No newline at end of file
-+</html>
-diff --git a/js/main.js b/js/main.js
-new file mode 100644
-index 0000000..070e705
---- /dev/null
-+++ b/js/main.js
-@@ -0,0 +1,77 @@
-+document.addEventListener('DOMContentLoaded', () => {
-+    // Product Filtering
-+    const filterBtns = document.querySelectorAll('.filter-btn');
-+    const productCards = document.querySelectorAll('.product-card');
-+
-+    filterBtns.forEach(btn => {
-+        btn.addEventListener('click', () => {
-+            // Remove active class from all buttons
-+            filterBtns.forEach(b => b.classList.remove('active'));
-+            // Add active to clicked button
-+            btn.classList.add('active');
-+
-+            const filter = btn.getAttribute('data-filter');
-+
-+            productCards.forEach(card => {
-+                if (filter === 'all' || card.getAttribute('data-category') === filter) {
-+                    card.style.display = 'block';
-+                } else {
-+                    card.style.display = 'none';
-+                }
-+            });
-+        });
-+    });
-+
-+    // Modal Details functionality
-+    const modal = document.getElementById('productModal');
-+    const closeBtn = document.querySelector('.close-btn');
-+    const viewDetailBtns = document.querySelectorAll('.view-details');
-+    
-+    const modalTitle = document.getElementById('modalTitle');
-+    const modalPrice = document.getElementById('modalPrice');
-+    const modalSpecsText = document.getElementById('modalSpecsText');
-+    const modalBuyBtn = document.querySelector('.modal-buy-btn');
-+
-+    viewDetailBtns.forEach(btn => {
-+        btn.addEventListener('click', () => {
-+            const name = btn.getAttribute('data-name');
-+            const specs = btn.getAttribute('data-specs');
-+            const price = btn.getAttribute('data-price');
-+
-+            modalTitle.textContent = name;
-+            modalPrice.textContent = 'Giá: ' + price;
-+            modalSpecsText.textContent = specs;
-+            
-+            modal.style.display = 'flex';
-+        });
-+    });
-+
-+    closeBtn.addEventListener('click', () => {
-+        modal.style.display = 'none';
-+    });
-+
-+    window.addEventListener('click', (e) => {
-+        if (e.target === modal) {
-+            modal.style.display = 'none';
-+        }
-+    });
-+
-+    modalBuyBtn.addEventListener('click', () => {
-+        modal.style.display = 'none';
-+    });
-+
-+    // Contact Form Submission Validation
-+    const contactForm = document.getElementById('contactForm');
-+    if (contactForm) {
-+        contactForm.addEventListener('submit', (e) => {
-+            e.preventDefault();
-+            const name = document.getElementById('name').value;
-+            const phone = document.getElementById('phone').value;
-+            
-+            if (name && phone) {
-+                alert(`Cảm ơn bạn ${name}! Yêu cầu tư vấn của bạn đã được gửi thành công. Chúng tôi sẽ liên hệ lại qua số ${phone} trong thời gian sớm nhất.`);
-+                contactForm.reset();
-+            }
-+        });
-+    }
-+});

@@ -1,202 +1,293 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const proGrid = document.getElementById('pro-players-grid');
-    const customGrid = document.getElementById('custom-players-grid');
-    const searchInput = document.getElementById('search-input');
-    const dpiFilter = document.getElementById('dpi-filter');
-    const sensitivityForm = document.getElementById('sensitivity-form');
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toast-message');
+const tracks = [
+    {
+        id: 1,
+        title: "Nevada",
+        artist: "Vicetone ft. Cozi Zuehlsdorff",
+        album: "Monstercat Best",
+        duration: "3:25",
+        cover: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+    },
+    {
+        id: 2,
+        title: "Spectre",
+        artist: "Alan Walker",
+        album: "NCS Release",
+        duration: "3:48",
+        cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+    },
+    {
+        id: 3,
+        title: "Faded",
+        artist: "Alan Walker",
+        album: "Different World",
+        duration: "3:32",
+        cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+    },
+    {
+        id: 4,
+        title: "Unity",
+        artist: "TheFatRat",
+        album: "TheFatRat Essentials",
+        duration: "4:08",
+        cover: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=100",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"
+    },
+    {
+        id: 5,
+        title: "Energy",
+        artist: "Bensound",
+        album: "Acoustic Indie",
+        duration: "2:59",
+        cover: "https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?w=100",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"
+    },
+    {
+        id: 6,
+        title: "Sunny",
+        artist: "Bensound",
+        album: "Vlog Music",
+        duration: "4:21",
+        cover: "https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?w=100",
+        audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+    }
+];
 
-    let customPlayers = JSON.parse(localStorage.getItem('ff_custom_players')) || [];
+let currentTrackIndex = 0;
+let isPlaying = false;
+let isShuffle = false;
+let isRepeat = false;
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
 
-    // Render Pro Players
-    function renderProPlayers(filterText = '', filterDpi = 'all') {
-        proGrid.innerHTML = '';
-        
-        const filtered = PRO_PLAYERS.filter(player => {
-            const matchName = player.name.toLowerCase().includes(filterText.toLowerCase()) || 
-                              player.device.toLowerCase().includes(filterText.toLowerCase());
-            
-            let matchDpi = true;
-            if (filterDpi === 'low') matchDpi = player.dpi < 500;
-            else if (filterDpi === 'mid') matchDpi = player.dpi >= 500 && player.dpi <= 800;
-            else if (filterDpi === 'high') matchDpi = player.dpi > 800;
+// DOM Elements
+const audioElement = document.getElementById('audio-element');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const playIcon = document.getElementById('play-icon');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+const shuffleBtn = document.getElementById('shuffle-btn');
+const repeatBtn = document.getElementById('repeat-btn');
+const progressBar = document.getElementById('progress-bar');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
+const volumeSlider = document.getElementById('volume-slider');
+const songListEl = document.getElementById('song-list');
+const searchInput = document.getElementById('search-input');
+const btnPlayAll = document.getElementById('btn-play-all');
 
-            return matchName && matchDpi;
-        });
+const playerCover = document.getElementById('player-cover');
+const playerTitle = document.getElementById('player-title');
+const playerArtist = document.getElementById('player-artist');
+const playerHeart = document.getElementById('player-heart');
 
-        if (filtered.length === 0) {
-            proGrid.innerHTML = `
-                <div class="col-span-full py-12 text-center text-gray-500">
-                    <i class="fa-solid fa-ghost text-4xl mb-3"></i>
-                    <p>Không tìm thấy cấu hình phù hợp.</p>
-                </div>
-            `;
-            return;
-        }
+// Initialize App
+function init() {
+    renderSongs(tracks);
+    loadTrack(currentTrackIndex);
 
-        filtered.forEach(player => {
-            proGrid.appendChild(createPlayerCard(player, false));
-        });
+    playPauseBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevTrack);
+    nextBtn.addEventListener('click', nextTrack);
+    shuffleBtn.addEventListener('click', toggleShuffle);
+    repeatBtn.addEventListener('click', toggleRepeat);
+    audioElement.addEventListener('timeupdate', updateProgress);
+    audioElement.addEventListener('ended', handleTrackEnd);
+    progressBar.addEventListener('click', setProgress);
+    volumeSlider.addEventListener('input', setVolume);
+    searchInput.addEventListener('input', handleSearch);
+    btnPlayAll.addEventListener('click', () => {
+        currentTrackIndex = 0;
+        loadTrack(currentTrackIndex);
+        playTrack();
+    });
+    playerHeart.addEventListener('click', toggleFavorite);
+}
+
+// Render Songs List
+function renderSongs(songsToRender) {
+    songListEl.innerHTML = '';
+    if (songsToRender.length === 0) {
+        songListEl.innerHTML = '<p style="padding: 20px; color: #b3b3b3; text-align: center;">Không tìm thấy bài hát nào.</p>';
+        return;
     }
 
-    // Render Custom Players
-    function renderCustomPlayers() {
-        customGrid.innerHTML = '';
-        
-        if (customPlayers.length === 0) {
-            customGrid.innerHTML = `
-                <div class="col-span-full py-10 text-center text-gray-500 bg-ffdark-900/50 border border-dashed border-gray-800 rounded-2xl">
-                    <i class="fa-solid fa-folder-open text-3xl mb-2 text-gray-600"></i>
-                    <p class="text-sm">Bạn chưa lưu độ nhạy nào. Hãy tạo ở form phía trên!</p>
-                </div>
-            `;
-            return;
-        }
-
-        customPlayers.forEach((player, index) => {
-            customGrid.appendChild(createPlayerCard(player, true, index));
-        });
-    }
-
-    // Create Card HTML element
-    function createPlayerCard(player, isCustom = false, index = null) {
-        const card = document.createElement('div');
-        card.className = "bg-ffdark-900 border border-gray-800 rounded-2xl p-6 flex flex-col justify-between hover:border-ffred-500/50 transition-all shadow-xl group";
-        
-        card.innerHTML = `
-            <div>
-                <div class="flex items-start justify-between mb-4">
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h3 class="font-black text-lg text-white group-hover:text-ffred-500 transition-colors">${player.name}</h3>
-                            ${player.tag ? `<span class="text-[10px] font-bold bg-ffred-500/10 text-ffred-500 px-2 py-0.5 rounded-full border border-ffred-500/20">${player.tag}</span>` : ''}
-                            ${isCustom ? `<span class="text-[10px] font-bold bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded-full border border-amber-500/20">Cá Nhân</span>` : ''}
-                        </div>
-                        <p class="text-xs text-gray-400 mt-0.5"><i class="fa-solid fa-mobile-screen mr-1 text-gray-500"></i> ${player.device}</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs font-semibold text-gray-400">DPI</span>
-                        <div class="text-sm font-mono font-bold text-amber-400">${player.dpi}</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 text-xs mb-6">
-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
-                        <span class="text-gray-400">Nhìn Xung Quanh</span>
-                        <span class="font-bold font-mono text-white">${player.general}</span>
-                    </div>
-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
-                        <span class="text-gray-400">Red Dot</span>
-                        <span class="font-bold font-mono text-white">${player.redDot}</span>
-                    </div>
-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
-                        <span class="text-gray-400">Ống Ngắm 2X</span>
-                        <span class="font-bold font-mono text-white">${player.scope2x}</span>
-                    </div>
-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80">
-                        <span class="text-gray-400">Ống Ngắm 4X</span>
-                        <span class="font-bold font-mono text-white">${player.scope4x}</span>
-                    </div>
-                    <div class="bg-ffdark-950 px-3 py-2 rounded-xl flex justify-between items-center border border-gray-800/80 col-span-2">
-                        <span class="text-gray-400">Ống Ngắm AWM</span>
-                        <span class="font-bold font-mono text-white">${player.awm}</span>
-                    </div>
+    songsToRender.forEach((song, index) => {
+        const isFav = favorites.includes(song.id);
+        const isCurrent = tracks[currentTrackIndex].id === song.id;
+        const songItem = document.createElement('div');
+        songItem.className = `song-item ${isCurrent ? 'active' : ''}`;
+        songItem.innerHTML = `
+            <span class="song-index">${index + 1}</span>
+            <div class="song-details">
+                <img src="${song.cover}" alt="${song.title}">
+                <div class="title-artist">
+                    <h5>${song.title}</h5>
+                    <p>${song.artist}</p>
                 </div>
             </div>
-
-            <div class="flex items-center gap-2">
-                <button class="copy-btn flex-1 bg-ffdark-950 hover:bg-ffred-600 hover:text-white border border-gray-800 text-gray-300 py-2.5 px-4 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2">
-                    <i class="fa-regular fa-copy"></i> Sao Chép Cấu Hình
-                </button>
-                ${isCustom ? `
-                    <button class="delete-btn bg-ffdark-950 hover:bg-red-600 hover:text-white border border-gray-800 text-red-400 py-2.5 px-3 rounded-xl font-bold text-xs transition-all" title="Xóa">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                ` : ''}
-            </div>
+            <span class="album-name">${song.album}</span>
+            <span class="song-duration">${song.duration}</span>
         `;
-
-        // Copy button event
-        const copyBtn = card.querySelector('.copy-btn');
-        copyBtn.addEventListener('click', () => {
-            const textToCopy = `🎮 Độ Nhạy Free Fire - ${player.name} (${player.device})\n- DPI: ${player.dpi}\n- Nhìn xung quanh: ${player.general}\n- Red Dot: ${player.redDot}\n- 2X: ${player.scope2x}\n- 4X: ${player.scope4x}\n- AWM: ${player.awm}`;
-            
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                showToast(`Đã sao chép cấu hình của ${player.name}!`);
-            }).catch(() => {
-                // Fallback
-                const textarea = document.createElement('textarea');
-                textarea.value = textToCopy;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showToast(`Đã sao chép cấu hình của ${player.name}!`);
-            });
+        songItem.addEventListener('click', () => {
+            const actualIndex = tracks.findIndex(t => t.id === song.id);
+            currentTrackIndex = actualIndex;
+            loadTrack(currentTrackIndex);
+            playTrack();
+            renderSongs(tracks);
         });
+        songListEl.appendChild(songItem);
+    });
+}
 
-        // Delete button event
-        if (isCustom) {
-            const deleteBtn = card.querySelector('.delete-btn');
-            deleteBtn.addEventListener('click', () => {
-                if (confirm(`Bạn có chắc muốn xóa cấu hình của ${player.name}?`)) {
-                    customPlayers.splice(index, 1);
-                    localStorage.setItem('ff_custom_players', JSON.stringify(customPlayers));
-                    renderCustomPlayers();
-                    showToast('Đã xóa cấu hình thành công!');
-                }
-            });
+// Load Track
+function loadTrack(index) {
+    const song = tracks[index];
+    audioElement.src = song.audioUrl;
+    playerCover.src = song.cover;
+    playerTitle.textContent = song.title;
+    playerArtist.textContent = song.artist;
+    
+    if (favorites.includes(song.id)) {
+        playerHeart.className = "fa-solid fa-heart active";
+    } else {
+        playerHeart.className = "fa-regular fa-heart";
+    }
+}
+
+// Play / Pause
+function togglePlay() {
+    if (isPlaying) {
+        pauseTrack();
+    } else {
+        playTrack();
+    }
+}
+
+function playTrack() {
+    isPlaying = true;
+    audioElement.play();
+    playIcon.className = "fa-solid fa-pause";
+}
+
+function pauseTrack() {
+    isPlaying = false;
+    audioElement.pause();
+    playIcon.className = "fa-solid fa-play";
+}
+
+// Next / Prev
+function nextTrack() {
+    if (isShuffle) {
+        currentTrackIndex = Math.floor(Math.random() * tracks.length);
+    } else {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+    }
+    loadTrack(currentTrackIndex);
+    playTrack();
+    renderSongs(tracks);
+}
+
+function prevTrack() {
+    currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+    loadTrack(currentTrackIndex);
+    playTrack();
+    renderSongs(tracks);
+}
+
+// Progress Bar
+function updateProgress() {
+    const { duration, currentTime } = audioElement;
+    if (isNaN(duration)) return;
+    const progressPercent = (currentTime / duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+
+    const currentMinutes = Math.floor(currentTime / 60);
+    const currentSeconds = Math.floor(currentTime % 60);
+    currentTimeEl.textContent = `${currentMinutes}:${currentSeconds < 10 ? '0' : ''}${currentSeconds}`;
+
+    const durationMinutes = Math.floor(duration / 60);
+    const durationSeconds = Math.floor(duration % 60);
+    if (!isNaN(duration)) {
+        durationEl.textContent = `${durationMinutes}:${durationSeconds < 10 ? '0' : ''}${durationSeconds}`;
+    }
+}
+
+function setProgress(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audioElement.duration;
+    audioElement.currentTime = (clickX / width) * duration;
+}
+
+// Volume
+function setVolume() {
+    audioElement.volume = volumeSlider.value;
+}
+
+// Shuffle & Repeat
+function toggleShuffle() {
+    isShuffle = !isShuffle;
+    shuffleBtn.classList.toggle('active', isShuffle);
+}
+
+function toggleRepeat() {
+    isRepeat = !isRepeat;
+    repeatBtn.classList.toggle('active', isRepeat);
+}
+
+function handleTrackEnd() {
+    if (isRepeat) {
+        audioElement.currentTime = 0;
+        playTrack();
+    } else {
+        nextTrack();
+    }
+}
+
+// Search
+function handleSearch(e) {
+    const keyword = e.target.value.toLowerCase();
+    const filtered = tracks.filter(song => 
+        song.title.toLowerCase().includes(keyword) || 
+        song.artist.toLowerCase().includes(keyword) ||
+        song.album.toLowerCase().includes(keyword)
+    );
+    renderSongs(filtered);
+}
+
+// Favorites
+function toggleFavorite() {
+    const currentSong = tracks[currentTrackIndex];
+    const index = favorites.indexOf(currentSong.id);
+    if (index > -1) {
+        favorites.splice(index, 1);
+        playerHeart.className = "fa-regular fa-heart";
+    } else {
+        favorites.push(currentSong.id);
+        playerHeart.className = "fa-solid fa-heart active";
+    }
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+    renderSongs(tracks);
+}
+
+// Navigation tabs
+const navItems = document.querySelectorAll('.nav-menu li');
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        navItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+        const tab = item.getAttribute('data-tab');
+        if (tab === 'favorites') {
+            const favSongs = tracks.filter(s => favorites.includes(s.id));
+            renderSongs(favSongs);
+        } else {
+            renderSongs(tracks);
         }
-
-        return card;
-    }
-
-    // Show Toast Notification helper
-    function showToast(message) {
-        toastMessage.textContent = message;
-        toast.classList.remove('translate-y-24', 'opacity-0');
-        setTimeout(() => {
-            toast.classList.add('translate-y-24', 'opacity-0');
-        }, 3000);
-    }
-
-    // Event Listeners for Filters
-    searchInput.addEventListener('input', (e) => {
-        renderProPlayers(e.target.value, dpiFilter.value);
     });
-
-    dpiFilter.addEventListener('change', (e) => {
-        renderProPlayers(searchInput.value, e.target.value);
-    });
-
-    // Form Submission
-    sensitivityForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const newPlayer = {
-            name: document.getElementById('creator-name').value,
-            device: document.getElementById('creator-device').value,
-            dpi: parseInt(document.getElementById('val-dpi').value),
-            general: parseInt(document.getElementById('val-general').value),
-            redDot: parseInt(document.getElementById('val-reddot').value),
-            scope2x: parseInt(document.getElementById('val-scope2x').value),
-            scope4x: parseInt(document.getElementById('val-scope4x').value),
-            awm: parseInt(document.getElementById('val-awm').value)
-        };
-
-        customPlayers.unshift(newPlayer);
-        localStorage.setItem('ff_custom_players', JSON.stringify(customPlayers));
-        
-        renderCustomPlayers();
-        sensitivityForm.reset();
-        
-        // Scroll to custom list
-        document.getElementById('custom-list').scrollIntoView({ behavior: 'smooth' });
-        showToast('Lưu cấu hình thành công!');
-    });
-
-    // Initial render
-    renderProPlayers();
-    renderCustomPlayers();
 });
+
+// Run init on load
+window.addEventListener('DOMContentLoaded', init);
