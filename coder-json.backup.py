@@ -1,18 +1,11 @@
 import json
 import subprocess
 from pathlib import Path
-import re
 
 data = Path(".bangiao/thay-doi.json").read_text()
-
 data = data.replace("```json", "").replace("```", "").strip()
 
-try:
-    obj = json.loads(data)
-except json.JSONDecodeError:
-    data = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', data)
-    obj = json.loads(data)
-
+obj = json.loads(data)
 files = obj["files"]
 
 subprocess.run([
@@ -41,18 +34,12 @@ try:
         target.write_text(content)
 
         subprocess.run(
-            [
-                "git", "-C", ".bangiao/worktree",
-                "add", "--intent-to-add", "--", path
-            ],
+            ["git", "-C", ".bangiao/worktree", "add", "--intent-to-add", "--", path],
             check=True
         )
 
     result = subprocess.run(
-        [
-            "git", "-C", ".bangiao/worktree",
-            "diff", "--binary"
-        ],
+        ["git", "-C", ".bangiao/worktree", "diff", "--binary"],
         capture_output=True,
         text=True,
         check=True

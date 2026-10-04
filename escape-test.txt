@@ -1,0 +1,2 @@
+Đây là đoạn văn kiểm tra ký tự đặc biệt: dấu backslash (\) và dấu ngoặc kép (").
+Đảm bảo pipeline đọc và xử lý chính xác các ký tự này.
