@@ -1,1292 +1,1014 @@
 diff --git a/css/style.css b/css/style.css
-index 75d20c2..c116673 100644
+index c116673..158f804 100644
 --- a/css/style.css
 +++ b/css/style.css
-@@ -1,13 +1,19 @@
+@@ -1,55 +1,55 @@
  :root {
--    --primary-color: #0284c7;
--    --primary-hover: #0369a1;
--    --secondary-color: #0f172a;
--    --accent-color: #38bdf8;
--    --text-color: #334155;
--    --light-bg: #f8fafc;
--    --white: #ffffff;
--    --gray: #cbd5e1;
--    --transition: all 0.3s ease;
-+    --bg-primary: #0f172a;
-+    --bg-secondary: #1e293b;
-+    --bg-card: #1e293b;
-+    --bg-card-hover: #334155;
-+    --text-main: #f8fafc;
-+    --text-muted: #94a3b8;
-+    --accent-glow: rgba(56, 189, 248, 0.15);
-+    
-+    --planner-color: #38bdf8;
-+    --coder-color: #4ade80;
-+    --reviewer-color: #f472b6;
-+    --tester-color: #fbbf24;
+-    --bg-primary: #0f172a;
+-    --bg-secondary: #1e293b;
+-    --bg-card: #1e293b;
+-    --bg-card-hover: #334155;
+-    --text-main: #f8fafc;
+-    --text-muted: #94a3b8;
+-    --accent-glow: rgba(56, 189, 248, 0.15);
+-    
+-    --planner-color: #38bdf8;
+-    --coder-color: #4ade80;
+-    --reviewer-color: #f472b6;
+-    --tester-color: #fbbf24;
+-
+-    --gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
++    --bg-color: #f8f9fa;
++    --text-color: #212529;
++    --header-bg: #ffffff;
++    --card-bg: #ffffff;
++    --card-border: #e3e6f0;
++    --primary-color: #ff5722;
++    --primary-hover: #f4511e;
++    --nav-text: #495057;
++    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
++}
 +
-+    --gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
++body.dark-mode {
++    --bg-color: #121212;
++    --text-color: #e0e0e0;
++    --header-bg: #1e1e1e;
++    --card-bg: #1e1e1e;
++    --card-border: #333333;
++    --primary-color: #ff7043;
++    --primary-hover: #ff5722;
++    --nav-text: #b0bec5;
++    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
  }
  
  * {
-@@ -21,79 +27,29 @@ html {
++    box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+-    box-sizing: border-box;
+-}
+-
+-html {
+-    scroll-behavior: smooth;
  }
  
  body {
--    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
--    color: var(--text-color);
--    background-color: var(--white);
-+    font-family: 'Inter', sans-serif;
-+    background-color: var(--bg-primary);
-+    color: var(--text-main);
+-    font-family: 'Inter', sans-serif;
+-    background-color: var(--bg-primary);
+-    color: var(--text-main);
++    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
++    background-color: var(--bg-color);
++    color: var(--text-color);
      line-height: 1.6;
-+    overflow-x: hidden;
+-    overflow-x: hidden;
++    transition: background-color 0.3s ease, color 0.3s ease;
  }
  
  .container {
++    width: 100%;
      max-width: 1200px;
      margin: 0 auto;
--    padding: 0 20px;
--}
--
--/* Buttons */
--.btn {
--    display: inline-block;
--    padding: 12px 24px;
--    border-radius: 6px;
--    font-weight: 600;
--    text-decoration: none;
--    cursor: pointer;
--    transition: var(--transition);
--    border: none;
--    font-size: 1rem;
--}
--
--.btn-primary {
--    background-color: var(--primary-color);
--    color: var(--white);
--}
--
--.btn-primary:hover {
--    background-color: var(--primary-hover);
--}
--
--.btn-secondary {
--    background-color: transparent;
--    color: var(--secondary-color);
--    border: 2px solid var(--secondary-color);
--}
--
--.btn-secondary:hover {
--    background-color: var(--secondary-color);
--    color: var(--white);
--}
--
--.btn-primary-outline {
--    background-color: transparent;
--    color: var(--primary-color);
--    border: 1px solid var(--primary-color);
--    padding: 8px 16px;
--}
--
--.btn-primary-outline:hover {
--    background-color: var(--primary-color);
--    color: var(--white);
--}
--
--.btn-sm {
--    padding: 8px 16px;
--    font-size: 0.9rem;
--}
--
--.btn-full {
--    width: 100%;
-+    padding: 0 2rem;
+-    padding: 0 2rem;
++    padding: 0 20px;
  }
  
- /* Header */
+-/* Header */
  .header {
--    background-color: var(--white);
--    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
--    position: sticky;
-+    position: fixed;
+-    position: fixed;
++    background-color: var(--header-bg);
++    box-shadow: var(--shadow);
++    position: sticky;
      top: 0;
-+    left: 0;
-+    width: 100%;
-+    background-color: rgba(15, 23, 42, 0.85);
-+    backdrop-filter: blur(10px);
+-    left: 0;
+-    width: 100%;
+-    background-color: rgba(15, 23, 42, 0.85);
+-    backdrop-filter: blur(10px);
      z-index: 1000;
-+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
++    transition: background-color 0.3s ease;
  }
  
  .nav-container {
-@@ -104,344 +60,293 @@ body {
+@@ -59,425 +59,179 @@ body {
+     height: 70px;
  }
  
- .logo {
--    font-size: 1.5rem;
+-.logo {
+-    display: flex;
+-    align-items: center;
+-    gap: 0.75rem;
+-    font-size: 1.25rem;
 -    font-weight: 700;
--    color: var(--secondary-color);
--    text-decoration: none;
+-    color: var(--text-main);
+-}
+-
+-.logo i {
+-    color: var(--planner-color);
++.logo h1 {
+     font-size: 1.5rem;
++    color: var(--primary-color);
+ }
+ 
+-.nav-links {
++.nav {
      display: flex;
-     align-items: center;
--    gap: 8px;
-+    gap: 0.75rem;
-+    font-size: 1.25rem;
-+    font-weight: 700;
-+    color: var(--text-main);
+-    gap: 2rem;
++    align-items: center;
++    gap: 20px;
  }
  
- .logo i {
--    color: var(--primary-color);
-+    color: var(--planner-color);
-+    font-size: 1.5rem;
- }
- 
--.nav-menu ul {
-+.nav-links {
-     display: flex;
--    list-style: none;
--    gap: 30px;
-+    gap: 2rem;
- }
- 
--.nav-menu a {
-+.nav-links a {
+-.nav-links a {
++.nav a {
      text-decoration: none;
--    color: var(--text-color);
-+    color: var(--text-muted);
+-    color: var(--text-muted);
++    color: var(--nav-text);
      font-weight: 500;
-     transition: var(--transition);
+-    transition: var(--transition);
++    transition: color 0.2s;
  }
  
--.nav-menu a:hover {
--    color: var(--primary-color);
-+.nav-links a:hover {
-+    color: var(--planner-color);
+-.nav-links a:hover {
+-    color: var(--planner-color);
++.nav a:hover,
++.nav a.active {
++    color: var(--primary-color);
  }
  
- /* Hero Section */
- .hero {
--    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
--    padding: 80px 0;
-+    padding: 12rem 0 8rem 0;
-+    text-align: center;
-+    background: radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
- }
- 
--.hero-content {
--    display: grid;
--    grid-template-columns: 1fr 1fr;
-+.hero-badge {
-+    display: inline-flex;
-     align-items: center;
--    gap: 40px;
-+    gap: 0.5rem;
-+    background: rgba(56, 189, 248, 0.1);
-+    color: var(--planner-color);
-+    padding: 0.5rem 1rem;
-+    border-radius: 50px;
-+    font-size: 0.875rem;
-+    font-weight: 600;
-+    margin-bottom: 1.5rem;
-+    border: 1px solid rgba(56, 189, 248, 0.2);
- }
- 
--.hero-text h1 {
--    font-size: 3rem;
--    color: var(--secondary-color);
--    line-height: 1.2;
--    margin-bottom: 20px;
-+h1 {
-+    font-size: 3.5rem;
-+    font-weight: 800;
-+    margin-bottom: 1.5rem;
-+    letter-spacing: -0.025em;
- }
- 
--.hero-text h1 span {
--    color: var(--primary-color);
-+.gradient-text {
-+    background: var(--gradient);
-+    -webkit-background-clip: text;
-+    -webkit-text-fill-color: transparent;
- }
- 
--.hero-text p {
--    font-size: 1.1rem;
--    margin-bottom: 30px;
--    color: #64748b;
-+.hero-subtitle {
-+    font-size: 1.2rem;
-+    color: var(--text-muted);
-+    max-width: 700px;
-+    margin: 0 auto 2.5rem auto;
- }
- 
- .hero-buttons {
+-/* Hero Section */
+-.hero {
+-    padding: 12rem 0 8rem 0;
+-    text-align: center;
+-    background: radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 60%);
+-}
+-
+-.hero-badge {
+-    display: inline-flex;
+-    align-items: center;
+-    gap: 0.5rem;
+-    background: rgba(56, 189, 248, 0.1);
+-    color: var(--planner-color);
+-    padding: 0.5rem 1rem;
+-    border-radius: 50px;
+-    font-size: 0.875rem;
+-    font-weight: 600;
+-    margin-bottom: 1.5rem;
+-    border: 1px solid rgba(56, 189, 248, 0.2);
+-}
+-
+-h1 {
+-    font-size: 3.5rem;
+-    font-weight: 800;
+-    margin-bottom: 1.5rem;
+-    letter-spacing: -0.025em;
+-}
+-
+-.gradient-text {
+-    background: var(--gradient);
+-    -webkit-background-clip: text;
+-    -webkit-text-fill-color: transparent;
+-}
+-
+-.hero-subtitle {
+-    font-size: 1.2rem;
+-    color: var(--text-muted);
+-    max-width: 700px;
+-    margin: 0 auto 2.5rem auto;
+-}
+-
+-.hero-buttons {
++.dark-mode-toggle {
++    background: none;
++    border: 2px solid var(--card-border);
++    border-radius: 50%;
++    width: 44px;
++    height: 44px;
      display: flex;
--    gap: 15px;
+-    justify-content: center;
+-    gap: 1rem;
 -}
 -
--.hero-image img {
--    width: 100%;
--    border-radius: 12px;
--    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+-.btn {
+-    display: inline-flex;
+     align-items: center;
+-    gap: 0.5rem;
+-    padding: 0.875rem 1.75rem;
+-    border-radius: 8px;
+-    font-weight: 600;
+-    text-decoration: none;
+-    transition: var(--transition);
++    justify-content: center;
+     cursor: pointer;
+-    border: none;
 -}
 -
--/* Section Titles */
+-.btn-primary {
+-    background: var(--gradient);
+-    color: #fff;
+-    box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.3);
+-}
+-
+-.btn-primary:hover {
+-    opacity: 0.9;
+-    transform: translateY(-2px);
+-}
+-
+-.btn-secondary {
+-    background-color: var(--bg-secondary);
+-    color: var(--text-main);
+-    border: 1px solid rgba(255, 255, 255, 0.1);
+-}
+-
+-.btn-secondary:hover {
+-    background-color: var(--bg-card-hover);
+-    border-color: rgba(255, 255, 255, 0.2);
+-}
+-
+-/* Agents Section */
+-.agents-section {
+-    padding: 6rem 0;
+-    background-color: rgba(30, 41, 59, 0.3);
+-}
+-
 -.section-title {
 -    text-align: center;
--    margin-bottom: 50px;
+-    margin-bottom: 4rem;
 -}
 -
 -.section-title h2 {
--    font-size: 2.2rem;
--    color: var(--secondary-color);
--    margin-bottom: 10px;
+-    font-size: 2.5rem;
+-    font-weight: 700;
+-    margin-bottom: 1rem;
 -}
 -
 -.section-title p {
--    color: #64748b;
--}
--
--/* Features Section */
--.features {
--    padding: 80px 0;
--    background-color: var(--white);
--}
--
--.feature-grid {
+-    color: var(--text-muted);
++    color: var(--text-color);
+     font-size: 1.1rem;
++    transition: all 0.2s ease;
+ }
+ 
+-.agents-grid {
 -    display: grid;
--    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
--    gap: 30px;
-+    justify-content: center;
-+    gap: 1rem;
+-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+-    gap: 2rem;
++.dark-mode-toggle:hover {
++    border-color: var(--primary-color);
++    color: var(--primary-color);
  }
  
--.feature-item {
--    text-align: center;
--    padding: 30px;
--    background-color: var(--light-bg);
-+.btn {
-+    display: inline-flex;
-+    align-items: center;
-+    gap: 0.5rem;
-+    padding: 0.875rem 1.75rem;
-     border-radius: 8px;
-+    font-weight: 600;
-+    text-decoration: none;
-     transition: var(--transition);
-+    cursor: pointer;
-+    border: none;
- }
- 
--.feature-item:hover {
--    transform: translateY(-5px);
--    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-+.btn-primary {
-+    background: var(--gradient);
-+    color: #fff;
-+    box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.3);
- }
- 
--.feature-item i {
--    font-size: 2.5rem;
--    color: var(--primary-color);
--    margin-bottom: 20px;
-+.btn-primary:hover {
-+    opacity: 0.9;
-+    transform: translateY(-2px);
- }
- 
--.feature-item h3 {
--    font-size: 1.2rem;
--    color: var(--secondary-color);
--    margin-bottom: 10px;
-+.btn-secondary {
-+    background-color: var(--bg-secondary);
-+    color: var(--text-main);
-+    border: 1px solid rgba(255, 255, 255, 0.1);
- }
- 
--.feature-item p {
--    font-size: 0.95rem;
--    color: #64748b;
-+.btn-secondary:hover {
-+    background-color: var(--bg-card-hover);
-+    border-color: rgba(255, 255, 255, 0.2);
- }
- 
--/* Products Section */
--.products {
--    padding: 80px 0;
--    background-color: var(--light-bg);
-+/* Agents Section */
-+.agents-section {
-+    padding: 6rem 0;
-+    background-color: rgba(30, 41, 59, 0.3);
- }
- 
--.filter-buttons {
--    display: flex;
--    justify-content: center;
--    gap: 10px;
--    margin-bottom: 40px;
--    flex-wrap: wrap;
-+.section-title {
-+    text-align: center;
-+    margin-bottom: 4rem;
- }
- 
--.filter-btn {
--    padding: 8px 20px;
--    background-color: var(--white);
--    border: 1px solid var(--gray);
--    border-radius: 30px;
--    cursor: pointer;
--    font-weight: 500;
+-.agent-card {
+-    background-color: var(--bg-card);
+-    border: 1px solid rgba(255, 255, 255, 0.05);
+-    border-radius: 16px;
+-    padding: 2rem;
 -    transition: var(--transition);
-+.section-title h2 {
-+    font-size: 2.5rem;
-+    font-weight: 700;
-+    margin-bottom: 1rem;
+-    position: relative;
+-    display: flex;
+-    flex-direction: column;
++.main-container {
++    max-width: 1200px;
++    margin: 30px auto;
++    padding: 0 20px;
  }
  
--.filter-btn.active,
--.filter-btn:hover {
--    background-color: var(--primary-color);
--    color: var(--white);
--    border-color: var(--primary-color);
-+.section-title p {
-+    color: var(--text-muted);
-+    font-size: 1.1rem;
+-.agent-card:hover {
+-    transform: translateY(-8px);
+-    border-color: rgba(56, 189, 248, 0.3);
+-    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
+-    background-color: var(--bg-card-hover);
++.hero {
++    text-align: center;
++    padding: 40px 20px;
++    margin-bottom: 30px;
  }
  
--.product-grid {
-+.agents-grid {
-     display: grid;
--    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
--    gap: 30px;
-+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-+    gap: 2rem;
+-.agent-header {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: flex-start;
+-    margin-bottom: 1.5rem;
++.hero h2 {
++    font-size: 2.2rem;
++    margin-bottom: 15px;
++    color: var(--text-color);
  }
  
--.product-card {
--    background-color: var(--white);
--    border-radius: 8px;
--    overflow: hidden;
--    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-+.agent-card {
-+    background-color: var(--bg-card);
-+    border: 1px solid rgba(255, 255, 255, 0.05);
-+    border-radius: 16px;
-+    padding: 2rem;
-     transition: var(--transition);
-     position: relative;
-+    display: flex;
-+    flex-direction: column;
+-.agent-icon {
+-    width: 60px;
+-    height: 60px;
+-    border-radius: 12px;
+-    display: flex;
+-    align-items: center;
+-    justify-content: center;
+-    font-size: 1.5rem;
++.hero p {
++    color: var(--nav-text);
++    max-width: 700px;
++    margin: 0 auto;
  }
  
--.product-card:hover {
--    transform: translateY(-5px);
--    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
--}
+-.planner-bg { background: rgba(56, 189, 248, 0.15); color: var(--planner-color); }
+-.coder-bg { background: rgba(74, 222, 128, 0.15); color: var(--coder-color); }
+-.reviewer-bg { background: rgba(244, 114, 182, 0.15); color: var(--reviewer-color); }
+-.tester-bg { background: rgba(251, 191, 36, 0.15); color: var(--tester-color); }
 -
--.product-badge {
--    position: absolute;
--    top: 15px;
--    left: 15px;
--    background-color: #ef4444;
--    color: var(--white);
--    padding: 4px 10px;
--    font-size: 0.8rem;
+-.agent-badge {
+-    font-size: 0.75rem;
 -    font-weight: 600;
+-    text-transform: uppercase;
+-    letter-spacing: 0.05em;
+-    padding: 0.25rem 0.75rem;
+-    border-radius: 20px;
+-    background: rgba(255, 255, 255, 0.05);
+-    color: var(--text-muted);
++.section {
++    margin-bottom: 40px;
+ }
+ 
+-.agent-card h3 {
++.section h3 {
+     font-size: 1.5rem;
+-    font-weight: 700;
+-    margin-bottom: 0.25rem;
+-}
+-
+-.agent-role {
+-    font-size: 0.9rem;
+-    color: var(--planner-color);
+-    font-weight: 500;
+-    margin-bottom: 1rem;
+-}
+-
+-.agent-desc {
+-    color: var(--text-muted);
+-    font-size: 0.95rem;
+-    margin-bottom: 1.5rem;
+-    flex-grow: 1;
+-}
+-
+-.agent-skills {
+-    display: flex;
+-    flex-wrap: wrap;
+-    gap: 0.5rem;
+-    margin-bottom: 1.5rem;
+-}
+-
+-.agent-skills span {
+-    font-size: 0.75rem;
+-    background: rgba(255, 255, 255, 0.05);
+-    padding: 0.25rem 0.5rem;
 -    border-radius: 4px;
--    z-index: 10;
+-    color: var(--text-muted);
 -}
 -
--.product-badge.office {
--    background-color: #10b981;
+-.btn-details {
+-    background: none;
+-    border: none;
+-    color: var(--text-main);
+-    font-weight: 600;
+-    font-size: 0.9rem;
+-    display: flex;
+-    align-items: center;
+-    gap: 0.5rem;
+-    cursor: pointer;
+-    transition: var(--transition);
+-    padding: 0;
 -}
 -
--.product-badge.graphic {
--    background-color: #8b5cf6;
+-.btn-details:hover {
+-    color: var(--planner-color);
+-    gap: 0.75rem;
++    margin-bottom: 20px;
++    border-left: 4px solid var(--primary-color);
++    padding-left: 10px;
+ }
+ 
+-/* Workflow Section */
+-.workflow-section {
+-    padding: 6rem 0;
 -}
 -
--.product-img {
--    height: 200px;
--    overflow: hidden;
+-.workflow-steps {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: center;
+-    gap: 1rem;
+-    flex-wrap: wrap;
 -}
 -
--.product-img img {
+-.step-card {
+-    background: var(--bg-card);
+-    border: 1px solid rgba(255, 255, 255, 0.05);
+-    border-radius: 12px;
+-    padding: 2rem;
+-    flex: 1;
+-    min-width: 220px;
+-    position: relative;
+-}
+-
+-.step-number {
+-    font-size: 2rem;
+-    font-weight: 800;
+-    color: rgba(56, 189, 248, 0.2);
+-    margin-bottom: 0.5rem;
+-}
+-
+-.step-card h4 {
+-    font-size: 1.2rem;
+-    margin-bottom: 0.5rem;
++.cards-grid {
++    display: grid;
++    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
++    gap: 20px;
+ }
+ 
+-.step-card p {
+-    font-size: 0.9rem;
+-    color: var(--text-muted);
++.card {
++    background-color: var(--card-bg);
++    border: 1px solid var(--card-border);
++    border-radius: 8px;
++    padding: 20px;
++    box-shadow: var(--shadow);
++    transition: background-color 0.3s ease, border-color 0.3s ease;
+ }
+ 
+-.step-connector {
+-    color: var(--text-muted);
++.card h4 {
++    margin-bottom: 15px;
+     font-size: 1.2rem;
++    color: var(--primary-color);
+ }
+ 
+-/* Modal */
+-.modal {
+-    display: none;
+-    position: fixed;
+-    z-index: 2000;
+-    left: 0;
+-    top: 0;
 -    width: 100%;
 -    height: 100%;
--    object-fit: cover;
--    transition: var(--transition);
-+.agent-card:hover {
-+    transform: translateY(-8px);
-+    border-color: rgba(56, 189, 248, 0.3);
-+    box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5);
-+    background-color: var(--bg-card-hover);
- }
- 
--.product-card:hover .product-img img {
--    transform: scale(1.05);
-+.agent-header {
-+    display: flex;
-+    justify-content: space-between;
-+    align-items: flex-start;
-+    margin-bottom: 1.5rem;
- }
- 
--.product-info {
--    padding: 20px;
-+.agent-icon {
-+    width: 60px;
-+    height: 60px;
-+    border-radius: 12px;
-+    display: flex;
-+    align-items: center;
-+    justify-content: center;
-+    font-size: 1.5rem;
- }
- 
--.product-info h3 {
--    font-size: 1.1rem;
--    color: var(--secondary-color);
--    margin-bottom: 8px;
--}
-+.planner-bg { background: rgba(56, 189, 248, 0.15); color: var(--planner-color); }
-+.coder-bg { background: rgba(74, 222, 128, 0.15); color: var(--coder-color); }
-+.reviewer-bg { background: rgba(244, 114, 182, 0.15); color: var(--reviewer-color); }
-+.tester-bg { background: rgba(251, 191, 36, 0.15); color: var(--tester-color); }
- 
--.product-info .specs {
--    font-size: 0.85rem;
--    color: #64748b;
--    margin-bottom: 15px;
--    height: 40px;
--    overflow: hidden;
-+.agent-badge {
-+    font-size: 0.75rem;
-+    font-weight: 600;
-+    text-transform: uppercase;
-+    letter-spacing: 0.05em;
-+    padding: 0.25rem 0.75rem;
-+    border-radius: 20px;
-+    background: rgba(255, 255, 255, 0.05);
-+    color: var(--text-muted);
- }
- 
--.price-box {
--    margin-bottom: 15px;
-+.agent-card h3 {
-+    font-size: 1.5rem;
-+    font-weight: 700;
-+    margin-bottom: 0.25rem;
- }
- 
--.price {
--    font-size: 1.2rem;
--    font-weight: 700;
--    color: #ef4444;
-+.agent-role {
-+    font-size: 0.9rem;
-+    color: var(--planner-color);
-+    font-weight: 500;
-+    margin-bottom: 1rem;
- }
- 
--/* Contact Section */
--.contact {
--    padding: 80px 0;
--    background-color: var(--white);
-+.agent-desc {
-+    color: var(--text-muted);
-+    font-size: 0.95rem;
-+    margin-bottom: 1.5rem;
-+    flex-grow: 1;
- }
- 
--.contact-wrapper {
--    display: grid;
--    grid-template-columns: 1fr 1fr;
--    gap: 50px;
--    background-color: var(--light-bg);
--    padding: 50px;
--    border-radius: 12px;
-+.agent-skills {
-+    display: flex;
-+    flex-wrap: wrap;
-+    gap: 0.5rem;
-+    margin-bottom: 1.5rem;
- }
- 
--.contact-info h3 {
--    font-size: 1.5rem;
--    color: var(--secondary-color);
--    margin-bottom: 20px;
-+.agent-skills span {
-+    font-size: 0.75rem;
-+    background: rgba(255, 255, 255, 0.05);
-+    padding: 0.25rem 0.5rem;
-+    border-radius: 4px;
-+    color: var(--text-muted);
- }
- 
--.contact-info p {
--    margin-bottom: 15px;
-+.btn-details {
-+    background: none;
-+    border: none;
-+    color: var(--text-main);
-+    font-weight: 600;
-+    font-size: 0.9rem;
-     display: flex;
-     align-items: center;
--    gap: 12px;
--    color: #64748b;
-+    gap: 0.5rem;
-+    cursor: pointer;
-+    transition: var(--transition);
-+    padding: 0;
- }
- 
--.contact-info i {
--    color: var(--primary-color);
--    font-size: 1.2rem;
-+.btn-details:hover {
-+    color: var(--planner-color);
-+    gap: 0.75rem;
- }
- 
--.social-icons {
--    display: flex;
--    gap: 15px;
--    margin-top: 30px;
-+/* Workflow Section */
-+.workflow-section {
-+    padding: 6rem 0;
- }
- 
--.social-icons a {
-+.workflow-steps {
-     display: flex;
-+    justify-content: space-between;
-     align-items: center;
+-    background-color: rgba(0, 0, 0, 0.7);
+-    backdrop-filter: blur(5px);
+-    align-items: center;
 -    justify-content: center;
--    width: 40px;
--    height: 40px;
--    background-color: var(--white);
--    color: var(--primary-color);
--    border-radius: 50%;
--    text-decoration: none;
--    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
++.card p {
++    margin-bottom: 8px;
++    color: var(--text-color);
+ }
+ 
+-.modal-content {
+-    background-color: var(--bg-secondary);
+-    border: 1px solid rgba(255, 255, 255, 0.1);
+-    border-radius: 16px;
+-    padding: 2.5rem;
+-    width: 90%;
+-    max-width: 600px;
+-    position: relative;
+-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+-    animation: modalIn 0.3s ease;
+-}
+-
+-@keyframes modalIn {
+-    from { opacity: 0; transform: scale(0.95); }
+-    to { opacity: 1; transform: scale(1); }
+-}
+-
+-.close-btn {
+-    position: absolute;
+-    top: 1.5rem;
+-    right: 1.5rem;
+-    font-size: 1.5rem;
+-    color: var(--text-muted);
++.btn-copy,
++.btn-primary {
++    background-color: var(--primary-color);
++    color: #ffffff;
++    border: none;
++    padding: 10px 16px;
++    border-radius: 6px;
+     cursor: pointer;
 -    transition: var(--transition);
 -}
 -
--.social-icons a:hover {
--    background-color: var(--primary-color);
--    color: var(--white);
-+    gap: 1rem;
-+    flex-wrap: wrap;
+-.close-btn:hover {
+-    color: var(--text-main);
+-}
+-
+-.modal-body-content h3 {
+-    font-size: 1.8rem;
+-    margin-bottom: 0.5rem;
+-}
+-
+-.modal-body-content .role {
+-    color: var(--planner-color);
+     font-weight: 600;
+-    margin-bottom: 1rem;
++    margin-top: 10px;
++    transition: background-color 0.2s;
++    min-height: 44px;
++    min-width: 44px;
  }
  
--.contact-form .form-group {
--    margin-bottom: 20px;
-+.step-card {
-+    background: var(--bg-card);
-+    border: 1px solid rgba(255, 255, 255, 0.05);
-+    border-radius: 12px;
-+    padding: 2rem;
-+    flex: 1;
-+    min-width: 220px;
-+    position: relative;
+-.modal-body-content p {
+-    color: var(--text-muted);
+-    margin-bottom: 1.5rem;
++.btn-copy:hover,
++.btn-primary:hover {
++    background-color: var(--primary-hover);
  }
  
--.contact-form label {
--    display: block;
--    margin-bottom: 8px;
--    font-weight: 500;
--    color: var(--secondary-color);
-+.step-number {
-+    font-size: 2rem;
-+    font-weight: 800;
-+    color: rgba(56, 189, 248, 0.2);
-+    margin-bottom: 0.5rem;
+-.modal-body-content h4 {
+-    font-size: 1.1rem;
+-    margin-bottom: 0.5rem;
+-    color: var(--text-main);
++.generator-box {
++    background-color: var(--card-bg);
++    border: 1px solid var(--card-border);
++    padding: 25px;
++    border-radius: 8px;
++    box-shadow: var(--shadow);
  }
  
--.contact-form input,
--.contact-form textarea {
--    width: 100%;
--    padding: 12px;
--    border: 1px solid var(--gray);
--    border-radius: 6px;
--    font-family: inherit;
--    outline: none;
--    transition: var(--transition);
-+.step-card h4 {
-+    font-size: 1.2rem;
-+    margin-bottom: 0.5rem;
+-.modal-body-content ul {
+-    list-style-type: none;
+-    padding-left: 0;
+-    margin-bottom: 1.5rem;
++.generator-box label {
++    display: block;
++    margin-bottom: 10px;
++    font-weight: 500;
  }
  
--.contact-form input:focus,
--.contact-form textarea:focus {
--    border-color: var(--primary-color);
--    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
-+.step-card p {
-+    font-size: 0.9rem;
-+    color: var(--text-muted);
+-.modal-body-content ul li {
+-    position: relative;
+-    padding-left: 1.5rem;
+-    margin-bottom: 0.5rem;
+-    color: var(--text-muted);
+-    font-size: 0.95rem;
++.generator-box select {
++    width: 100%;
++    padding: 12px;
++    border-radius: 6px;
++    border: 1px solid var(--card-border);
++    background-color: var(--bg-color);
++    color: var(--text-color);
++    margin-bottom: 15px;
++    min-height: 44px;
+ }
+ 
+-.modal-body-content ul li::before {
+-    content: "•";
+-    position: absolute;
+-    left: 0;
+-    color: var(--planner-color);
+-    font-size: 1.2rem;
++.result-area {
++    margin-top: 20px;
++    font-weight: 500;
  }
  
 -/* Footer */
--.footer {
--    background-color: var(--secondary-color);
--    color: var(--white);
--    text-align: center;
--    padding: 30px 0;
-+.step-connector {
-+    color: var(--text-muted);
-+    font-size: 1.2rem;
+ .footer {
+-    background-color: var(--bg-secondary);
+-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+-    padding: 3rem 0;
+-}
+-
+-.footer-content {
+-    display: flex;
+-    justify-content: space-between;
+-    align-items: center;
+-    flex-wrap: wrap;
+-    gap: 1rem;
+-}
+-
+-.footer-content p {
+-    color: var(--text-muted);
+-    font-size: 0.9rem;
+-}
+-
+-.social-links {
+-    display: flex;
+-    gap: 1.5rem;
+-}
+-
+-.social-links a {
+-    color: var(--text-muted);
+-    font-size: 1.25rem;
+-    transition: var(--transition);
+-}
+-
+-.social-links a:hover {
+-    color: var(--planner-color);
++    background-color: var(--header-bg);
++    text-align: center;
++    padding: 20px 0;
++    margin-top: 50px;
++    border-top: 1px solid var(--card-border);
++    color: var(--nav-text);
  }
  
- /* Modal */
-@@ -453,96 +358,126 @@ body {
-     top: 0;
-     width: 100%;
-     height: 100%;
--    background-color: rgba(0, 0, 0, 0.5);
-+    background-color: rgba(0, 0, 0, 0.7);
-+    backdrop-filter: blur(5px);
-     align-items: center;
-     justify-content: center;
- }
- 
- .modal-content {
--    background-color: var(--white);
--    padding: 30px;
--    border-radius: 8px;
-+    background-color: var(--bg-secondary);
-+    border: 1px solid rgba(255, 255, 255, 0.1);
-+    border-radius: 16px;
-+    padding: 2.5rem;
-     width: 90%;
--    max-width: 500px;
-+    max-width: 600px;
-     position: relative;
--    animation: modalSlide 0.3s ease;
-+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-+    animation: modalIn 0.3s ease;
- }
- 
--@keyframes modalSlide {
--    from {
--        transform: translateY(-50px);
--        opacity: 0;
--    }
--    to {
--        transform: translateY(0);
--        opacity: 1;
--    }
-+@keyframes modalIn {
-+    from { opacity: 0; transform: scale(0.95); }
-+    to { opacity: 1; transform: scale(1); }
- }
- 
- .close-btn {
-     position: absolute;
--    top: 15px;
--    right: 20px;
-+    top: 1.5rem;
-+    right: 1.5rem;
-     font-size: 1.5rem;
-+    color: var(--text-muted);
-     cursor: pointer;
--    color: #64748b;
-+    transition: var(--transition);
- }
- 
- .close-btn:hover {
--    color: var(--secondary-color);
-+    color: var(--text-main);
- }
- 
--#modalTitle {
--    font-size: 1.4rem;
--    color: var(--secondary-color);
--    margin-bottom: 10px;
-+.modal-body-content h3 {
-+    font-size: 1.8rem;
-+    margin-bottom: 0.5rem;
- }
- 
--.modal-price {
--    font-size: 1.2rem;
--    font-weight: 700;
--    color: #ef4444;
--    margin-bottom: 20px;
-+.modal-body-content .role {
-+    color: var(--planner-color);
-+    font-weight: 600;
-+    margin-bottom: 1rem;
- }
- 
--.modal-specs {
--    margin-bottom: 25px;
--    background-color: var(--light-bg);
--    padding: 15px;
--    border-radius: 6px;
-+.modal-body-content p {
-+    color: var(--text-muted);
-+    margin-bottom: 1.5rem;
- }
- 
--.modal-specs h4 {
--    margin-bottom: 8px;
--    color: var(--secondary-color);
-+.modal-body-content h4 {
-+    font-size: 1.1rem;
-+    margin-bottom: 0.5rem;
-+    color: var(--text-main);
-+}
-+
-+.modal-body-content ul {
-+    list-style-type: none;
-+    padding-left: 0;
-+    margin-bottom: 1.5rem;
- }
- 
--.modal-specs p {
--    color: #64748b;
-+.modal-body-content ul li {
-+    position: relative;
-+    padding-left: 1.5rem;
-+    margin-bottom: 0.5rem;
-+    color: var(--text-muted);
-     font-size: 0.95rem;
- }
- 
--/* Responsive Design */
-+.modal-body-content ul li::before {
-+    content: "•";
-+    position: absolute;
-+    left: 0;
-+    color: var(--planner-color);
-+    font-size: 1.2rem;
-+}
-+
-+/* Footer */
-+.footer {
-+    background-color: var(--bg-secondary);
-+    border-top: 1px solid rgba(255, 255, 255, 0.05);
-+    padding: 3rem 0;
-+}
-+
-+.footer-content {
-+    display: flex;
-+    justify-content: space-between;
-+    align-items: center;
-+    flex-wrap: wrap;
-+    gap: 1rem;
-+}
-+
-+.footer-content p {
-+    color: var(--text-muted);
-+    font-size: 0.9rem;
-+}
-+
-+.social-links {
-+    display: flex;
-+    gap: 1.5rem;
-+}
-+
-+.social-links a {
-+    color: var(--text-muted);
-+    font-size: 1.25rem;
-+    transition: var(--transition);
-+}
-+
-+.social-links a:hover {
-+    color: var(--planner-color);
-+}
-+
-+/* Responsive */
+-/* Responsive */
  @media (max-width: 768px) {
--    .hero-content {
--        grid-template-columns: 1fr;
--        text-align: center;
--    }
--
--    .hero-buttons {
--        justify-content: center;
--    }
--
--    .hero-text h1 {
--        font-size: 2.2rem;
--    }
--
--    .contact-wrapper {
--        grid-template-columns: 1fr;
--        padding: 30px 20px;
--    }
--
--    .nav-menu {
--        display: none;
--    }
-+    h1 { font-size: 2.5rem; }
-+    .nav-links { display: none; }
-+    .workflow-steps { flex-direction: column; }
-+    .step-connector { display: none; }
- }
+-    h1 { font-size: 2.5rem; }
+-    .nav-links { display: none; }
+-    .workflow-steps { flex-direction: column; }
+-    .step-connector { display: none; }
+-}
++    .nav-container {
++        flex-direction: column;
++        height: auto;
++        padding: 15px 0;
++    }
++    .nav {
++        margin-top: 15px;
++        gap: 15px;
++        flex-wrap: wrap;
++        justify-content: center;
++    }
++}
+\ No newline at end of file
 diff --git a/index.html b/index.html
-index 646453c..9529000 100644
+index 9529000..0e37a2f 100644
 --- a/index.html
 +++ b/index.html
-@@ -3,123 +3,188 @@
+@@ -3,188 +3,76 @@
  <head>
      <meta charset="UTF-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
--    <title>Giai Điệu Vô Tận - Web Nghe Nhạc Hàng Đầu</title>
-+    <title>Hệ Thống 4 AI Agent - Tự Động Hóa Phát Triển Phần Mềm</title>
-+    <link rel="stylesheet" href="css/style.css">
+-    <title>Hệ Thống 4 AI Agent - Tự Động Hóa Phát Triển Phần Mềm</title>
++    <title>Free Fire Sensitivity - Độ Nhạy FF Chuẩn Pro</title>
+     <link rel="stylesheet" href="css/style.css">
++    <link rel="stylesheet" href="src/style.css">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
--    <link rel="stylesheet" href="src/style.css">
-+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
  </head>
  <body>
--    <div class="app-container">
--        <!-- Sidebar -->
--        <aside class="sidebar">
-+    <!-- Header & Hero Section -->
-+    <header class="header">
-+        <div class="container nav-container">
+-    <!-- Header & Hero Section -->
+     <header class="header">
+         <div class="container nav-container">
              <div class="logo">
--                <i class="fa-solid fa-music"></i>
--                <span>MuZic</span>
-+                <i class="fa-solid fa-network-wired"></i>
-+                <span>4Agent.AI</span>
+-                <i class="fa-solid fa-network-wired"></i>
+-                <span>4Agent.AI</span>
++                <h1><i class="fa-solid fa-crosshairs"></i> FF Sensitivity</h1>
              </div>
--            <ul class="nav-menu">
--                <li class="active" data-tab="home">
--                    <i class="fa-solid fa-house"></i>
--                    <span>Khám Phá</span>
--                </li>
--                <li data-tab="library">
--                    <i class="fa-solid fa-book-bookmark"></i>
--                    <span>Thư Viện</span>
--                </li>
--                <li data-tab="favorites">
--                    <i class="fa-solid fa-heart"></i>
--                    <span>Yêu Thích</span>
--                </li>
--            </ul>
--            <div class="playlist-section">
--                <h3>Playlist của bạn</h3>
--                <ul id="user-playlists">
--                    <li><span>Nhạc trẻ Hot 2024</span></li>
--                    <li><span>Lofi Chill Relax</span></li>
--                    <li><span>Remix Sôi Động</span></li>
--                </ul>
-+            <nav class="nav-links">
-+                <a href="#agents">Agents</a>
-+                <a href="#workflow">Quy Trình</a>
-+                <a href="#features">Tính Năng</a>
-+            </nav>
-+        </div>
-+    </header>
-+
-+    <section class="hero">
-+        <div class="container hero-content">
-+            <div class="hero-badge">
-+                <i class="fa-solid fa-wand-magic-sparkles"></i> Hệ Thống Đa Tác Nhân Thông Minh
-+            </div>
-+            <h1>Khám Phá Sức Mạnh Của <span class="gradient-text">4 AI Agent</span></h1>
-+            <p class="hero-subtitle">
-+                Sự kết hợp hoàn hảo giữa Planner, Coder, Reviewer và Tester giúp tự động hóa toàn bộ vòng đời phát triển phần mềm với độ chính xác cao và tốc độ vượt trội.
-+            </p>
-+            <div class="hero-buttons">
-+                <a href="#agents" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Khám Phá Ngay</a>
-+                <a href="#workflow" class="btn btn-secondary"><i class="fa-solid fa-diagram-project"></i> Xem Quy Trình</a>
+-            <nav class="nav-links">
+-                <a href="#agents">Agents</a>
+-                <a href="#workflow">Quy Trình</a>
+-                <a href="#features">Tính Năng</a>
++            <nav class="nav">
++                <a href="#" class="active">Trang chủ</a>
++                <a href="#pro-players">Pro Player</a>
++                <a href="#generator">Tạo độ nhạy</a>
++                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle Dark Mode">
++                    <i class="fa-solid fa-moon"></i>
++                </button>
+             </nav>
+         </div>
+     </header>
+ 
+-    <section class="hero">
+-        <div class="container hero-content">
+-            <div class="hero-badge">
+-                <i class="fa-solid fa-wand-magic-sparkles"></i> Hệ Thống Đa Tác Nhân Thông Minh
+-            </div>
+-            <h1>Khám Phá Sức Mạnh Của <span class="gradient-text">4 AI Agent</span></h1>
+-            <p class="hero-subtitle">
+-                Sự kết hợp hoàn hảo giữa Planner, Coder, Reviewer và Tester giúp tự động hóa toàn bộ vòng đời phát triển phần mềm với độ chính xác cao và tốc độ vượt trội.
+-            </p>
+-            <div class="hero-buttons">
+-                <a href="#agents" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Khám Phá Ngay</a>
+-                <a href="#workflow" class="btn btn-secondary"><i class="fa-solid fa-diagram-project"></i> Xem Quy Trình</a>
+-            </div>
+-        </div>
+-    </section>
+-
+-    <!-- Agents Section -->
+-    <section id="agents" class="agents-section">
+-        <div class="container">
+-            <div class="section-title">
+-                <h2>Đội Ngũ <span class="gradient-text">4 AI Agent</span></h2>
+-                <p>Mỗi agent đảm nhận một vai trò chuyên biệt, phối hợp nhịp nhàng như một đội ngũ kỹ sư thực thụ.</p>
+-            </div>
+-
+-            <div class="agents-grid">
+-                <!-- Agent 1: Planner -->
+-                <div class="agent-card" data-agent="planner">
+-                    <div class="agent-header">
+-                        <div class="agent-icon planner-bg">
+-                            <i class="fa-solid fa-compass-drafting"></i>
+-                        </div>
+-                        <div class="agent-badge">Chiến Lược</div>
+-                    </div>
+-                    <h3>1. Planner</h3>
+-                    <p class="agent-role">Kiến trúc sư & Lập kế hoạch</p>
+-                    <p class="agent-desc">Phân tích yêu cầu gốc, lập kế hoạch chi tiết từng bước, chia nhỏ công việc và xác định các file cần thay đổi trước khi triển khai.</p>
+-                    <div class="agent-skills">
+-                        <span>Phân tích</span>
+-                        <span>Lập kế hoạch</span>
+-                        <span>Thiết kế hệ thống</span>
+-                    </div>
+-                    <button class="btn-details" onclick="openModal('planner')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
+-                </div>
+-
+-                <!-- Agent 2: Coder -->
+-                <div class="agent-card" data-agent="coder">
+-                    <div class="agent-header">
+-                        <div class="agent-icon coder-bg">
+-                            <i class="fa-solid fa-code"></i>
+-                        </div>
+-                        <div class="agent-badge">Thực Thi</div>
+-                    </div>
+-                    <h3>2. Coder</h3>
+-                    <p class="agent-role">Lập trình viên & Phát triển</p>
+-                    <p class="agent-desc">Đọc kỹ kế hoạch từ Planner, viết mã nguồn sạch, chính xác, tuân thủ quy ước codebase và bàn giao kết quả hoàn thiện.</p>
+-                    <div class="agent-skills">
+-                        <span>HTML/CSS/JS</span>
+-                        <span>Clean Code</span>
+-                        <span>Triển khai</span>
+-                    </div>
+-                    <button class="btn-details" onclick="openModal('coder')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
+-                </div>
+-
+-                <!-- Agent 3: Reviewer -->
+-                <div class="agent-card" data-agent="reviewer">
+-                    <div class="agent-header">
+-                        <div class="agent-icon reviewer-bg">
+-                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+-                        </div>
+-                        <div class="agent-badge">Kiểm Định</div>
+-                    </div>
+-                    <h3>3. Reviewer</h3>
+-                    <p class="agent-role">Chuyên gia Kiểm tra Mã nguồn</p>
+-                    <p class="agent-desc">Đánh giá toàn diện mã nguồn do Coder thực hiện, đảm bảo tuân thủ tiêu chuẩn chất lượng, bảo mật và tính tối ưu.</p>
+-                    <div class="agent-skills">
+-                        <span>Code Review</span>
+-                        <span>Bảo mật</span>
+-                        <span>Tối ưu hóa</span>
+-                    </div>
+-                    <button class="btn-details" onclick="openModal('reviewer')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
+-                </div>
++    <main class="main-container">
++        <section class="hero">
++            <h2>Cấu Hình Độ Nhạy Free Fire Chuẩn Nhất</h2>
++            <p>Tìm kiếm và tùy chỉnh độ nhạy, DPI, nút bắn tối ưu như các tuyển thủ chuyên nghiệp để tối đa hóa tỷ lệ headshot.</p>
++        </section>
+ 
+-                <!-- Agent 4: Tester -->
+-                <div class="agent-card" data-agent="tester">
+-                    <div class="agent-header">
+-                        <div class="agent-icon tester-bg">
+-                            <i class="fa-solid fa-vial-circle-check"></i>
+-                        </div>
+-                        <div class="agent-badge">Đảm Bảo Chất Lượng</div>
+-                    </div>
+-                    <h3>4. Tester</h3>
+-                    <p class="agent-role">Kỹ sư Kiểm thử Phần mềm</p>
+-                    <p class="agent-desc">Kiểm thử giao diện, tính năng, độ tương thích trên các thiết bị và xác nhận sản phẩm đạt chuẩn trước khi phát hành.</p>
+-                    <div class="agent-skills">
+-                        <span>UI/UX Testing</span>
+-                        <span>Responsive</span>
+-                        <span>Bug Detection</span>
+-                    </div>
+-                    <button class="btn-details" onclick="openModal('tester')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
++        <section id="pro-players" class="section">
++            <h3>Độ Nhạy Pro Player</h3>
++            <div class="cards-grid">
++                <div class="card">
++                    <h4>White444</h4>
++                    <p>General: 95</p>
++                    <p>Red Dot: 90</p>
++                    <p>2x Scope: 88</p>
++                    <button class="btn-copy">Sao chép</button>
+                 </div>
+-            </div>
+-        </div>
+-    </section>
+-
+-    <!-- Workflow Section -->
+-    <section id="workflow" class="workflow-section">
+-        <div class="container">
+-            <div class="section-title">
+-                <h2>Quy Trình Hoạt Động <span class="gradient-text">Khép Kín</span></h2>
+-                <p>Cách 4 agent phối hợp với nhau để biến ý tưởng thành sản phẩm hoàn chỉnh.</p>
+-            </div>
+-            <div class="workflow-steps">
+-                <div class="step-card">
+-                    <div class="step-number">01</div>
+-                    <h4>Planner Tiếp Nhận</h4>
+-                    <p>Nhận yêu cầu từ người dùng, nghiên cứu và vạch ra bản kế hoạch chi tiết từng bước.</p>
+-                </div>
+-                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
+-                <div class="step-card">
+-                    <div class="step-number">02</div>
+-                    <h4>Coder Triển Khai</h4>
+-                    <p>Dựa vào kế hoạch để viết mã, xây dựng giao diện và lập trình tính năng.</p>
+-                </div>
+-                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
+-                <div class="step-card">
+-                    <div class="step-number">03</div>
+-                    <h4>Reviewer Đánh Giá</h4>
+-                    <p>Soát xét toàn bộ code, đưa ra nhận xét, phát hiện lỗ hổng hoặc điểm cần cải thiện.</p>
+-                </div>
+-                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
+-                <div class="step-card">
+-                    <div class="step-number">04</div>
+-                    <h4>Tester Nghiệm Thu</h4>
+-                    <p>Chạy thử nghiệm thực tế, kiểm tra độ ổn định và chốt kết quả bàn giao cuối cùng.</p>
++                <div class="card">
++                    <h4>RASTAR</h4>
++                    <p>General: 98</p>
++                    <p>Red Dot: 95</p>
++                    <p>2x Scope: 92</p>
++                    <button class="btn-copy">Sao chép</button>
+                 </div>
              </div>
--        </aside>
-+        </div>
-+    </section>
+-        </div>
+-    </section>
++        </section>
  
--        <!-- Main Content -->
--        <main class="main-content">
--            <!-- Header -->
--            <header class="header">
--                <div class="search-box">
--                    <i class="fa-solid fa-magnifying-glass"></i>
--                    <input type="text" id="search-input" placeholder="Tìm kiếm bài hát, nghệ sĩ...">
--                </div>
--                <div class="user-profile">
--                    <i class="fa-solid fa-bell"></i>
--                    <div class="avatar">
--                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100" alt="Avatar">
-+    <!-- Agents Section -->
-+    <section id="agents" class="agents-section">
-+        <div class="container">
-+            <div class="section-title">
-+                <h2>Đội Ngũ <span class="gradient-text">4 AI Agent</span></h2>
-+                <p>Mỗi agent đảm nhận một vai trò chuyên biệt, phối hợp nhịp nhàng như một đội ngũ kỹ sư thực thụ.</p>
-+            </div>
-+
-+            <div class="agents-grid">
-+                <!-- Agent 1: Planner -->
-+                <div class="agent-card" data-agent="planner">
-+                    <div class="agent-header">
-+                        <div class="agent-icon planner-bg">
-+                            <i class="fa-solid fa-compass-drafting"></i>
-+                        </div>
-+                        <div class="agent-badge">Chiến Lược</div>
-+                    </div>
-+                    <h3>1. Planner</h3>
-+                    <p class="agent-role">Kiến trúc sư & Lập kế hoạch</p>
-+                    <p class="agent-desc">Phân tích yêu cầu gốc, lập kế hoạch chi tiết từng bước, chia nhỏ công việc và xác định các file cần thay đổi trước khi triển khai.</p>
-+                    <div class="agent-skills">
-+                        <span>Phân tích</span>
-+                        <span>Lập kế hoạch</span>
-+                        <span>Thiết kế hệ thống</span>
-                     </div>
-+                    <button class="btn-details" onclick="openModal('planner')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
-                 </div>
--            </header>
- 
--            <!-- Banner -->
--            <section class="banner">
--                <div class="banner-content">
--                    <span class="tag">Đề Xuất</span>
--                    <h1>Thế Giới Âm Nhạc Trong Tầm Tay</h1>
--                    <p>Khám phá hàng triệu bài hát chất lượng cao từ mọi thể loại.</p>
--                    <button class="btn-play-all" id="btn-play-all">
--                        <i class="fa-solid fa-play"></i> Nghe Ngay
--                    </button>
-+                <!-- Agent 2: Coder -->
-+                <div class="agent-card" data-agent="coder">
-+                    <div class="agent-header">
-+                        <div class="agent-icon coder-bg">
-+                            <i class="fa-solid fa-code"></i>
-+                        </div>
-+                        <div class="agent-badge">Thực Thi</div>
-+                    </div>
-+                    <h3>2. Coder</h3>
-+                    <p class="agent-role">Lập trình viên & Phát triển</p>
-+                    <p class="agent-desc">Đọc kỹ kế hoạch từ Planner, viết mã nguồn sạch, chính xác, tuân thủ quy ước codebase và bàn giao kết quả hoàn thiện.</p>
-+                    <div class="agent-skills">
-+                        <span>HTML/CSS/JS</span>
-+                        <span>Clean Code</span>
-+                        <span>Triển khai</span>
-+                    </div>
-+                    <button class="btn-details" onclick="openModal('coder')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
-                 </div>
--            </section>
- 
--            <!-- Track List Section -->
--            <section class="songs-section">
--                <h2>Tất Cả Bài Hạc</h2>
--                <div class="song-list-header">
--                    <span>#</span>
--                    <span>Tiêu đề</span>
--                    <span>Album</span>
--                    <span><i class="fa-solid fa-clock"></i></span>
--                </div>
--                <div class="song-list" id="song-list">
--                    <!-- Dynamic tracks will be loaded here -->
-+                <!-- Agent 3: Reviewer -->
-+                <div class="agent-card" data-agent="reviewer">
-+                    <div class="agent-header">
-+                        <div class="agent-icon reviewer-bg">
-+                            <i class="fa-solid fa-magnifying-glass-chart"></i>
-+                        </div>
-+                        <div class="agent-badge">Kiểm Định</div>
-+                    </div>
-+                    <h3>3. Reviewer</h3>
-+                    <p class="agent-role">Chuyên gia Kiểm tra Mã nguồn</p>
-+                    <p class="agent-desc">Đánh giá toàn diện mã nguồn do Coder thực hiện, đảm bảo tuân thủ tiêu chuẩn chất lượng, bảo mật và tính tối ưu.</p>
-+                    <div class="agent-skills">
-+                        <span>Code Review</span>
-+                        <span>Bảo mật</span>
-+                        <span>Tối ưu hóa</span>
-+                    </div>
-+                    <button class="btn-details" onclick="openModal('reviewer')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
-                 </div>
--            </section>
--        </main>
+-    <!-- Modal Chi Tiết -->
+-    <div id="agentModal" class="modal">
+-        <div class="modal-content">
+-            <span class="close-btn" onclick="closeModal()">&times;</span>
+-            <div id="modalBody">
+-                <!-- Nội dung động sẽ được điền bằng JavaScript -->
++        <section id="generator" class="section">
++            <h3>Công Cụ Gợi Ý Độ Nhạy</h3>
++            <div class="generator-box">
++                <label for="deviceType">Chọn thiết bị của bạn:</label>
++                <select id="deviceType">
++                    <option value="android">Android (Thường)</option>
++                    <option value="ios">iPhone / iOS</option>
++                    <option value="gaming">Gaming Phone</option>
++                </select>
++                <button id="generateBtn" class="btn-primary">Xem gợi ý</button>
++                <div id="resultArea" class="result-area"></div>
+             </div>
+-        </div>
 -    </div>
++        </section>
++    </main>
  
--    <!-- Music Player Bar -->
--    <div class="music-player">
--        <div class="current-song">
--            <img id="player-cover" src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100" alt="Cover">
--            <div class="song-info">
--                <h4 id="player-title">Chọn bài hát</h4>
--                <p id="player-artist">Nghệ sĩ</p>
-+                <!-- Agent 4: Tester -->
-+                <div class="agent-card" data-agent="tester">
-+                    <div class="agent-header">
-+                        <div class="agent-icon tester-bg">
-+                            <i class="fa-solid fa-vial-circle-check"></i>
-+                        </div>
-+                        <div class="agent-badge">Đảm Bảo Chất Lượng</div>
-+                    </div>
-+                    <h3>4. Tester</h3>
-+                    <p class="agent-role">Kỹ sư Kiểm thử Phần mềm</p>
-+                    <p class="agent-desc">Kiểm thử giao diện, tính năng, độ tương thích trên các thiết bị và xác nhận sản phẩm đạt chuẩn trước khi phát hành.</p>
-+                    <div class="agent-skills">
-+                        <span>UI/UX Testing</span>
-+                        <span>Responsive</span>
-+                        <span>Bug Detection</span>
-+                    </div>
-+                    <button class="btn-details" onclick="openModal('tester')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
-+                </div>
-             </div>
--            <i class="fa-regular fa-heart" id="player-heart"></i>
-         </div>
-+    </section>
- 
--        <div class="player-center">
--            <div class="player-controls">
--                <button id="shuffle-btn" title="Xáo trộn"><i class="fa-solid fa-shuffle"></i></button>
--                <button id="prev-btn" title="Bài trước"><i class="fa-solid fa-backward-step"></i></button>
--                <button id="play-pause-btn" class="play-pause" title="Phát/Tạm dừng"><i class="fa-solid fa-play" id="play-icon"></i></button>
--                <button id="next-btn" title="Bài tiếp theo"><i class="fa-solid fa-forward-step"></i></button>
--                <button id="repeat-btn" title="Lặp lại"><i class="fa-solid fa-repeat"></i></button>
-+    <!-- Workflow Section -->
-+    <section id="workflow" class="workflow-section">
+-    <!-- Footer -->
+     <footer class="footer">
+-        <div class="container footer-content">
+-            <p>&copy; 2025 Hệ Thống 4 AI Agent. Được phát triển tự động bởi dây chuyền AI.</p>
+-            <div class="social-links">
+-                <a href="#"><i class="fa-brands fa-github"></i></a>
+-                <a href="#"><i class="fa-brands fa-discord"></i></a>
+-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+-            </div>
 +        <div class="container">
-+            <div class="section-title">
-+                <h2>Quy Trình Hoạt Động <span class="gradient-text">Khép Kín</span></h2>
-+                <p>Cách 4 agent phối hợp với nhau để biến ý tưởng thành sản phẩm hoàn chỉnh.</p>
-             </div>
--            <div class="progress-container">
--                <span id="current-time">0:00</span>
--                <div class="progress-bar" id="progress-bar">
--                    <div class="progress" id="progress"></div>
-+            <div class="workflow-steps">
-+                <div class="step-card">
-+                    <div class="step-number">01</div>
-+                    <h4>Planner Tiếp Nhận</h4>
-+                    <p>Nhận yêu cầu từ người dùng, nghiên cứu và vạch ra bản kế hoạch chi tiết từng bước.</p>
-+                </div>
-+                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
-+                <div class="step-card">
-+                    <div class="step-number">02</div>
-+                    <h4>Coder Triển Khai</h4>
-+                    <p>Dựa vào kế hoạch để viết mã, xây dựng giao diện và lập trình tính năng.</p>
-+                </div>
-+                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
-+                <div class="step-card">
-+                    <div class="step-number">03</div>
-+                    <h4>Reviewer Đánh Giá</h4>
-+                    <p>Soát xét toàn bộ code, đưa ra nhận xét, phát hiện lỗ hổng hoặc điểm cần cải thiện.</p>
-+                </div>
-+                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
-+                <div class="step-card">
-+                    <div class="step-number">04</div>
-+                    <h4>Tester Nghiệm Thu</h4>
-+                    <p>Chạy thử nghiệm thực tế, kiểm tra độ ổn định và chốt kết quả bàn giao cuối cùng.</p>
-                 </div>
--                <span id="duration">0:00</span>
-             </div>
++            <p>&copy; 2025 Free Fire Sensitivity Tool. All rights reserved.</p>
          </div>
-+    </section>
+     </footer>
  
--        <div class="player-right">
--            <i class="fa-solid fa-volume-high" id="volume-icon"></i>
--            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
-+    <!-- Modal Chi Tiết -->
-+    <div id="agentModal" class="modal">
-+        <div class="modal-content">
-+            <span class="close-btn" onclick="closeModal()">&times;</span>
-+            <div id="modalBody">
-+                <!-- Nội dung động sẽ được điền bằng JavaScript -->
-+            </div>
-         </div>
-     </div>
- 
--    <!-- Audio Element -->
--    <audio id="audio-element"></audio>
-+    <!-- Footer -->
-+    <footer class="footer">
-+        <div class="container footer-content">
-+            <p>&copy; 2025 Hệ Thống 4 AI Agent. Được phát triển tự động bởi dây chuyền AI.</p>
-+            <div class="social-links">
-+                <a href="#"><i class="fa-brands fa-github"></i></a>
-+                <a href="#"><i class="fa-brands fa-discord"></i></a>
-+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-+            </div>
-+        </div>
-+    </footer>
- 
--    <script src="src/js/app.js"></script>
-+    <script src="js/main.js"></script>
+     <script src="js/main.js"></script>
++    <script src="src/js/app.js"></script>
  </body>
- </html>
+-</html>
++</html>
+\ No newline at end of file
 diff --git a/js/main.js b/js/main.js
-index 070e705..320a277 100644
+index 320a277..61e75c6 100644
 --- a/js/main.js
 +++ b/js/main.js
-@@ -1,77 +1,89 @@
--document.addEventListener('DOMContentLoaded', () => {
--    // Product Filtering
--    const filterBtns = document.querySelectorAll('.filter-btn');
--    const productCards = document.querySelectorAll('.product-card');
--
--    filterBtns.forEach(btn => {
--        btn.addEventListener('click', () => {
--            // Remove active class from all buttons
--            filterBtns.forEach(b => b.classList.remove('active'));
--            // Add active to clicked button
--            btn.classList.add('active');
--
--            const filter = btn.getAttribute('data-filter');
--
--            productCards.forEach(card => {
--                if (filter === 'all' || card.getAttribute('data-category') === filter) {
--                    card.style.display = 'block';
--                } else {
--                    card.style.display = 'none';
--                }
--            });
--        });
--    });
--
--    // Modal Details functionality
--    const modal = document.getElementById('productModal');
--    const closeBtn = document.querySelector('.close-btn');
--    const viewDetailBtns = document.querySelectorAll('.view-details');
--    
--    const modalTitle = document.getElementById('modalTitle');
--    const modalPrice = document.getElementById('modalPrice');
--    const modalSpecsText = document.getElementById('modalSpecsText');
--    const modalBuyBtn = document.querySelector('.modal-buy-btn');
-+const agentDetails = {
-+    planner: {
-+        name: "Planner Agent",
-+        role: "Kiến trúc sư & Lập kế hoạch hệ thống",
-+        description: "Planner là bộ óc chiến lược của hệ thống. Agent này nhận các yêu cầu thô từ người dùng, phân tích sâu sắc các khía cạnh kỹ thuật, sau đó lập ra bản kế hoạch chi tiết từng bước (.bangiao/ke-hoach.md). Điều này đảm bảo mọi bước tiếp theo đều có hướng đi rõ ràng, hạn chế tối đa sai sót.",
-+        responsibilities: [
-+            "Phân tích yêu cầu gốc từ người dùng",
-+            "Xác định cấu trúc file cần tạo/sửa",
-+            "Lập kế hoạch chi tiết từng bước cho Coder",
-+            "Định hướng kiến trúc và công nghệ sử dụng"
-+        ],
-+        tools: ["Markdown", "Phân tích ngữ nghĩa", "Hệ thống Prompting"]
-+    },
-+    coder: {
-+        name: "Coder Agent",
-+        role: "Lập trình viên & Phát triển mã nguồn",
-+        description: "Coder là người hiện thực hóa bản vẽ của Planner thành mã nguồn thực tế. Với khả năng viết code chuẩn xác, sạch sẽ và tuân thủ tuyệt đối quy ước codebase, Coder tạo ra các trang web, tính năng hoặc sửa lỗi một cách nhanh chóng.",
-+        responsibilities: [
-+            "Đọc và tuân thủ tuyệt đối file kế hoạch",
-+            "Viết mã nguồn HTML, CSS, JavaScript chuẩn xác",
-+            "Áp dụng các pattern chuẩn từ codebase",
-+            "Bàn giao kết quả hoàn thiện cho Tester/Reviewer"
-+        ],
-+        tools: ["HTML5", "CSS3 (Flexbox/Grid)", "JavaScript (ES6+)"]
-+    },
-+    reviewer: {
-+        name: "Reviewer Agent",
-+        role: "Chuyên gia Kiểm định & Soát xét Mã nguồn",
-+        description: "Reviewer đóng vai trò như một Senior Developer kiểm tra chất lượng code. Agent này soi xét kỹ lưỡng từng dòng code do Coder tạo ra để đảm bảo không có lỗi logic, mã nguồn tối ưu, không thừa thãi và tuân thủ các tiêu chuẩn bảo mật.",
-+        responsibilities: [
-+            "Soát xét toàn bộ thay đổi mã nguồn",
-+            "Phát hiện các lỗ hổng hoặc điểm chưa tối ưu",
-+            "Kiểm tra việc tuân thủ phạm vi kế hoạch",
-+            "Đưa ra đánh giá khách quan và đề xuất cải tiến"
-+        ],
-+        tools: ["Code Analysis", "Security Scanner", "Best Practices Validator"]
-+    },
-+    tester: {
-+        name: "Tester Agent",
-+        role: "Kỹ sư Kiểm thử & Đảm bảo Chất lượng (QA)",
-+        description: "Tester là chốt chặn cuối cùng trước khi sản phẩm đến tay người dùng. Agent này thực hiện kiểm tra giao diện, tính tương thích trên các thiết bị di động/máy tính, thử nghiệm các tính năng tương tác và xác thực mọi thứ hoạt động hoàn hảo.",
-+        responsibilities: [
-+            "Kiểm tra giao diện UI/UX trên nhiều kích thước màn hình",
-+            "Thử nghiệm các tính năng tương tác (Modal, Button, Animation)",
-+            "Xác nhận sản phẩm đáp ứng đúng yêu cầu gốc",
-+            "Báo cáo kết quả kiểm thử và nghiệm thu"
-+        ],
-+        tools: ["UI Testing", "Responsive Checker", "Interactive Validator"]
+@@ -1,89 +1,50 @@
+-const agentDetails = {
+-    planner: {
+-        name: "Planner Agent",
+-        role: "Kiến trúc sư & Lập kế hoạch hệ thống",
+-        description: "Planner là bộ óc chiến lược của hệ thống. Agent này nhận các yêu cầu thô từ người dùng, phân tích sâu sắc các khía cạnh kỹ thuật, sau đó lập ra bản kế hoạch chi tiết từng bước (.bangiao/ke-hoach.md). Điều này đảm bảo mọi bước tiếp theo đều có hướng đi rõ ràng, hạn chế tối đa sai sót.",
+-        responsibilities: [
+-            "Phân tích yêu cầu gốc từ người dùng",
+-            "Xác định cấu trúc file cần tạo/sửa",
+-            "Lập kế hoạch chi tiết từng bước cho Coder",
+-            "Định hướng kiến trúc và công nghệ sử dụng"
+-        ],
+-        tools: ["Markdown", "Phân tích ngữ nghĩa", "Hệ thống Prompting"]
+-    },
+-    coder: {
+-        name: "Coder Agent",
+-        role: "Lập trình viên & Phát triển mã nguồn",
+-        description: "Coder là người hiện thực hóa bản vẽ của Planner thành mã nguồn thực tế. Với khả năng viết code chuẩn xác, sạch sẽ và tuân thủ tuyệt đối quy ước codebase, Coder tạo ra các trang web, tính năng hoặc sửa lỗi một cách nhanh chóng.",
+-        responsibilities: [
+-            "Đọc và tuân thủ tuyệt đối file kế hoạch",
+-            "Viết mã nguồn HTML, CSS, JavaScript chuẩn xác",
+-            "Áp dụng các pattern chuẩn từ codebase",
+-            "Bàn giao kết quả hoàn thiện cho Tester/Reviewer"
+-        ],
+-        tools: ["HTML5", "CSS3 (Flexbox/Grid)", "JavaScript (ES6+)"]
+-    },
+-    reviewer: {
+-        name: "Reviewer Agent",
+-        role: "Chuyên gia Kiểm định & Soát xét Mã nguồn",
+-        description: "Reviewer đóng vai trò như một Senior Developer kiểm tra chất lượng code. Agent này soi xét kỹ lưỡng từng dòng code do Coder tạo ra để đảm bảo không có lỗi logic, mã nguồn tối ưu, không thừa thãi và tuân thủ các tiêu chuẩn bảo mật.",
+-        responsibilities: [
+-            "Soát xét toàn bộ thay đổi mã nguồn",
+-            "Phát hiện các lỗ hổng hoặc điểm chưa tối ưu",
+-            "Kiểm tra việc tuân thủ phạm vi kế hoạch",
+-            "Đưa ra đánh giá khách quan và đề xuất cải tiến"
+-        ],
+-        tools: ["Code Analysis", "Security Scanner", "Best Practices Validator"]
+-    },
+-    tester: {
+-        name: "Tester Agent",
+-        role: "Kỹ sư Kiểm thử & Đảm bảo Chất lượng (QA)",
+-        description: "Tester là chốt chặn cuối cùng trước khi sản phẩm đến tay người dùng. Agent này thực hiện kiểm tra giao diện, tính tương thích trên các thiết bị di động/máy tính, thử nghiệm các tính năng tương tác và xác thực mọi thứ hoạt động hoàn hảo.",
+-        responsibilities: [
+-            "Kiểm tra giao diện UI/UX trên nhiều kích thước màn hình",
+-            "Thử nghiệm các tính năng tương tác (Modal, Button, Animation)",
+-            "Xác nhận sản phẩm đáp ứng đúng yêu cầu gốc",
+-            "Báo cáo kết quả kiểm thử và nghiệm thu"
+-        ],
+-        tools: ["UI Testing", "Responsive Checker", "Interactive Validator"]
+-    }
+-};
++document.addEventListener('DOMContentLoaded', () => {
++    const darkModeToggle = document.getElementById('darkModeToggle');
++    const body = document.body;
++    const icon = darkModeToggle ? darkModeToggle.querySelector('i') : null;
+ 
+-function openModal(agentKey) {
+-    const modal = document.getElementById('agentModal');
+-    const modalBody = document.getElementById('modalBody');
+-    const data = agentDetails[agentKey];
++    const updateIcon = (isDark) => {
++        if (!icon) return;
++        if (isDark) {
++            icon.className = 'fa-solid fa-sun';
++        } else {
++            icon.className = 'fa-solid fa-moon';
++        }
++    };
+ 
+-    if (!data) return;
++    const savedTheme = localStorage.getItem('theme');
++    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
++        body.classList.add('dark-mode');
++        updateIcon(true);
++    } else {
++        updateIcon(false);
 +    }
-+};
  
--    viewDetailBtns.forEach(btn => {
--        btn.addEventListener('click', () => {
--            const name = btn.getAttribute('data-name');
--            const specs = btn.getAttribute('data-specs');
--            const price = btn.getAttribute('data-price');
-+function openModal(agentKey) {
-+    const modal = document.getElementById('agentModal');
-+    const modalBody = document.getElementById('modalBody');
-+    const data = agentDetails[agentKey];
+-    modalBody.innerHTML = `
+-        <div class="modal-body-content">
+-            <h3>${data.name}</h3>
+-            <div class="role">${data.role}</div>
+-            <p>${data.description}</p>
+-            <h4>Trách nhiệm chính:</h4>
+-            <ul>
+-                ${data.responsibilities.map(item => `<li>${item}</li>`).join('')}
+-            </ul>
+-            <h4>Công nghệ / Công cụ:</h4>
+-            <div class="agent-skills">
+-                ${data.tools.map(tool => `<span>${tool}</span>`).join('')}
+-            </div>
+-        </div>
+-    `;
++    if (darkModeToggle) {
++        darkModeToggle.addEventListener('click', () => {
++            body.classList.toggle('dark-mode');
++            const isDark = body.classList.contains('dark-mode');
++            localStorage.setItem('theme', isDark ? 'dark' : 'light');
++            updateIcon(isDark);
++        });
++    }
  
--            modalTitle.textContent = name;
--            modalPrice.textContent = 'Giá: ' + price;
--            modalSpecsText.textContent = specs;
--            
--            modal.style.display = 'flex';
--        });
--    });
-+    if (!data) return;
+-    modal.style.display = 'flex';
+-}
++    const generateBtn = document.getElementById('generateBtn');
++    if (generateBtn) {
++        generateBtn.addEventListener('click', () => {
++            const deviceType = document.getElementById('deviceType').value;
++            const resultArea = document.getElementById('resultArea');
++            let sensitivityText = '';
  
--    closeBtn.addEventListener('click', () => {
--        modal.style.display = 'none';
--    });
-+    modalBody.innerHTML = `
-+        <div class="modal-body-content">
-+            <h3>${data.name}</h3>
-+            <div class="role">${data.role}</div>
-+            <p>${data.description}</p>
-+            <h4>Trách nhiệm chính:</h4>
-+            <ul>
-+                ${data.responsibilities.map(item => `<li>${item}</li>`).join('')}
-+            </ul>
-+            <h4>Công nghệ / Công cụ:</h4>
-+            <div class="agent-skills">
-+                ${data.tools.map(tool => `<span>${tool}</span>`).join('')}
-+            </div>
-+        </div>
-+    `;
+-function closeModal() {
+-    const modal = document.getElementById('agentModal');
+-    modal.style.display = 'none';
+-}
++            if (deviceType === 'ios') {
++                sensitivityText = 'Gợi ý iPhone: General: 97 | Red Dot: 94 | 2x Scope: 90 | DPI: Mặc định';
++            } else if (deviceType === 'gaming') {
++                sensitivityText = 'Gợi ý Gaming Phone: General: 99 | Red Dot: 96 | 2x Scope: 95 | DPI: 600';
++            } else {
++                sensitivityText = 'Gợi ý Android: General: 92 | Red Dot: 88 | 2x Scope: 85 | DPI: 500';
++            }
  
--    window.addEventListener('click', (e) => {
--        if (e.target === modal) {
--            modal.style.display = 'none';
--        }
--    });
-+    modal.style.display = 'flex';
-+}
- 
--    modalBuyBtn.addEventListener('click', () => {
--        modal.style.display = 'none';
--    });
-+function closeModal() {
-+    const modal = document.getElementById('agentModal');
-+    modal.style.display = 'none';
-+}
- 
--    // Contact Form Submission Validation
--    const contactForm = document.getElementById('contactForm');
--    if (contactForm) {
--        contactForm.addEventListener('submit', (e) => {
--            e.preventDefault();
--            const name = document.getElementById('name').value;
--            const phone = document.getElementById('phone').value;
--            
--            if (name && phone) {
--                alert(`Cảm ơn bạn ${name}! Yêu cầu tư vấn của bạn đã được gửi thành công. Chúng tôi sẽ liên hệ lại qua số ${phone} trong thời gian sớm nhất.`);
--                contactForm.reset();
--            }
--        });
-+// Đóng modal khi click ra ngoài vùng nội dung
-+window.onclick = function(event) {
-+    const modal = document.getElementById('agentModal');
-+    if (event.target === modal) {
-+        closeModal();
+-// Đóng modal khi click ra ngoài vùng nội dung
+-window.onclick = function(event) {
+-    const modal = document.getElementById('agentModal');
+-    if (event.target === modal) {
+-        closeModal();
++            resultArea.innerHTML = `<div style="padding: 15px; background: var(--bg-color); border: 1px solid var(--card-border); border-radius: 6px;">${sensitivityText}</div>`;
++        });
      }
--});
-+}
+-}
++});

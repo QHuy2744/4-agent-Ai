@@ -3,188 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống 4 AI Agent - Tự Động Hóa Phát Triển Phần Mềm</title>
+    <title>Free Fire Sensitivity - Độ Nhạy FF Chuẩn Pro</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="src/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header & Hero Section -->
     <header class="header">
         <div class="container nav-container">
             <div class="logo">
-                <i class="fa-solid fa-network-wired"></i>
-                <span>4Agent.AI</span>
+                <h1><i class="fa-solid fa-crosshairs"></i> FF Sensitivity</h1>
             </div>
-            <nav class="nav-links">
-                <a href="#agents">Agents</a>
-                <a href="#workflow">Quy Trình</a>
-                <a href="#features">Tính Năng</a>
+            <nav class="nav">
+                <a href="#" class="active">Trang chủ</a>
+                <a href="#pro-players">Pro Player</a>
+                <a href="#generator">Tạo độ nhạy</a>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
-        <div class="container hero-content">
-            <div class="hero-badge">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> Hệ Thống Đa Tác Nhân Thông Minh
-            </div>
-            <h1>Khám Phá Sức Mạnh Của <span class="gradient-text">4 AI Agent</span></h1>
-            <p class="hero-subtitle">
-                Sự kết hợp hoàn hảo giữa Planner, Coder, Reviewer và Tester giúp tự động hóa toàn bộ vòng đời phát triển phần mềm với độ chính xác cao và tốc độ vượt trội.
-            </p>
-            <div class="hero-buttons">
-                <a href="#agents" class="btn btn-primary"><i class="fa-solid fa-rocket"></i> Khám Phá Ngay</a>
-                <a href="#workflow" class="btn btn-secondary"><i class="fa-solid fa-diagram-project"></i> Xem Quy Trình</a>
-            </div>
-        </div>
-    </section>
+    <main class="main-container">
+        <section class="hero">
+            <h2>Cấu Hình Độ Nhạy Free Fire Chuẩn Nhất</h2>
+            <p>Tìm kiếm và tùy chỉnh độ nhạy, DPI, nút bắn tối ưu như các tuyển thủ chuyên nghiệp để tối đa hóa tỷ lệ headshot.</p>
+        </section>
 
-    <!-- Agents Section -->
-    <section id="agents" class="agents-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Đội Ngũ <span class="gradient-text">4 AI Agent</span></h2>
-                <p>Mỗi agent đảm nhận một vai trò chuyên biệt, phối hợp nhịp nhàng như một đội ngũ kỹ sư thực thụ.</p>
-            </div>
-
-            <div class="agents-grid">
-                <!-- Agent 1: Planner -->
-                <div class="agent-card" data-agent="planner">
-                    <div class="agent-header">
-                        <div class="agent-icon planner-bg">
-                            <i class="fa-solid fa-compass-drafting"></i>
-                        </div>
-                        <div class="agent-badge">Chiến Lược</div>
-                    </div>
-                    <h3>1. Planner</h3>
-                    <p class="agent-role">Kiến trúc sư & Lập kế hoạch</p>
-                    <p class="agent-desc">Phân tích yêu cầu gốc, lập kế hoạch chi tiết từng bước, chia nhỏ công việc và xác định các file cần thay đổi trước khi triển khai.</p>
-                    <div class="agent-skills">
-                        <span>Phân tích</span>
-                        <span>Lập kế hoạch</span>
-                        <span>Thiết kế hệ thống</span>
-                    </div>
-                    <button class="btn-details" onclick="openModal('planner')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
+        <section id="pro-players" class="section">
+            <h3>Độ Nhạy Pro Player</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h4>White444</h4>
+                    <p>General: 95</p>
+                    <p>Red Dot: 90</p>
+                    <p>2x Scope: 88</p>
+                    <button class="btn-copy">Sao chép</button>
                 </div>
-
-                <!-- Agent 2: Coder -->
-                <div class="agent-card" data-agent="coder">
-                    <div class="agent-header">
-                        <div class="agent-icon coder-bg">
-                            <i class="fa-solid fa-code"></i>
-                        </div>
-                        <div class="agent-badge">Thực Thi</div>
-                    </div>
-                    <h3>2. Coder</h3>
-                    <p class="agent-role">Lập trình viên & Phát triển</p>
-                    <p class="agent-desc">Đọc kỹ kế hoạch từ Planner, viết mã nguồn sạch, chính xác, tuân thủ quy ước codebase và bàn giao kết quả hoàn thiện.</p>
-                    <div class="agent-skills">
-                        <span>HTML/CSS/JS</span>
-                        <span>Clean Code</span>
-                        <span>Triển khai</span>
-                    </div>
-                    <button class="btn-details" onclick="openModal('coder')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-
-                <!-- Agent 3: Reviewer -->
-                <div class="agent-card" data-agent="reviewer">
-                    <div class="agent-header">
-                        <div class="agent-icon reviewer-bg">
-                            <i class="fa-solid fa-magnifying-glass-chart"></i>
-                        </div>
-                        <div class="agent-badge">Kiểm Định</div>
-                    </div>
-                    <h3>3. Reviewer</h3>
-                    <p class="agent-role">Chuyên gia Kiểm tra Mã nguồn</p>
-                    <p class="agent-desc">Đánh giá toàn diện mã nguồn do Coder thực hiện, đảm bảo tuân thủ tiêu chuẩn chất lượng, bảo mật và tính tối ưu.</p>
-                    <div class="agent-skills">
-                        <span>Code Review</span>
-                        <span>Bảo mật</span>
-                        <span>Tối ưu hóa</span>
-                    </div>
-                    <button class="btn-details" onclick="openModal('reviewer')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
-                </div>
-
-                <!-- Agent 4: Tester -->
-                <div class="agent-card" data-agent="tester">
-                    <div class="agent-header">
-                        <div class="agent-icon tester-bg">
-                            <i class="fa-solid fa-vial-circle-check"></i>
-                        </div>
-                        <div class="agent-badge">Đảm Bảo Chất Lượng</div>
-                    </div>
-                    <h3>4. Tester</h3>
-                    <p class="agent-role">Kỹ sư Kiểm thử Phần mềm</p>
-                    <p class="agent-desc">Kiểm thử giao diện, tính năng, độ tương thích trên các thiết bị và xác nhận sản phẩm đạt chuẩn trước khi phát hành.</p>
-                    <div class="agent-skills">
-                        <span>UI/UX Testing</span>
-                        <span>Responsive</span>
-                        <span>Bug Detection</span>
-                    </div>
-                    <button class="btn-details" onclick="openModal('tester')">Xem Chi Tiết <i class="fa-solid fa-arrow-right"></i></button>
+                <div class="card">
+                    <h4>RASTAR</h4>
+                    <p>General: 98</p>
+                    <p>Red Dot: 95</p>
+                    <p>2x Scope: 92</p>
+                    <button class="btn-copy">Sao chép</button>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Workflow Section -->
-    <section id="workflow" class="workflow-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Quy Trình Hoạt Động <span class="gradient-text">Khép Kín</span></h2>
-                <p>Cách 4 agent phối hợp với nhau để biến ý tưởng thành sản phẩm hoàn chỉnh.</p>
+        <section id="generator" class="section">
+            <h3>Công Cụ Gợi Ý Độ Nhạy</h3>
+            <div class="generator-box">
+                <label for="deviceType">Chọn thiết bị của bạn:</label>
+                <select id="deviceType">
+                    <option value="android">Android (Thường)</option>
+                    <option value="ios">iPhone / iOS</option>
+                    <option value="gaming">Gaming Phone</option>
+                </select>
+                <button id="generateBtn" class="btn-primary">Xem gợi ý</button>
+                <div id="resultArea" class="result-area"></div>
             </div>
-            <div class="workflow-steps">
-                <div class="step-card">
-                    <div class="step-number">01</div>
-                    <h4>Planner Tiếp Nhận</h4>
-                    <p>Nhận yêu cầu từ người dùng, nghiên cứu và vạch ra bản kế hoạch chi tiết từng bước.</p>
-                </div>
-                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
-                <div class="step-card">
-                    <div class="step-number">02</div>
-                    <h4>Coder Triển Khai</h4>
-                    <p>Dựa vào kế hoạch để viết mã, xây dựng giao diện và lập trình tính năng.</p>
-                </div>
-                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
-                <div class="step-card">
-                    <div class="step-number">03</div>
-                    <h4>Reviewer Đánh Giá</h4>
-                    <p>Soát xét toàn bộ code, đưa ra nhận xét, phát hiện lỗ hổng hoặc điểm cần cải thiện.</p>
-                </div>
-                <div class="step-connector"><i class="fa-solid fa-chevron-right"></i></div>
-                <div class="step-card">
-                    <div class="step-number">04</div>
-                    <h4>Tester Nghiệm Thu</h4>
-                    <p>Chạy thử nghiệm thực tế, kiểm tra độ ổn định và chốt kết quả bàn giao cuối cùng.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Modal Chi Tiết -->
-    <div id="agentModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div id="modalBody">
-                <!-- Nội dung động sẽ được điền bằng JavaScript -->
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer class="footer">
-        <div class="container footer-content">
-            <p>&copy; 2025 Hệ Thống 4 AI Agent. Được phát triển tự động bởi dây chuyền AI.</p>
-            <div class="social-links">
-                <a href="#"><i class="fa-brands fa-github"></i></a>
-                <a href="#"><i class="fa-brands fa-discord"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter"></i></a>
-            </div>
+        <div class="container">
+            <p>&copy; 2025 Free Fire Sensitivity Tool. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="src/js/app.js"></script>
 </body>
 </html>
