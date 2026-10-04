@@ -2,77 +2,61 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Fire Sensitivity - Độ Nhạy FF Chuẩn Pro</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="src/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Android To-Do List</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for modern icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container nav-container">
-            <div class="logo">
-                <h1><i class="fa-solid fa-crosshairs"></i> FF Sensitivity</h1>
-            </div>
-            <nav class="nav">
-                <a href="#" class="active">Trang chủ</a>
-                <a href="#pro-players">Pro Player</a>
-                <a href="#generator">Tạo độ nhạy</a>
-                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle Dark Mode">
-                    <i class="fa-solid fa-moon"></i>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1><i class="fa-solid fa-clipboard-list"></i> Việc Cần Làm</h1>
+            <p id="date-display">Hôm nay</p>
+        </header>
+
+        <!-- Input Section -->
+        <section class="input-section">
+            <form id="todo-form">
+                <input 
+                    type="text" 
+                    id="todo-input" 
+                    placeholder="Thêm công việc mới..." 
+                    autocomplete="off"
+                    required
+                >
+                <button type="submit" id="add-btn" aria-label="Thêm công việc">
+                    <i class="fa-solid fa-plus"></i>
                 </button>
-            </nav>
-        </div>
-    </header>
-
-    <main class="main-container">
-        <section class="hero">
-            <h2>Cấu Hình Độ Nhạy Free Fire Chuẩn Nhất</h2>
-            <p>Tìm kiếm và tùy chỉnh độ nhạy, DPI, nút bắn tối ưu như các tuyển thủ chuyên nghiệp để tối đa hóa tỷ lệ headshot.</p>
+            </form>
         </section>
 
-        <section id="pro-players" class="section">
-            <h3>Độ Nhạy Pro Player</h3>
-            <div class="cards-grid">
-                <div class="card">
-                    <h4>White444</h4>
-                    <p>General: 95</p>
-                    <p>Red Dot: 90</p>
-                    <p>2x Scope: 88</p>
-                    <button class="btn-copy">Sao chép</button>
-                </div>
-                <div class="card">
-                    <h4>RASTAR</h4>
-                    <p>General: 98</p>
-                    <p>Red Dot: 95</p>
-                    <p>2x Scope: 92</p>
-                    <button class="btn-copy">Sao chép</button>
-                </div>
+        <!-- Filter Tabs -->
+        <section class="filter-section">
+            <button class="filter-btn active" data-filter="all">Tất cả</button>
+            <button class="filter-btn" data-filter="active">Đang làm</button>
+            <button class="filter-btn" data-filter="completed">Đã xong</button>
+        </section>
+
+        <!-- Tasks List Section -->
+        <section class="list-section">
+            <ul id="todo-list">
+                <!-- Dynamic items will be injected here -->
+            </ul>
+            <div id="empty-state" class="empty-state hidden">
+                <i class="fa-solid fa-face-smile"></i>
+                <p>Không có công việc nào!</p>
             </div>
         </section>
 
-        <section id="generator" class="section">
-            <h3>Công Cụ Gợi Ý Độ Nhạy</h3>
-            <div class="generator-box">
-                <label for="deviceType">Chọn thiết bị của bạn:</label>
-                <select id="deviceType">
-                    <option value="android">Android (Thường)</option>
-                    <option value="ios">iPhone / iOS</option>
-                    <option value="gaming">Gaming Phone</option>
-                </select>
-                <button id="generateBtn" class="btn-primary">Xem gợi ý</button>
-                <div id="resultArea" class="result-area"></div>
-            </div>
-        </section>
-    </main>
+        <!-- Footer Counter -->
+        <footer class="app-footer">
+            <span id="task-counter">0 công việc còn lại</span>
+            <button id="clear-completed" class="clear-btn">Xóa đã xong</button>
+        </footer>
+    </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Free Fire Sensitivity Tool. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="js/main.js"></script>
-    <script src="src/js/app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

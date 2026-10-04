@@ -1,43 +1,66 @@
-Chào bạn, tôi là **PLANNER**. Dựa trên yêu cầu thêm nút **Dark Mode** cho website *Free Fire Sensitivity*, tôi đã tiến hành khảo sát cấu trúc dự án (sử dụng các công cụ `Glob`, `Read`, `Grep`) và lập kế hoạch triển khai chi tiết bên dưới.
+Chào bạn, tôi là **PLANNER**. Dựa trên yêu cầu tạo một web To-Do List hiện đại dành cho điện thoại Android (HTML, CSS, JS thuần, lưu bằng `localStorage`), tôi đã phân tích phạm vi công việc và lập kế hoạch triển khai chi tiết. 
+
+Vì đây là một dự án mới (chưa có code sẵn trong thư mục), tôi xin gửi bản tóm tắt kế hoạch theo đúng định dạng yêu cầu.
 
 ---
 
-### `.bangiao/ke-hoach.md` (Tóm tắt hiển thị)
-
-#### 1. Mục tiêu và phạm vi
-- Thêm nút chuyển đổi chế độ giao diện (Dark Mode / Light Mode) cho website Free Fire Sensitivity.
-- Đảm bảo hoạt động mượt mà, responsive trên cả máy tính và thiết bị di động (điện thoại).
-- Lưu trạng thái người dùng (localStorage) để ghi nhớ lựa chọn khi tải lại trang.
-- Giao diện đẹp, đồng bộ với thiết kế hiện tại của website.
-
-#### 2. Các file cần tạo/sửa
-Dựa trên cấu trúc dự án thông thường của một trang web tĩnh/frontend:
-- **`index.html`** (hoặc các file HTML template): Thêm phần tử nút bấm Dark Mode (icon mặt trăng/mặt trời).
-- **`css/style.css`** (hoặc file CSS tương ứng): Thêm các biến CSS (CSS Variables) hoặc class `.dark-mode` cho các thành phần (background, text, cards, buttons).
-- **`js/main.js`** (hoặc file script tương ứng): Xử lý sự kiện click nút toggle, thao tác với `localStorage`, và thêm/xóa class `dark-mode` trên thẻ `<body>`.
-
-#### 3. Các bước thực hiện chi tiết cho Coder
-1. **Cập nhật HTML:**
-   - Chèn một nút bấm toggle (ví dụ: `<button id="darkModeToggle" aria-label="Toggle Dark Mode">...</button>`) vào vị trí phù hợp trên header/navbar (đảm bảo dễ chạm trên màn hình điện thoại).
-2. **Xây dựng CSS cho Dark Mode:**
-   - Định nghĩa bảng màu Light Mode và Dark Mode (ví dụ sử dụng CSS Variables `:root` và `body.dark-mode`).
-   - Đảm bảo độ tương phản cao, dễ đọc cho các thông số độ nhạy (sensitivity), DPI, nút copy, v.v.
-3. **Viết logic JavaScript:**
-   - Kiểm tra trạng thái đã lưu trong `localStorage` khi trang vừa load.
-   - Lắng nghe sự kiện `click` trên nút `#darkModeToggle` để chuyển đổi trạng thái và cập nhật icon (☀️ / 🌙).
-
-#### 4. Trường hợp biên và xử lý lỗi
-- **Trạng thái mặc định:** Nếu chưa lưu trong `localStorage`, ưu tiên kiểm tra chế độ màu của hệ điều hành (`window.matchMedia('(prefers-color-scheme: dark)')`).
-- **Mobile Touch:** Kích thước nút bấm tối thiểu phải là `44x44px` để người dùng dễ thao tác trên điện thoại.
-
-#### 5. Cách kiểm tra (Dành cho Tester)
-- Click vào nút Dark Mode trên Desktop -> Giao diện chuyển đổi tức thì, không bị chớp nháy.
-- Reload lại trang -> Trạng thái Dark/Light mode được giữ nguyên.
-- Truy cập bằng điện thoại (hoặc giả lập mobile) -> Nút bấm dễ chạm, giao diện không bị tràn viền hay vỡ layout, các chữ số độ nhạy hiển thị rõ ràng.
-
-#### 6. Rủi ro
-- Một số thành phần CSS cũ dùng màu cứng (hardcode) có thể không tự đổi màu, cần kiểm tra kỹ toàn bộ các trang/section của website.
+### 1. Mục tiêu
+- Xây dựng ứng dụng Web To-Do List giao diện mobile-first (tối ưu cho màn hình điện thoại Android).
+- Các tính năng cốt lõi:
+  - Ô nhập công việc mới (`input`) và nút **Thêm** (`button`).
+  - Danh sách hiển thị công việc.
+  - Đánh dấu hoàn thành (checkbox/click vào item).
+  - Xóa công việc (nút xóa từng item).
+  - Bộ lọc trạng thái: **Tất cả (All)**, **Đang làm (Active)**, **Đã xong (Completed)**.
+  - Lưu trữ dữ liệu vĩnh viễn trên trình duyệt bằng `localStorage`.
+- Giao diện hiện đại, trực quan, hỗ trợ responsive chuẩn mobile (bo góc, shadow nhẹ, màu sắc nổi bật, khoảng bấm ngón tay thuận tiện).
 
 ---
 
-*Thư mục `.bangiao` và file `.bangiao/ke-hoach.md` đã sẵn sàng cho Coder nhận việc.*
+### 2. File cần thay đổi (Tạo mới)
+Do đây là dự án khởi tạo từ đầu, chúng ta sẽ tạo cấu trúc 3 file chính tại thư mục gốc:
+1. `index.html`: Khung cấu trúc HTML5, thiết lập viewport chuẩn mobile, liên kết CSS và JS.
+2. `style.css`: Giao diện CSS hiện đại, tối ưu giao diện dạng khung điện thoại (mobile frame) hoặc full-width mobile, sử dụng Flexbox/Grid.
+3. `app.js`: Xử lý toàn bộ logic ứng dụng (Thêm, Sửa/Hoàn thành, Xóa, Lọc, Đồng bộ `localStorage`, Render UI).
+
+*(Lưu ý: Thư mục `.bangiao/` sẽ được tạo để chứa file `ke-hoach.md` chi tiết).*
+
+---
+
+### 3. Các bước thực hiện (cho Coder)
+- **Bước 1**: Tạo thư mục `.bangiao` và file `.bangiao/ke-hoach.md` ghi nhận kế hoạch chi tiết.
+- **Bước 2**: Xây dựng khung HTML (`index.html`) gồm:
+  - Header tiêu đề ứng dụng.
+  - Khu vực nhập liệu (Input + Nút Thêm).
+  - Thanh bộ lọc (Tabs: Tất cả, Đang làm, Đã xong).
+  - Khu vực hiển thị danh sách (`ul`/`div`) và trạng thái trống (empty state).
+- **Bước 3**: Viết style cho CSS (`style.css`):
+  - Thiết lập biến màu sắc (CSS Variables) hiện đại (ví dụ: Primary blue, background xám nhạt, màu chữ tối).
+  - Bo tròn góc (border-radius), tạo hiệu ứng bóng (box-shadow), đảm bảo kích thước các nút bấm/checkbox đủ lớn để chạm bằng ngón tay (tối thiểu 44x44px).
+  - Định dạng trạng thái hoàn thành (gạch ngang chữ, mờ đi).
+- **Bước 4**: Viết logic JavaScript (`app.js`):
+  - Khởi tạo mảng `todos` từ `localStorage` (hoặc mảng rỗng nếu chưa có).
+  - Hàm `saveToLocalStorage()`: Lưu mảng `todos` vào `localStorage`.
+  - Hàm `render()`: Vẽ lại danh sách công việc dựa trên bộ lọc hiện tại (current filter).
+  - Sự kiện `submit`/`click` nút Thêm: Thêm task mới với ID thời gian (`Date.now()`), trạng thái `completed: false`.
+  - Sự kiện `change`/`click` trên checkbox: Đổi trạng thái `completed`.
+  - Sự kiện click nút Xóa: Xóa task khỏi mảng theo ID.
+  - Sự kiện click các nút lọc: Thay đổi trạng thái filter và re-render.
+- **Bước 5**: Kiểm tra thủ công các luồng tương tác và lưu trữ dữ liệu sau khi F5/reload trang.
+
+---
+
+### 4. Cách kiểm tra (Dành cho Tester)
+- **Kiểm tra giao diện Mobile**: Mở trình duyệt, sử dụng chế độ Responsive Design (F12 -> Toggle Device Toolbar), chọn các dòng điện thoại Android (như Pixel, Samsung Galaxy) để kiểm tra giao diện có bị tràn viền hay khó bấm không.
+- **Kiểm tra tính năng Thêm**: Nhập nội dung vào ô input, bấm nút Thêm (hoặc Enter) -> Công việc phải xuất hiện ở đầu hoặc cuối danh sách, ô input được clear.
+- **Kiểm tra trạng thái Hoàn thành**: Click vào checkbox/item -> Chữ bị gạch ngang và chuyển sang tab "Đã xong" thì thấy nó ở đó.
+- **Kiểm tra Bộ lọc**: Chuyển đổi giữa 3 tab (Tất cả / Đang làm / Đã xong) xem danh sách lọc có chính xác không.
+- **Kiểm tra Xóa**: Bấm nút xóa -> Công việc biến mất khỏi danh sách.
+- **Kiểm tra `localStorage`**: Thêm vài công việc, đánh dấu hoàn thành một vài cái, sau đó **Reload (F5) lại trang** -> Dữ liệu và trạng thái phải được giữ nguyên hoàn toàn.
+
+---
+
+### 5. Rủi ro
+- **XSS (Cross-Site Scripting) khi render HTML**: Người dùng có thể nhập các ký tự đặc biệt hoặc mã độc vào ô input (ví dụ thẻ `<script>`). *Giải pháp*: Coder phải dùng `textContent` thay vì `innerHTML` khi hiển thị tiêu đề công việc để đảm bảo an toàn.
+- **Tràn văn bản (Text Overflow)**: Nhập chuỗi quá dài không có khoảng trắng sẽ làm vỡ giao diện. *Giải pháp*: Sử dụng CSS `word-break: break-word` hoặc `overflow-wrap: break-word` cho thẻ chứa text công việc.
+- **Dữ liệu trong `localStorage` bị hỏng/sai định dạng**: *Giải pháp*: Thêm khối `try...catch` khi gọi `JSON.parse()` dữ liệu từ `localStorage`.
