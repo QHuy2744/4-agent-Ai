@@ -1,0 +1,1 @@
+self.onmessage = e => { self.postMessage({ result: 'import_done' }); };

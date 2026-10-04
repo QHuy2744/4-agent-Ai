@@ -1,0 +1,1 @@
+export function renderSidebar(container) { container.innerHTML = '<aside>Sidebar</aside>'; }

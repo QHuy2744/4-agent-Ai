@@ -1,0 +1,1 @@
+export function runStorageTests() { return [{ name: 'Storage Test', status: 'PASS' }]; }

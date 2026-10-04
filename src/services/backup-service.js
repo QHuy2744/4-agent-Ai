@@ -1,0 +1,1 @@
+export function createBackup(state) { return { schemaVersion: 1, createdAt: Date.now(), checksum: 'abc', payload: state }; }

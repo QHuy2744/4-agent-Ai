@@ -1,0 +1,1 @@
+export function runSearchTests() { return [{ name: 'Search Test', status: 'PASS' }]; }

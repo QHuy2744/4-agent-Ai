@@ -1,0 +1,1 @@
+self.onmessage = e => { self.postMessage({ result: 'search_done' }); };

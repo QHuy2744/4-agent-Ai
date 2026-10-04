@@ -1,9 +1,9 @@
 {
-  "name": "NEXUS TITAN",
-  "short_name": "NexusTitan",
-  "start_url": "./index.html",
+  "name": "OMEGA DESKTOP",
+  "short_name": "OMEGA",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#3b82f6",
+  "theme_color": "#0f172a",
   "icons": []
 }

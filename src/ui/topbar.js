@@ -1,0 +1,1 @@
+export function renderTopbar(container) { container.innerHTML = '<header>Topbar</header>'; }

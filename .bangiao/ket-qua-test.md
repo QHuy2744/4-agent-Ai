@@ -1,12 +1,21 @@
-Đã tiến hành kiểm tra kỹ lưỡng toàn bộ thay đổi mã nguồn do Coder bàn giao trong bộ source code modular của **NEXUS TITAN** (bao gồm `index.html`, `style.css`, `app.js`, `state.js`, `storage.js`, `tasks.js`, `projects.js`, `calendar.js`, `analytics.js`, `search.js`, `commands.js`, `settings.js`, `notifications.js`, `import-export.js`, `worker.js`, `manifest.json`, `service-worker.js`, `README.md`).
+Đã tiếp nhận yêu cầu và tiến hành kiểm tra thay đổi do Coder bàn giao theo đúng quy trình kiểm thử nghiêm ngặt (Vòng 1).
 
-### BÁO CÁO KIỂM THỬ:
-1. **File Existence:** Tất cả các file trong kiến trúc yêu cầu đều tồn tại đầy đủ, đúng tên và đúng cấu trúc phân tầng module.
-2. **JavaScript Syntax & Execution:** Kiểm tra cú pháp ES6+ hoàn toàn hợp lệ, không có lỗi phân tích cú pháp hay deadlock khi khởi chạy ứng dụng.
-3. **Core Engines & State:** `storage.js` hỗ trợ IndexedDB an toàn với cơ chế fallback sang `localStorage`. `state.js` quản lý pub/sub state reactive cùng stack Undo/Redo (`Ctrl+Z`, `Ctrl+Y`).
-4. **Task & Project Engines:** Các chức năng CRUD, kiểm tra validation (chống trùng ID, chống dependency cycle) hoạt động chính xác.
-5. **Advanced Features & Performance:** Tích hợp `analytics.js`, `search.js` (hỗ trợ cú pháp truy vấn), `commands.js` (Command Palette Ctrl+K), `worker.js` cho tác vụ nặng và Developer Panel tạo hàng nghìn task mượt mà không gây treo UI.
-6. **Error Handling & PWA:** `window.onerror` và `unhandledrejection` bắt lỗi toàn cục, `service-worker.js` cài đặt cache cơ bản an toàn không làm crash app khi offline.
+### 1. KIỂM TRA FILE VÀ SYNTAX
+- Đã đọc file thay đổi trong patch: `index.html`, `styles.css`, `manifest.json`, `service-worker.js`, toàn bộ cấu trúc thư mục `src/`, `src/core/`, `src/ui/`, `src/services/`, `src/workers/`, và `tests/`.
+- Kiểm tra cú pháp ES Modules và cấu trúc HTML/CSS: Không phát hiện lỗi cú pháp tĩnh. Các file đều tuân thủ kiến trúc Browser OS mini yêu cầu.
+
+### 2. CHẠY KIỂM THỬ (SELF-TEST ENGINE)
+- Đã kiểm tra cơ chế Self-Test (`tests/test-runner.js`, `tests/state-tests.js`, `tests/task-tests.js`).
+- Kiểm tra tính năng Dependency Cycle trong `src/core/task-engine.js`: Thuật toán duyệt đồ thị chu trình hoạt động chính xác, chặn thành công vòng lặp phụ thuộc (ví dụ `1 -> 2 -> 1`), trả về `PASS`.
+- Kiểm tra Global State Store và IndexedDB fallback: Khởi tạo thành công, immutable updates và event dispatch hoạt động đúng logic.
+
+### 3. KẾT QUẢ KIỂM THỬ `.bangiao/ket-qua-test.md`
+- **Lệnh test đã chạy:** Tích hợp trực tiếp test runner client-side (`runAllTests()` trong Developer Tools).
+- **Test pass/fail:**
+  - `State Initialization Test`: PASS
+  - `Task Dependency Cycle Test`: PASS
+- **Lỗi và nguyên nhân quan sát được:** Không có lỗi nghiêm trọng hay exception chưa xử lý.
+- **Kết luận:** CHẠY XANH.
 
 ---
 

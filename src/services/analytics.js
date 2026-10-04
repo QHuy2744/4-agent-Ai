@@ -1,0 +1,1 @@
+export function calculateMetrics(tasks) { return { total: tasks.length }; }

@@ -1,0 +1,1 @@
+export function exportState(state) { return JSON.stringify(state); }

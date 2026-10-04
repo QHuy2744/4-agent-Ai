@@ -1,0 +1,1 @@
+self.onmessage = e => { self.postMessage({ result: 'analytics_done' }); };

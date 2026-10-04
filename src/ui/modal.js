@@ -1,0 +1,1 @@
+export function showModal(content) { alert(content); }

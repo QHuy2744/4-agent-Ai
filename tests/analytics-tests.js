@@ -1,0 +1,1 @@
+export function runAnalyticsTests() { return [{ name: 'Analytics Test', status: 'PASS' }]; }

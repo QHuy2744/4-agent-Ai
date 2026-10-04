@@ -1,0 +1,1 @@
+export function importState(json) { return JSON.parse(json); }
