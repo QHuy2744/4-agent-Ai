@@ -1,10 +1,5 @@
 #!/data/data/com.termux/files/usr/bin/bash
-if [ "$#" -eq 1 ] && [ -f "$1" ]; then
-  REQUEST="$(cat "$1")"
-else
-  REQUEST="$*"
-fi
-
+REQUEST="$*"
 MAX_FIX=3
 if [ -z "$REQUEST" ]; then
   echo "Cách dùng: ./ship-gemini.sh \"Yêu cầu cần làm\""
@@ -32,7 +27,7 @@ echo "🧠 [1/4] PLANNER..."
 
 PLAN_PROMPT=$(cat planner.md)
 
-cat <<EOF | ./ask-gemini.sh > .bangiao/ke-hoach.md
+./ask-gemini.sh "
 Bạn là PLANNER.
 
 HƯỚNG DẪN:
@@ -50,7 +45,7 @@ Trả về:
 3. Các bước thực hiện
 4. Cách kiểm tra
 5. Rủi ro.
-EOF
+" > .bangiao/ke-hoach.md
 
 if [ $? -ne 0 ]; then
   echo "❌ Planner thất bại."
@@ -91,7 +86,7 @@ while [ $FIX -lt $MAX_FIX ]; do
 
 
   
-  cat <<EOF | ./ask-gemini.sh > .bangiao/thay-doi.json
+  ./ask-gemini.sh "
 Bạn là CODER trong hệ thống 4 Agent.
 
 HƯỚNG DẪN CODER:
@@ -109,9 +104,30 @@ $GIT_STATUS
 CÁC FILE ĐANG ĐƯỢC GIT THEO DÕI:
 $TRACKED_FILES
 
-LỖI TỪ TESTER:
+LỖI TỪ VÒNG TRƯỚC:
 $ERROR_INFO
-EOF
+
+Hãy trả về JSON chứa các file cần thay đổi và TOÀN BỘ nội dung mới của từng file.
+
+ĐỊNH DẠNG:
+{
+  \"files\": [
+    {
+      \"path\": \"README.md\",
+      \"content\": \"toàn bộ nội dung mới của file\"
+    }
+  ]
+}
+
+QUY TẮC:
+- Chỉ trả về JSON hợp lệ.
+- Không dùng markdown fence.
+- Không giải thích bên ngoài JSON.
+- path phải là đường dẫn tương đối trong project.
+- Không được sửa file .git hoặc .bangiao.
+- Nếu file đã tồn tại, trả về TOÀN BỘ nội dung mới.
+- Không được dùng unified diff.
+" > .bangiao/thay-doi.json
 
   echo "🧩 Tạo patch hợp lệ từ JSON..."
 
@@ -142,7 +158,7 @@ EOF
 
   TESTER_PROMPT=$(cat tester.md)
 
-  cat <<EOF | ./ask-gemini.sh > .bangiao/ket-qua-test.md
+  ./ask-gemini.sh "
 Bạn là TESTER.
 
 HƯỚNG DẪN:
@@ -170,7 +186,6 @@ Kiểm tra:
 ƯU TIÊN KIỂM TRA TRẠNG THÁI HIỆN TẠI CỦA CODE, KHÔNG ĐÁNH GIÁ LẠI YÊU CẦU BAN ĐẦU.
 Nếu Coder đã sửa đúng lỗi mà Tester báo ở vòng trước và code hiện tại hợp lệ, bắt buộc trả về TEST_RESULT: PASS.
 Khi nhận TEST_RESULT: FAIL từ vòng trước, chỉ kiểm tra lỗi cần sửa được nêu trong báo cáo lỗi; không được quay lại tạo lại lỗi của yêu cầu ban đầu.
-
 Cuối cùng bắt buộc trả về:
 
 TEST_RESULT: PASS
@@ -180,7 +195,7 @@ hoặc
 TEST_RESULT: FAIL
 
 Nếu FAIL, liệt kê lỗi thật cụ thể để Coder có thể sửa.
-EOF
+" > .bangiao/ket-qua-test.md
 
   cat .bangiao/ket-qua-test.md
 
@@ -219,7 +234,7 @@ echo "========================================"
 
 REVIEWER_PROMPT=$(cat reviewer.md)
 
-cat <<EOF | ./ask-gemini.sh > .bangiao/danh-gia.md
+./ask-gemini.sh "
 Bạn là REVIEWER cuối cùng.
 
 HƯỚNG DẪN:
@@ -252,7 +267,7 @@ hoặc
 PHAN QUYET: CHAN
 
 Giải thích ngắn gọn sau quyết định.
-EOF
+" > .bangiao/danh-gia.md
 
 cat .bangiao/danh-gia.md
 

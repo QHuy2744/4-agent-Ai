@@ -1,19 +1,13 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-if [ -t 0 ]; then
-  PROMPT="$*"
-else
-  PROMPT="$(cat)"
-fi
+PROMPT="$*"
 
 if [ -z "$PROMPT" ]; then
-  echo "Cách dùng:"
-  echo '  ./ask-gemini.sh "câu hỏi"'
-  echo '  cat prompt.txt | ./ask-gemini.sh'
+  echo "Cách dùng: ./ask-gemini.sh \"câu hỏi\""
   exit 1
 fi
 
-RESPONSE=$(printf '%s' "$PROMPT" | ./gemini.sh)
+RESPONSE=$(./gemini.sh "$PROMPT")
 
 printf '%s' "$RESPONSE" | python -c '
 import sys, json

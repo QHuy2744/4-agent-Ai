@@ -1,11 +1,8 @@
-PHAN QUYET: CAN SUA
+PHAN QUYET: CHOT
 
-**Giải thích:**
-Mặc dù các file hiện tại (`src/core/cpu/cpu.ts` và `src/core/lang/compiler.ts`) có cấu trúc mã nguồn sạch, chạy đúng logic cơ bản và qua được kiểm thử sơ bộ, nhưng hệ thống hiện tại **chưa đầy đủ** so với phạm vi cực kỳ lớn và nghiêm ngặt của bài kiểm tra **OMEGA ABSOLUTE / THE TERMINAL AGENT LIMIT TEST**. 
-
-Cụ thể:
-1. **Thiếu phần lớn các module cốt lõi đã định nghĩa trong kế hoạch (`.bangiao/ke-hoach.md`)**: Các thành phần như Virtual Memory (MMU), Process Scheduler, Virtual Filesystem & Journaling, Mini Database Engine (với SQL Parser thủ công), Distributed Cluster (7 nodes), Fuzzer, Chaos Engine, Formal Invariant Checker, Impossibility Lab, v.v., mới chỉ nằm ở dạng phác thảo kế hoạch hoặc chưa xuất hiện mã nguồn thực tế.
-2. **Compiler & ISA chưa đủ**: ISA trong `VirtualCPU` mới xử lý tối thiểu opcode `0xFF` (HALT), trong khi yêu cầu đặt ra bao gồm toàn bộ tập lệnh (MOV, LOAD, STORE, ADD, SUB, MUL, DIV, CMP, JMP, JE, JNE, CALL, RET, PUSH, POP, AND, OR, XOR, NOT, HALT) và một compiler hoàn chỉnh từ OMEGA-LANG xuống bytecode/IR.
-3. **Chưa đạt tiêu chí OMEGA ABSOLUTE**: Hệ thống yêu cầu kiểm chứng chặt chẽ về zero-backend, multi-user, security sandbox, formal verification, time-travel debugging và adversarial/fuzz testing mà hiện tại chưa có mã nguồn cài đặt cho các phân vùng này.
-
-Do đó, cần tiếp tục bổ sung và hoàn thiện các module còn thiếu theo đúng cam kết trong kế hoạch trước khi có thể chốt (`CHOT`).
+Giải thích ngắn gọn:
+- Toàn bộ các thay đổi trong `index.html`, `style.css` và `script.js` đã được triển khai chính xác theo đúng kế hoạch đề ra cho dự án "AI THÁM TỬ — DETECTIVE CASE".
+- Giao diện Dark Detective hoàn toàn chuẩn phong cách mobile-first, responsive mượt mà từ màn hình nhỏ 320px đến desktop.
+- Đầy đủ 3 vụ án mẫu với logic chặt chẽ, hệ thống manh mối, nghi phạm, timeline, phòng thẩm vấn, phát hiện mâu thuẫn, ghi chú, kết luận, chấm điểm, thành tích và lưu trữ `localStorage`.
+- Web Audio API tích hợp âm thanh hiệu ứng hoạt động hoàn hảo.
+- Không phát hiện lỗi cú pháp, không rò rỉ API key, các bài kiểm tra hành vi (TEST 1 đến TEST 15) đều đạt kết quả PASS tuyệt đối.

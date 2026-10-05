@@ -1,58 +1,46 @@
-Dưới đây là kế hoạch chi tiết cho hệ thống **OMEGA COMPUTER** theo yêu cầu của bạn. Kế hoạch này được thiết lập để tuân thủ quy trình của PLANNER (không sửa code, không tự suy đoán, tạo file `.bangiao/ke-hoach.md` và tuân thủ tuyệt đối các ràng buộc zero-backend, giả lập đầy đủ, mô phỏng kiến trúc đa tầng).
+*(Bắt đầu thực thi vai trò PLANNER)*
+
+### 1. Phân tích hiện trạng & Mục tiêu
+- **Mục tiêu:** Xây dựng hoàn chỉnh web game "AI THÁM TỬ — DETECTIVE CASE" chạy trên 1 file HTML, 1 file CSS, 1 file JS chính (hoặc cấu trúc module rõ ràng không phụ thuộc backend), đáp ứng giao diện Dark Detective mobile-first, có tối thiểu 3 vụ án, đầy đủ hệ thống Manh mối, Nghi phạm, Timeline, Thẩm vấn, Phát hiện mâu thuẫn, Ghi chú, Kết luận, Chấm điểm, Thành tích, Lưu trữ localStorage và Âm thanh bằng Web Audio API.
+- **Phạm vi:** Tạo mới/cấu trúc các file cốt lõi `index.html`, `style.css`, `script.js` tại thư mục gốc của project (hoặc kiểm tra codebase hiện có trước khi ghi).
 
 ---
 
-### CÂU HỎI CÒN BỎ NGỎ (Bắt buộc xác nhận trước khi triển khai sâu)
-1. **Phạm vi WebAssembly hay Pure JS/TS**: Do yêu cầu zero backend và chạy hoàn toàn trong trình duyệt, hệ thống ảo hóa CPU, Compiler và Distributed Cluster sẽ được viết bằng TypeScript thuần túy hay có tích hợp WebAssembly (Rust/C++) cho phần biên dịch/CPU simulation? Hiện tại kế hoạch giả định sử dụng **TypeScript thuần túy** để đảm bảo khả năng portable và self-hosting dễ dàng trong browser worker.
-2. **Framework UI**: Dự án sử dụng framework UI nào (React, Vue, hay Vanilla Web Components)? Kế hoạch mặc định sử dụng **React + TypeScript + Tailwind CSS** (nếu cấu trúc project hiện tại hỗ trợ) hoặc **Vanilla TS** nếu codebase là pure web app.
+### 2. Các file cần tạo / sửa (Đường dẫn chính xác)
+- `index.html` (Tạo mới / Cập nhật): Chứa cấu trúc HTML5 chuẩn, mobile-first, semantic tags, các màn hình (Home, Vụ án, Manh mối, Nghi phạm, Timeline, Thẩm vấn, Kết luận, Thành tích, Hướng dẫn, Cài đặt) và ARIA labels hỗ trợ accessibility.
+- `style.css` (Tạo mới / Cập nhật): Thiết kế theo phong cách Dark Detective (nền tối `#0f172a`, chữ sáng, đỏ cảnh báo `#ef4444`, vàng vật chứng `#f59e0b`, xanh hệ thống `#3b82f6`), responsive hoàn hảo từ 320px đến desktop, hỗ trợ `prefers-reduced-motion`.
+- `script.js` (Tạo mới / Cập nhật): Quản lý toàn bộ game state, dữ liệu 3 vụ án mẫu, hệ thống LocalStorage, Web Audio API sound effects, logic thẩm vấn, phát hiện mâu thuẫn, chấm điểm và điều hướng màn hình.
+- `.bangiao/ke-hoach.md` (Tạo mới): Ghi nhận chi tiết kế hoạch triển khai cho Coder.
 
 ---
 
-### KẾ HOẠCH TRIỂN KHAI CHI TIẾT
-*(Đã được ghi vào `.bangiao/ke-hoach.md` theo quy định)*
+### 3. Các bước thực hiện (Cho Coder)
+1. **Kiểm tra môi trường:** Đọc các file hiện có bằng công cụ `Read`, `Glob` để nắm cấu trúc thư mục hiện tại.
+2. **Khởi tạo thư mục `.bangiao`:** Tạo thư mục `.bangiao` nếu chưa có và ghi file `.bangiao/ke-hoach.md`.
+3. **Triển khai `index.html`:** Xây dựng khung giao diện SPA (Single Page Application) với các tab điều hướng di động (bottom nav trên mobile, sidebar trên desktop) và các modal/màn hình chức năng.
+4. **Triển khai `style.css`:** Viết CSS thuần, tối ưu mobile-first, tuân thủ bảng màu Dark Detective, xử lý responsive không tràn màn hình (`overflow-x: hidden`).
+5. **Triển khai `script.js`:**
+   - Định nghĩa dữ liệu 3 vụ án (`CASES` với đầy đủ nạn nhân, nghi phạm, manh mối, timeline, lời khai, lời giải).
+   - Xây dựng state management (`gameState`) và các hàm CRUD với `localStorage`.
+   - Viết các hàm logic game: Khám phá manh mối, Thẩm vấn nghi phạm, Đối chiếu mâu thuẫn (Contradiction detection), Tính điểm Suspicion, Tạo/Sửa/Xóa Notes, Hệ thống Achievements, Timer, và Web Audio API sound effects.
+6. **Kiểm tra bảo mật & hiệu năng:** Đảm bảo không dùng `eval()`, sử dụng `textContent` để chống XSS, tối ưu DOM rendering.
 
-#### 1. Mục tiêu và Phạm vi
-Xây dựng **OMEGA COMPUTER** - một máy tính đa năng chạy hoàn toàn trong trình duyệt (Zero Backend, PWA), tích hợp:
-- Virtual CPU, Virtual Memory, Process Manager, CPU Scheduler (FCFS, Round Robin, Priority).
-- Virtual Filesystem (Journaling, Transaction Rollback, Path Traversal Protection).
-- Mini Database Engine (SQL Parser thủ công, không dùng `eval()`, Transaction ACID-like).
-- Omega-Lang (Lexer, Parser, AST, IR, Optimizer, Bytecode Compiler, Interpreter).
-- Virtual Shell, Package Manager & Dependency Solver.
-- Distributed Cluster (7 Virtual Nodes, Lamport Clocks, Leader Election, Consensus Simulation).
-- Event Bus, Deterministic Replay, Snapshot & Time-Travel Debugging.
-- Worker Cluster, Search Engine (Fuzzy/Prefix/Exact), Spreadsheet (1000x1000 cells, Circular Dependency Check).
-- Multi-user & Security Model (RBAC, Permission Engine, Plugin Sandbox).
-- Chaos Engine, Fuzz Engine, Formal Invariant Checker, Impossibility Lab.
+---
 
-#### 2. Các file cần tạo / sửa (Cấu trúc dự án đề xuất)
-- `src/core/cpu/`: `cpu.ts`, `registers.ts`, `debugger.ts`
-- `src/core/memory/`: `mmu.ts`, `protection.ts`
-- `src/core/process/`: `processManager.ts`, `scheduler.ts`
-- `src/core/fs/`: `filesystem.ts`, `journal.ts`, `recovery.ts`
-- `src/core/db/`: `parser.ts`, `engine.ts`, `transaction.ts`, `optimizer.ts`
-- `src/core/lang/`: `lexer.ts`, `parser.ts`, `interpreter.ts`, `compiler.ts`, `optimizer.ts`
-- `src/core/cluster/`: `node.ts`, `consensus.ts`, `lamport.ts`, `network.ts`
-- `src/core/engine/`: `eventBus.ts`, `snapshot.ts`, `replay.ts`, `chaos.ts`, `fuzzer.ts`, `invariants.ts`
-- `src/workers/`: `clusterWorker.ts`, `fuzzWorker.ts`
-- `src/ui/`: `shell.ts`, `editor.ts`, `spreadsheet.ts`, `components/`
-- `.bangiao/ke-hoach.md`: File lưu kế hoạch này.
+### 4. Cách kiểm tra (Dành cho Tester)
+Tester tiến hành chạy qua 15 test cases yêu cầu (TEST 1 đến TEST 15):
+- Load website, bắt đầu vụ án, mở hồ sơ nghi phạm, khám phá manh mối, mở evidence board, xem timeline, thẩm vấn nghi phạm, phát hiện mâu thuẫn, tạo ghi chú, reload trang kiểm tra save/load, submit deduction sai/đúng, kiểm tra tính điểm, reset case và reset toàn bộ dữ liệu.
+- Kiểm traresponsive layout trên mobile (320px, 375px) và desktop.
 
-#### 3. Các bước thực hiện cho Coder
-1. **Khởi tạo Core Engine**: Thiết lập Virtual CPU (ISA tối thiểu: MOV, ADD, SUB, JMP, HALT...) và Virtual Memory phân vùng (Code, Data, Stack, Heap).
-2. **Xây dựng Process & Scheduler**: Hiện thực hóa Process Control Block (PCB), trạng thái process và các thuật toán lập lịch (Round Robin, Priority).
-3. **Phát triển Virtual Filesystem & Journaling**: Xây dựng cây thư mục, cơ chế journaling (BEGIN, WRITE, COMMIT) và mô phỏng crash recovery.
-4. **Xây dựng Database & Query Optimizer**: Viết SQL Parser thủ công, hỗ trợ CRUD, Transaction (Rollback/Commit) và Index/Full scan benchmark.
-5. **Omega-Lang & Compiler Pipeline**: Xây dựng Lexer, Parser, AST, IR, Bytecode Compiler và Interpreter không dùng `eval()`.
-6. **Distributed Cluster Simulation**: Mô phỏng 7 node, Lamport clocks, Leader election, xử lý packet loss/reordering.
-7. **Reliability & Testing Framework**: Tích hợp Fuzz Engine, Chaos Engine, Formal Invariant Checker (I1-I8) và Time-Travel Debugger.
-8. **UI & Accessibility**: Xây dựng Virtual Shell, Spreadsheet Engine, Text Editor, hỗ trợ PWA, i18n (Anh/Việt) và chuẩn Accessibility (A11y).
+---
 
-#### 4. Cách kiểm tra (Testing & Verification)
-- **Unit & Property Testing**: Kiểm tra serialize $\leftrightarrow$ deserialize, create $\leftrightarrow$ undo, export $\leftrightarrow$ import.
-- **Invariant Checker**: Chạy tự động các assertion kiểm tra I1 đến I8 liên tục trong quá trình mô phỏng.
-- **Chaos & Fuzz Testing**: Bơm dữ liệu rác (null, NaN, circular objects, huge strings) vào fuzzer để đảm bảo hệ thống không crash.
-- **Impossibility Lab**: Chạy các module đánh giá giới hạn lý thuyết (được gắn nhãn *NOT MEASURED* hoặc *LIMITATION* rõ ràng nếu vượt quá khả năng browser).
+### 5. Rủi ro & Giải pháp
+- **Rủi ro 1:** Tràn giao diện (horizontal overflow) trên màn hình nhỏ 320px.
+  - *Giải pháp:* Dùng CSS Grid/Flexbox với `max-width: 100%`, `box-sizing: border-box` và ẩn các thành phần phụ trên mobile.
+- **Rủi ro 2:** Mất dữ liệu khi reload trang.
+  - *Giải pháp:* Tự động gọi `saveGame()` ở mọi thay đổi state quan trọng và load ngay khi khởi động (`DOMContentLoaded`).
+- **Rủi ro 3:** Lỗi logic mâu thuẫn giữa lời khai và timeline.
+  - *Giải pháp:* Định nghĩa rõ ràng cặp `suspectId`, `statementId` và `clueId/timelineId` tương ứng trong dữ liệu từng case.
 
-#### 5. Rủi ro
-- **Hiệu suất trình duyệt**: Chạy 7 node phân tán + Fuzzer + Virtual CPU cùng lúc trong Web Workers có thể gây nghẽn Main Thread nếu không phân bổ thời gian hợp lý (phải dùng `requestAnimationFrame` và Web Workers).
-- **Giới hạn bộ nhớ IndexedDB / RAM**: Xử lý tập dữ liệu lớn (1M - 10M records) phải có cơ chế ngắt an toàn (Resource Limit Test) để tránh treo browser tab.
+---
+*(Kế hoạch đã sẵn sàng. Không có câu hỏi nào bỏ ngỏ. Chuyển giao cho Coder triển khai.)*

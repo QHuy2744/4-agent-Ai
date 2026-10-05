@@ -1,0 +1,1057 @@
+TẠO PROJECT: AI THÁM TỬ — DETECTIVE CASE
+
+Mục tiêu:
+Xây dựng một game web điều tra/phá án hoàn chỉnh, mobile-first, chạy tốt trên Android và desktop. Người chơi đóng vai thám tử, thu thập manh mối, đọc lời khai, thẩm vấn nghi phạm, dựng timeline và cuối cùng đưa ra kết luận về hung thủ.
+
+QUAN TRỌNG:
+- Giữ nguyên kiến trúc 4 AI Agent hiện tại.
+- Không thay đổi cơ chế Planner → Coder → Tester → Reviewer.
+- Không thay đổi cơ chế Auto-Fix tối đa 3 vòng.
+- Không tự động git push.
+- Không tự động tạo Pull Request.
+- Reviewer phải trả về CHOT trước khi thay đổi được áp dụng.
+- Không xóa hoặc phá hỏng các script pipeline hiện tại.
+- Không sử dụng API key trực tiếp trong frontend.
+- Project phải chạy được mà không cần backend.
+- Nếu chưa có backend/API thật, AI phải được mô phỏng bằng logic JavaScript local.
+- Ưu tiên hoàn thiện sản phẩm chạy được hơn là tạo code quá phức tạp.
+
+==================================================
+1. CÔNG NGHỆ
+==================================================
+
+Sử dụng:
+
+- HTML5
+- CSS3
+- JavaScript ES6+
+- Không framework nếu không cần thiết.
+- Không cần backend.
+- Không cần database server.
+- localStorage hoặc IndexedDB để lưu dữ liệu.
+- Responsive mobile-first.
+- Có thể chạy trực tiếp bằng GitHub Pages.
+
+Các file chính:
+
+index.html
+style.css
+script.js
+
+Có thể tạo thêm thư mục/file nếu thật sự cần thiết.
+
+Không nhúng API key vào:
+- HTML
+- CSS
+- JavaScript
+- localStorage
+- URL
+- Git repository
+
+==================================================
+2. GIAO DIỆN
+==================================================
+
+Thiết kế theo phong cách:
+
+DARK DETECTIVE / CRIME INVESTIGATION
+
+Màu chủ đạo:
+- nền tối
+- trắng/xám
+- đỏ cảnh báo
+- vàng cho vật chứng
+- xanh cho thông tin hệ thống
+
+Giao diện phải có cảm giác giống một hệ thống điều tra chuyên nghiệp.
+
+Mobile-first.
+
+Trên điện thoại:
+- navigation dễ bấm bằng ngón tay
+- button tối thiểu khoảng 44px
+- không có phần tử bị tràn ngang
+- text dễ đọc
+- card bo góc
+- animation nhẹ
+
+Trang chính có:
+
+HEADER:
+"AI THÁM TỬ"
+
+subtitle:
+"THE CASE BEGINS"
+
+Các nút:
+
+[ VỤ ÁN ]
+[ MANH MỐI ]
+[ NGHI PHẠM ]
+[ TIMELINE ]
+[ THẨM VẤN ]
+[ KẾT LUẬN ]
+
+==================================================
+3. TRANG HOME
+==================================================
+
+Home hiển thị:
+
+🕵️ AI THÁM TỬ
+
+"Bạn có đủ khả năng tìm ra sự thật?"
+
+Các lựa chọn:
+
+[ VỤ ÁN MỚI ]
+
+[ TIẾP TỤC VỤ ÁN ]
+
+[ HƯỚNG DẪN ]
+
+[ THÀNH TÍCH ]
+
+Hiển thị thống kê:
+
+- Vụ án đã hoàn thành
+- Vụ án phá thành công
+- Tỷ lệ phá án
+- Điểm cao nhất
+
+==================================================
+4. HỆ THỐNG VỤ ÁN
+==================================================
+
+Tạo hệ thống case.
+
+Mỗi vụ án có:
+
+caseId
+title
+difficulty
+victim
+location
+date
+time
+description
+suspects
+clues
+statements
+timeline
+solution
+
+Có ít nhất 3 vụ án mẫu.
+
+Difficulty:
+
+🟢 EASY
+🟡 MEDIUM
+🔴 HARD
+
+Ví dụ:
+
+CASE #001
+"ÁN MẠNG TRONG PHÒNG KHÓA KÍN"
+
+CASE #002
+"CHIẾC ĐIỆN THOẠI BIẾN MẤT"
+
+CASE #003
+"BÓNG NGƯỜI LÚC 02:13"
+
+Mỗi vụ án phải có logic hợp lý.
+
+Không được tạo lời giải mâu thuẫn với manh mối.
+
+==================================================
+5. HỒ SƠ NẠN NHÂN
+==================================================
+
+Hiển thị:
+
+Tên
+Tuổi
+Nghề nghiệp
+Địa điểm
+Thời gian tử vong
+Thông tin liên quan
+
+Có phần:
+
+"INITIAL REPORT"
+
+để người chơi đọc báo cáo ban đầu.
+
+==================================================
+6. NGHI PHẠM
+==================================================
+
+Mỗi vụ án có 3–5 nghi phạm.
+
+Mỗi nghi phạm:
+
+Tên
+Tuổi
+Nghề nghiệp
+Quan hệ với nạn nhân
+Ảnh đại diện dạng placeholder
+Mô tả
+Alibi
+Mức độ đáng ngờ
+
+Không được hiển thị trực tiếp ai là hung thủ.
+
+Có button:
+
+[XEM HỒ SƠ]
+
+==================================================
+7. HỆ THỐNG MANH MỐI
+==================================================
+
+Mỗi case có nhiều clues.
+
+Clue gồm:
+
+id
+title
+description
+location
+importance
+discovered
+relatedSuspects
+
+Phân loại:
+
+🔴 CRITICAL
+🟡 IMPORTANT
+⚪ NORMAL
+
+Người chơi phải tự khám phá.
+
+Ban đầu một số clue bị khóa.
+
+Button:
+
+[KHÁM PHÁ]
+
+Khi khám phá:
+
+- animation
+- âm thanh nếu có thể
+- hiện mô tả
+- cập nhật số manh mối
+
+Không được tiết lộ đáp án trực tiếp.
+
+==================================================
+8. INVENTORY / BẢNG CHỨNG CỨ
+==================================================
+
+Tạo Evidence Board.
+
+Người chơi có thể xem:
+
+- vật chứng
+- ảnh
+- ghi chú
+- lời khai
+- manh mối
+
+Cho phép đánh dấu:
+
+⭐ Quan trọng
+
+Có thể lọc:
+
+ALL
+EVIDENCE
+STATEMENT
+CLUE
+IMPORTANT
+
+==================================================
+9. TIMELINE
+==================================================
+
+Tạo timeline tương tác.
+
+Ví dụ:
+
+18:30
+Nạn nhân về nhà.
+
+19:10
+Nghi phạm A xuất hiện.
+
+20:00
+Điện thoại nạn nhân hoạt động.
+
+21:15
+Nghi phạm B rời khỏi khu vực.
+
+22:03
+Camera mất tín hiệu.
+
+22:17
+Phát hiện vụ án.
+
+Timeline phải giúp người chơi phát hiện mâu thuẫn.
+
+Cho phép click từng event để xem chi tiết.
+
+==================================================
+10. THẨM VẤN
+==================================================
+
+Tạo màn hình:
+
+INTERROGATION ROOM
+
+Người chơi chọn nghi phạm.
+
+Hiển thị:
+
+Tên
+Hồ sơ
+Alibi
+
+Các câu hỏi:
+
+- Bạn ở đâu lúc xảy ra vụ án?
+- Bạn biết nạn nhân từ khi nào?
+- Quan hệ của bạn với nạn nhân?
+- Bạn có nhìn thấy ai không?
+- Tại sao lời khai của bạn khác với camera?
+
+Nghi phạm trả lời dựa trên dữ liệu case.
+
+Không cần AI API thật.
+
+Dùng dialogue system local.
+
+Một số câu trả lời có thể:
+
+- trung thực
+- né tránh
+- mâu thuẫn
+- nói dối
+
+Người chơi phải đối chiếu với evidence.
+
+==================================================
+11. PHÁT HIỆN MÂU THUẪN
+==================================================
+
+Đây là tính năng quan trọng.
+
+Nếu lời khai:
+
+"Ở nhà lúc 21:00"
+
+nhưng timeline/camera cho thấy:
+
+"xuất hiện tại địa điểm vụ án 21:00"
+
+thì hệ thống phải cho phép người chơi chọn:
+
+[ĐỐI CHIẾU MANH MỐI]
+
+Nếu đúng:
+
+"MÂU THUẪN ĐÃ ĐƯỢC PHÁT HIỆN"
+
+Nếu sai:
+
+"Không tìm thấy mâu thuẫn."
+
+Không được cho người chơi thử vô hạn mà không có hậu quả.
+
+==================================================
+12. SUSPICION SYSTEM
+==================================================
+
+Mỗi nghi phạm có suspicion score.
+
+Ví dụ:
+
+0–25:
+LOW
+
+26–50:
+MEDIUM
+
+51–75:
+HIGH
+
+76–100:
+CRITICAL
+
+Điểm được tính từ:
+
+- lời khai
+- mâu thuẫn
+- bằng chứng
+- timeline
+- hành động của người chơi
+
+Không hiển thị trực tiếp công thức.
+
+==================================================
+13. NOTE SYSTEM
+==================================================
+
+Cho phép người chơi tạo ghi chú.
+
+Ví dụ:
+
+"21:00 - A nói đang ở nhà"
+
+Cho phép:
+
+- tạo note
+- sửa note
+- xóa note
+
+Lưu bằng localStorage.
+
+==================================================
+14. FINAL DEDUCTION
+==================================================
+
+Khi người chơi thu thập đủ điều kiện:
+
+mở:
+
+FINAL DEDUCTION
+
+Người chơi chọn:
+
+1. Hung thủ
+2. Động cơ
+3. Phương thức gây án
+4. Bằng chứng quan trọng nhất
+
+Button:
+
+[ĐƯA RA KẾT LUẬN]
+
+Không cho phép submit nếu chưa chọn đủ.
+
+==================================================
+15. CHẤM ĐIỂM
+==================================================
+
+Sau khi submit:
+
+Tính điểm:
+
+Evidence discovered
+Contradictions found
+Wrong accusations
+Time
+Correct killer
+Correct motive
+Correct method
+
+Rank:
+
+S
+A
+B
+C
+D
+
+Ví dụ:
+
+CASE SOLVED
+
+Rank: A
+
+Score: 870/1000
+
+"Bạn đã phá án thành công."
+
+Nếu sai:
+
+CASE FAILED
+
+"Thủ phạm thực sự vẫn chưa bị bắt."
+
+Cho phép:
+
+[THỬ LẠI]
+
+==================================================
+16. CASE SOLUTION
+==================================================
+
+Sau khi hoàn thành hoặc thất bại, cho phép xem:
+
+CASE FILE
+
+Hiển thị:
+
+Hung thủ
+Động cơ
+Phương thức
+Timeline thật
+Các bằng chứng then chốt
+Các lời khai nói dối
+
+Nhưng chỉ được mở SAU khi người chơi kết thúc vụ án.
+
+==================================================
+17. SAVE SYSTEM
+==================================================
+
+Dùng localStorage.
+
+Lưu:
+
+currentCase
+discoveredClues
+notes
+suspectScores
+timelineProgress
+interrogationProgress
+score
+completedCases
+achievements
+settings
+
+Khi reload trang:
+
+không mất tiến trình.
+
+Có:
+
+[SAVE]
+
+[RESET CASE]
+
+[RESET ALL DATA]
+
+Reset all phải có confirm.
+
+==================================================
+18. ACHIEVEMENTS
+==================================================
+
+Thêm achievement system.
+
+Ví dụ:
+
+🔎 FIRST CLUE
+Tìm manh mối đầu tiên.
+
+🧠 LOGIC MASTER
+Phát hiện 5 mâu thuẫn.
+
+🕵️ PERFECT DETECTIVE
+Phá án với điểm tối đa.
+
+⚡ SPEED DETECTIVE
+Phá án trong thời gian ngắn.
+
+👁️ OBSERVER
+Tìm toàn bộ evidence.
+
+Hiển thị locked/unlocked.
+
+==================================================
+19. TIMER
+==================================================
+
+Mỗi vụ án có timer.
+
+Hiển thị:
+
+TIME ELAPSED
+
+Không bắt buộc phải giới hạn thời gian để phá án.
+
+Timer dùng để tính điểm.
+
+Có thể pause khi người chơi mở menu.
+
+==================================================
+20. RANDOM CASE MODE
+==================================================
+
+Thêm:
+
+RANDOM CASE
+
+Hệ thống chọn ngẫu nhiên một vụ án.
+
+Nếu có thể, random:
+
+- thứ tự clues
+- thứ tự suspects
+- một số dialogue
+
+Nhưng KHÔNG được random khiến logic vụ án sai.
+
+==================================================
+21. GAME STATE
+==================================================
+
+Thiết kế state management rõ ràng.
+
+Ví dụ:
+
+gameState = {
+ currentCase,
+ discoveredClues,
+ evidence,
+ notes,
+ suspects,
+ timeline,
+ score,
+ timer,
+ completed,
+ interrogation,
+ settings
+}
+
+Không tạo quá nhiều biến global rời rạc.
+
+==================================================
+22. ACCESSIBILITY
+==================================================
+
+Phải hỗ trợ:
+
+- keyboard navigation
+- focus state
+- aria-label
+- button rõ ràng
+- contrast tốt
+- reduced motion nếu user bật prefers-reduced-motion
+- không phụ thuộc hoàn toàn vào màu sắc
+
+==================================================
+23. RESPONSIVE
+==================================================
+
+Phải chạy tốt:
+
+320px
+360px
+375px
+390px
+414px
+768px
+1024px
+desktop
+
+Không horizontal overflow.
+
+Mobile navigation có thể dùng bottom navigation.
+
+Desktop có sidebar nếu phù hợp.
+
+==================================================
+24. UI ANIMATION
+==================================================
+
+Thêm animation nhẹ:
+
+- page transition
+- clue reveal
+- modal
+- evidence unlock
+- success/fail
+- button feedback
+
+Không lạm dụng animation.
+
+Nếu prefers-reduced-motion:
+
+tắt animation không cần thiết.
+
+==================================================
+25. SOUND
+==================================================
+
+Nếu có thể tạo bằng Web Audio API:
+
+- click
+- clue discovered
+- warning
+- success
+- failure
+
+Không bắt buộc tải audio bên ngoài.
+
+Có Settings:
+
+🔊 Sound ON/OFF
+
+==================================================
+26. SETTINGS
+==================================================
+
+Có:
+
+Sound
+Animation
+Dark mode
+Reset progress
+
+UI phải đẹp.
+
+==================================================
+27. HELP
+==================================================
+
+Có trang:
+
+HOW TO PLAY
+
+Hướng dẫn:
+
+1. Đọc hồ sơ.
+2. Kiểm tra nghi phạm.
+3. Tìm evidence.
+4. Dựng timeline.
+5. Thẩm vấn.
+6. Phát hiện mâu thuẫn.
+7. Đưa ra kết luận.
+
+==================================================
+28. DATA ARCHITECTURE
+==================================================
+
+Case data phải tách khỏi UI logic nếu có thể.
+
+Ví dụ:
+
+const CASES = [...]
+
+Các hàm:
+
+loadCase()
+saveGame()
+loadGame()
+discoverClue()
+interrogateSuspect()
+detectContradiction()
+calculateSuspicion()
+submitDeduction()
+calculateScore()
+resetCase()
+resetAll()
+
+Không viết toàn bộ logic vào event listener.
+
+==================================================
+29. SECURITY
+==================================================
+
+Không dùng:
+
+eval()
+
+new Function()
+
+innerHTML với dữ liệu người dùng nếu không cần.
+
+Nếu phải render text người dùng nhập:
+
+dùng textContent.
+
+Validate input.
+
+Không cho phép XSS thông qua Notes.
+
+==================================================
+30. PERFORMANCE
+==================================================
+
+Không tạo animation loop không cần thiết.
+
+Không chạy setInterval liên tục nếu không cần.
+
+Timer phải được quản lý đúng.
+
+Không render lại toàn bộ DOM cho mỗi thao tác nhỏ nếu có thể tránh.
+
+==================================================
+31. TESTER REQUIREMENTS
+==================================================
+
+Tester phải kiểm tra:
+
+HTML có lỗi không.
+
+CSS có lỗi nghiêm trọng không.
+
+JavaScript có syntax error không.
+
+Các button có hoạt động không.
+
+Case có load không.
+
+Clue có unlock không.
+
+Suspect có hiển thị không.
+
+Timeline có hoạt động không.
+
+Interrogation có hoạt động không.
+
+Contradiction detection có hoạt động không.
+
+Notes có save/load không.
+
+localStorage có hoạt động không.
+
+Final deduction có validate không.
+
+Score có tính không.
+
+Reset có hoạt động không.
+
+Responsive layout có vấn đề không.
+
+Không chỉ kiểm tra syntax.
+
+Tester phải kiểm tra BEHAVIOR.
+
+==================================================
+32. TEST CASES
+==================================================
+
+Tester phải thử ít nhất:
+
+TEST 1:
+Load website.
+
+TEST 2:
+Start case.
+
+TEST 3:
+Open suspect.
+
+TEST 4:
+Discover clue.
+
+TEST 5:
+Open evidence.
+
+TEST 6:
+Check timeline.
+
+TEST 7:
+Interrogate suspect.
+
+TEST 8:
+Find contradiction.
+
+TEST 9:
+Create note.
+
+TEST 10:
+Reload page và kiểm tra save.
+
+TEST 11:
+Submit invalid deduction.
+
+TEST 12:
+Submit valid deduction.
+
+TEST 13:
+Check score.
+
+TEST 14:
+Reset case.
+
+TEST 15:
+Reset all.
+
+==================================================
+33. AUTO-FIX
+==================================================
+
+Nếu Tester FAIL:
+
+Coder phải sửa lỗi.
+
+Sau đó Tester chạy lại.
+
+Tối đa:
+
+3 FIX ROUNDS.
+
+Vòng 1:
+Coder → Tester
+
+Nếu FAIL:
+
+Vòng 2:
+Coder → Tester
+
+Nếu FAIL:
+
+Vòng 3:
+Coder → Tester
+
+Nếu vẫn FAIL:
+
+DỪNG.
+
+Không cố vô hạn.
+
+Tester phải kiểm tra trạng thái CODE HIỆN TẠI.
+
+Không quay lại cố tình tạo lại lỗi ban đầu sau khi Coder đã sửa đúng.
+
+==================================================
+34. REVIEWER
+==================================================
+
+Reviewer phải kiểm tra:
+
+- code structure
+- functionality
+- security
+- responsive
+- accessibility
+- game logic
+- save system
+- no API key leak
+- no destructive changes
+- no broken existing pipeline
+
+Nếu đạt:
+
+TEST_RESULT: PASS
+
+REVIEWER: CHOT
+
+Nếu chưa đạt:
+
+REVIEWER: REJECT
+
+Không được CHOT nếu còn lỗi nghiêm trọng.
+
+==================================================
+35. PIPELINE SAFETY
+==================================================
+
+Không được sửa:
+
+gemini.sh
+ask-gemini.sh
+ship-gemini.sh
+coder-json.py
+.bangiao/
+
+trừ khi nhiệm vụ thật sự yêu cầu thay đổi pipeline.
+
+Không xóa Git history.
+
+Không git push.
+
+Không commit tự động.
+
+Không sửa API key.
+
+Không hardcode secret.
+
+==================================================
+36. DEFINITION OF DONE
+==================================================
+
+Project chỉ được coi là hoàn thành khi:
+
+✓ Website mở được.
+✓ UI đẹp.
+✓ Mobile responsive.
+✓ Có ít nhất 3 vụ án.
+✓ Có suspects.
+✓ Có clues.
+✓ Có evidence board.
+✓ Có timeline.
+✓ Có interrogation.
+✓ Có contradiction detection.
+✓ Có notes.
+✓ Có save/load.
+✓ Có final deduction.
+✓ Có scoring.
+✓ Có achievements.
+✓ Có settings.
+✓ Có reset.
+✓ Không có JavaScript syntax error.
+✓ Không có lỗi nghiêm trọng trong console.
+✓ Không có API key trong source.
+✓ Tester PASS.
+✓ Reviewer CHOT.
+
+==================================================
+37. ƯU TIÊN
+==================================================
+
+Nếu phải lựa chọn giữa:
+
+A. Thêm tính năng mới
+B. Sửa bug hiện tại
+
+LUÔN ưu tiên sửa bug.
+
+Nếu tính năng quá phức tạp:
+
+- tạo phiên bản đơn giản nhưng hoạt động ổn định.
+- không tạo placeholder giả vờ hoạt động.
+- không bỏ qua Tester.
+
+Nếu không thể hoàn thành toàn bộ trong một lần:
+
+ưu tiên theo thứ tự:
+
+1. Core game
+2. Case system
+3. Clues
+4. Suspects
+5. Timeline
+6. Interrogation
+7. Deduction
+8. Save
+9. Score
+10. UI polish
+
+==================================================
+38. FINAL REQUIREMENT
+==================================================
+
+Hãy tự xây dựng project hoàn chỉnh.
+
+Planner phải lập kế hoạch trước.
+
+Coder phải triển khai.
+
+Tester phải kiểm tra thực tế.
+
+Nếu FAIL, Coder phải tự sửa.
+
+Tester phải kiểm tra lại.
+
+Tối đa 3 vòng Auto-Fix.
+
+Sau khi PASS, Reviewer phải kiểm tra lần cuối.
+
+Chỉ khi Reviewer trả về:
+
+CHOT
+
+thì mới áp dụng thay đổi.
+
+KHÔNG được coi project là hoàn thành chỉ vì code đã được tạo.
+
+Mục tiêu cuối cùng:
+
+Một game web "AI THÁM TỬ" thực sự có thể chơi được trên điện thoại Android, có cảm giác như một game điều tra chuyên nghiệp và toàn bộ hệ thống phải hoạt động end-to-end.
+

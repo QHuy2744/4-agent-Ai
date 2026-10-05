@@ -1,83 +1,282 @@
-<!DOCTYPE html>
-<html lang="vi" data-theme="dark">
+<DOCTYPE html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMEGA DESKTOP - Browser Operating System</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Thám Tử — Detective Case</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app-root">
-        <div id="desktop-background">
-            <div id="app-grid"></div>
-        </div>
-        <div id="window-container"></div>
-        <div id="shell-topbar">
-            <div class="tray-left">
-                <button id="start-btn" class="tray-btn" aria-label="App Launcher">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                    <span>Omega</span>
-                </button>
-                <div id="active-tasks-indicator"></div>
+    <div id="app">
+        <!-- HEADER -->
+        <header id="main-header">
+            <div class="header-title">
+                <h1>🕵️ AI THÁM TỬ</h1>
+                <p class="subtitle">THE CASE BEGINS</p>
             </div>
-            <div class="tray-center">
-                <div id="system-clock">00:00:00</div>
+            <div class="header-stats" id="header-stats">
+                <span id="header-timer">⏱️ 00:00</span>
+                <span id="header-score">⭐ Điểm: 0</span>
             </div>
-            <div class="tray-right">
-                <button id="lock-btn" class="tray-btn" title="Lock Session">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                </button>
-                <button id="notif-tray-btn" class="tray-btn" title="Notifications">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                    <span id="notif-badge" class="badge">0</span>
-                </button>
-                <span id="user-session-pill">Admin</span>
-            </div>
-        </div>
-        <div id="shell-taskbar"></div>
-        <div id="launcher-menu" class="hidden">
-            <div class="launcher-search">
-                <input type="text" id="launcher-search-input" placeholder="Search apps or press Ctrl+K for Command Palette...">
-            </div>
-            <div class="launcher-apps" id="launcher-apps-list"></div>
-        </div>
-        <div id="notification-center" class="hidden">
-            <div class="notif-header">
-                <h3>Notifications</h3>
-                <div>
-                    <button id="notif-mark-all">Read All</button>
-                    <button id="notif-clear">Clear</button>
+        </header>
+
+        <!-- NAVIGATION -->
+        <nav id="main-nav" class="hidden">
+            <button class="nav-btn active" data-target="screen-case">📂 VỤ ÁN</button>
+            <button class="nav-btn" data-target="screen-clues">🔍 MANH MỐI</button>
+            <button class="nav-btn" data-target="screen-suspects">👥 NGHI PHẠM</button>
+            <button class="nav-btn" data-target="screen-timeline">⏰ TIMELINE</button>
+            <button class="nav-btn" data-target="screen-interrogation">💬 THẨM VẤN</button>
+            <button class="nav-btn" data-target="screen-evidence">📋 CHỨNG CỨ</button>
+            <button class="nav-btn" data-target="screen-notes">📝 GHI CHÚ</button>
+            <button class="nav-btn" data-target="screen-deduction">🎯 KẾT LUẬN</button>
+        </nav>
+
+        <!-- MAIN CONTENT CONTAINER -->
+        <main id="content-container">
+            <!-- 1. HOME SCREEN -->
+            <section id="screen-home" class="game-screen active">
+                <div class="home-hero">
+                    <div class="hero-icon">🕵️</div>
+                    <h2>AI THÁM TỬ</h2>
+                    <p class="hero-quote">"Bạn có đủ khả năng tìm ra sự thật trong thế giới ngầm tối tăm này?"</p>
+                    
+                    <div class="home-menu">
+                        <button class="btn btn-primary btn-lg" id="btn-new-case">[ VỤ ÁN MỚI ]</button>
+                        <button class="btn btn-secondary btn-lg" id="btn-continue">[ TIẾP TỤC VỤ ÁN ]</button>
+                        <button class="btn btn-secondary" id="btn-random-case">[ VỤ ÁN NGẪU NHIÊN ]</button>
+                        <button class="btn btn-outline" id="btn-how-to-play">[ HƯỚNG DẪN ]</button>
+                        <button class="btn btn-outline" id="btn-achievements">[ THÀNH TÍCH ]</button>
+                        <button class="btn btn-outline" id="btn-settings">[ CÀI ĐẶT ]</button>
+                    </div>
+
+                    <div class="global-stats-card">
+                        <h3>THỐNG KÊ ĐIỀU TRA</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-completed">0</span>
+                                <span class="stat-lbl">Đã hoàn thành</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-success">0</span>
+                                <span class="stat-lbl">Phá án thành công</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-rate">0%</span>
+                                <span class="stat-lbl">Tỷ lệ phá án</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-val" id="stat-highscore">0</span>
+                                <span class="stat-lbl">Điểm cao nhất</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. CASE SCREEN -->
+            <section id="screen-case" class="game-screen">
+                <div class="screen-header">
+                    <h2>HỒ SƠ VỤ ÁN</h2>
+                    <button class="btn btn-sm btn-outline" id="btn-back-home">🏠 Về Trang Chủ</button>
+                </div>
+                <div class="case-container" id="case-details-content">
+                    <!-- Dynamic Case Details -->
+                </div>
+            </section>
+
+            <!-- 3. CLUES SCREEN -->
+            <section id="screen-clues" class="game-screen">
+                <div class="screen-header">
+                    <h2>MANH MỐI ĐÃ THU THẬP</h2>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">TẤT CẢ</button>
+                        <button class="filter-btn" data-filter="critical">🔴 CRITICAL</button>
+                        <button class="filter-btn" data-filter="important">🟡 IMPORTANT</button>
+                        <button class="filter-btn" data-filter="normal">⚪ NORMAL</button>
+                    </div>
+                </div>
+                <div class="clues-grid" id="clues-grid-content">
+                    <!-- Dynamic Clues List -->
+                </div>
+            </section>
+
+            <!-- 4. SUSPECTS SCREEN -->
+            <section id="screen-suspects" class="game-screen">
+                <div class="screen-header">
+                    <h2>DANH SÁCH NGHI PHẠM</h2>
+                </div>
+                <div class="suspects-grid" id="suspects-grid-content">
+                    <!-- Dynamic Suspects List -->
+                </div>
+            </section>
+
+            <!-- 5. TIMELINE SCREEN -->
+            <section id="screen-timeline" class="game-screen">
+                <div class="screen-header">
+                    <h2>TIMELINE SỰ KIỆN</h2>
+                    <p class="screen-desc">Đối chiếu thời gian để tìm ra những lỗ hổng trong lời khai.</p>
+                </div>
+                <div class="timeline-container" id="timeline-content">
+                    <!-- Dynamic Timeline Events -->
+                </div>
+            </section>
+
+            <!-- 6. INTERROGATION SCREEN -->
+            <section id="screen-interrogation" class="game-screen">
+                <div class="screen-header">
+                    <h2>PHÒNG THẨM VẤN</h2>
+                    <p class="screen-desc">Chọn nghi phạm để thẩm vấn và phát hiện mâu thuẫn.</p>
+                </div>
+                <div class="interrogation-layout">
+                    <div class="interrogation-sidebar" id="interrogation-suspects-list">
+                        <!-- Suspect selection list -->
+                    </div>
+                    <div class="interrogation-main" id="interrogation-room">
+                        <div class="empty-state">Chọn một nghi phạm bên trái để bắt đầu thẩm vấn.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. EVIDENCE BOARD SCREEN -->
+            <section id="screen-evidence" class="game-screen">
+                <div class="screen-header">
+                    <h2>BẢNG CHỨNG CỨ & VẬT CHẤT</h2>
+                </div>
+                <div class="evidence-board" id="evidence-board-content">
+                    <!-- Dynamic Evidence Board -->
+                </div>
+            </section>
+
+            <!-- 8. NOTES SCREEN -->
+            <section id="screen-notes" class="game-screen">
+                <div class="screen-header">
+                    <h2>GHI CHÚ THÁM TỬ</h2>
+                    <button class="btn btn-primary btn-sm" id="btn-add-note">+ Thêm Ghi Chú</button>
+                </div>
+                <div class="notes-container" id="notes-container">
+                    <!-- Dynamic Notes -->
+                </div>
+            </section>
+
+            <!-- 9. FINAL DEDUCTION SCREEN -->
+            <section id="screen-deduction" class="game-screen">
+                <div class="screen-header">
+                    <h2>KẾT LUẬN ĐIỀU TRA</h2>
+                    <p class="screen-desc">Hãy đưa ra phán quyết cuối cùng của bạn. Cân nhắc kỹ trước khi nộp hồ sơ!</p>
+                </div>
+                <div class="deduction-form-card" id="deduction-form-container">
+                    <!-- Dynamic Deduction Form -->
+                </div>
+            </section>
+
+            <!-- 10. HOW TO PLAY SCREEN -->
+            <section id="screen-howto" class="game-screen">
+                <div class="screen-header">
+                    <h2>HƯỚNG DẪN ĐIỀU TRA</h2>
+                    <button class="btn btn-sm btn-outline" id="btn-close-howto">⬅ Quay lại</button>
+                </div>
+                <div class="info-card">
+                    <h3>CẨM NANG THÁM TỬ</h3>
+                    <ol class="guide-list">
+                        <li><strong>Đọc hồ sơ vụ án:</strong> Nắm bắt thời gian, địa điểm và báo cáo ban đầu từ hiện trường.</li>
+                        <li><strong>Thu thập manh mối:</strong> Khám phá các khu vực xung quanh để tìm kiếm manh mối (Critical, Important, Normal).</li>
+                        <li><strong>Kiểm tra nghi phạm:</strong> Xem hồ sơ, alibi (lời khai ngoại phạm) và mức độ đáng ngờ.</li>
+                        <li><strong>Dựng timeline:</strong> Sắp xếp chuỗi sự kiện để phát hiện mâu thuẫn thời gian.</li>
+                        <li><strong>Thẩm vấn chuyên sâu:</strong> Hỏi nghi phạm và dùng tính năng <em>[Đối chiếu manh mối]</em> khi phát hiện điểm nghi vấn.</li>
+                        <li><strong>Ghi chép:</strong> Sử dụng sổ tay ghi chú để lưu lại thông tin quan trọng.</li>
+                        <li><strong>Đưa ra kết luận:</strong> Xác định chính xác Hung thủ, Động cơ, Phương thức và Bằng chứng then chốt để phá án!</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- 11. ACHIEVEMENTS SCREEN -->
+            <section id="screen-achievements" class="game-screen">
+                <div class="screen-header">
+                    <h2>THÀNH TÍCH THÁM TỬ</h2>
+                    <button class="btn btn-sm btn-outline" id="btn-close-achievements">⬅ Quay lại</button>
+                </div>
+                <div class="achievements-grid" id="achievements-grid-content">
+                    <!-- Dynamic Achievements -->
+                </div>
+            </section>
+
+            <!-- 12. SETTINGS SCREEN -->
+            <section id="screen-settings" class="game-screen">
+                <div class="screen-header">
+                    <h2>CÀI ĐẶT HỆ THỐNG</h2>
+                    <button class="btn btn-sm btn-outline" id="btn-close-settings">⬅ Quay lại</button>
+                </div>
+                <div class="settings-card">
+                    <div class="setting-item">
+                        <span>🔊 Âm thanh (Sound Effects)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-sound" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>✨ Hiệu ứng động (Animations)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-animation" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <span>🌙 Giao diện Dark Detective</span>
+                        <label class="switch">
+                            <input type="checkbox" id="setting-darkmode" checked disabled>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="setting-actions">
+                        <button class="btn btn-secondary" id="btn-save-game-manual">💾 Lưu Tiến Trình</button>
+                        <button class="btn btn-warning" id="btn-reset-case">🔄 Reset Vụ Án Này</button>
+                        <button class="btn btn-danger" id="btn-reset-all">⚠️ Xóa Toàn Bộ Dữ Liệu</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- MODALS -->
+        <div class="modal-overlay" id="modal-overlay">
+            <div class="modal-card" id="modal-card">
+                <button class="modal-close" id="modal-close">&times;</button>
+                <div id="modal-body">
+                    <!-- Modal Dynamic Content -->
                 </div>
             </div>
-            <div id="notif-list"></div>
         </div>
-        <div id="lock-screen" class="hidden">
-            <div class="lock-box">
-                <h2>OMEGA LOCKED</h2>
-                <p>Enter PIN (default: 1234)</p>
-                <input type="password" id="lock-pin-input" maxlength="6">
-                <button id="lock-unlock-btn">Unlock</button>
-            </div>
-        </div>
-        <div id="command-palette" class="hidden">
-            <div class="palette-box">
-                <input type="text" id="palette-input" placeholder="Type a command (e.g. Create Task, Run Tests)...">
-                <div id="palette-results"></div>
-            </div>
-        </div>
-        <div id="global-toast-container"></div>
-        <div id="global-error-boundary" class="hidden">
-            <div class="error-box">
-                <h2>System Exception Caught</h2>
-                <p id="error-message"></p>
-                <small id="error-id"></small>
-                <pre id="error-details" class="hidden"></pre>
-                <button onclick="window.location.reload()">Reboot Omega</button>
-            </div>
-        </div>
+
+        <!-- FOOTER / BOTTOM NAV FOR MOBILE -->
+        <nav id="bottom-nav" class="hidden">
+            <button class="b-nav-btn active" data-target="screen-case">
+                <span>📂</span>
+                <small>Vụ Án</small>
+            </button>
+            <button class="b-nav-btn" data-target="screen-clues">
+                <span>🔍</span>
+                <small>Manh Mối</small>
+            </button>
+            <button class="b-nav-btn" data-target="screen-suspects">
+                <span>👥</span>
+                <small>Nghi Phạm</small>
+            </button>
+            <button class="b-nav-btn" data-target="screen-timeline">
+                <span>⏰</span>
+                <small>Timeline</small>
+            </button>
+            <button class="b-nav-btn" data-target="screen-interrogation">
+                <span>💬</span>
+                <small>Thẩm Vấn</small>
+            </button>
+            <button class="b-nav-btn" data-target="screen-deduction">
+                <span>🎯</span>
+                <small>Kết Luận</small>
+            </button>
+        </nav>
     </div>
-    <script type="module" src="src/app.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
