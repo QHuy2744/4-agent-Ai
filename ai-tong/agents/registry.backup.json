@@ -1,0 +1,44 @@
+{
+  "agents": [
+    {
+      "id": "planner",
+      "name": "PLANNER",
+      "role": "Phân tích yêu cầu và lập kế hoạch",
+      "status": "ready",
+      "can_fix": [],
+      "can_be_fixed_by": ["coder", "debugger"]
+    },
+    {
+      "id": "coder",
+      "name": "CODER",
+      "role": "Viết và sửa code",
+      "status": "ready",
+      "can_fix": ["planner", "tester"],
+      "can_be_fixed_by": ["debugger", "reviewer"]
+    },
+    {
+      "id": "tester",
+      "name": "TESTER",
+      "role": "Kiểm thử và tìm lỗi",
+      "status": "ready",
+      "can_fix": ["coder"],
+      "can_be_fixed_by": ["debugger", "reviewer"]
+    },
+    {
+      "id": "reviewer",
+      "name": "REVIEWER",
+      "role": "Đánh giá kết quả và phát hiện vấn đề",
+      "status": "ready",
+      "can_fix": ["coder", "tester"],
+      "can_be_fixed_by": ["debugger"]
+    },
+    {
+      "id": "debugger",
+      "name": "DEBUGGER",
+      "role": "Điều tra và sửa lỗi cho agent khác",
+      "status": "ready",
+      "can_fix": ["planner", "coder", "tester", "reviewer"],
+      "can_be_fixed_by": []
+    }
+  ]
+}
